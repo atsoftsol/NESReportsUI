@@ -1,1 +1,118 @@
-<branch-wise></branch-wise>
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-xl-12 connectedSortable">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row m-b-20">
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select State'" [data]="states" [settings]="stateDropdownSettings"
+                                        [(ngModel)]="selectedStates" (onSelect)="selectState($event)" (onSelectAll)="selectAllStates($event)"
+                                        (onDeSelect)="unSelectState($event)" (onDeSelectAll)="unSelectAllStates($event)">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>District</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select District'" [data]="districts"
+                                        [settings]="districtDropdownSettings" [(ngModel)]="selectedDistricts"
+                                        (onSelect)="selectDistrict($event)" (onSelectAll)="selectAllDistricts($event)"
+                                        (onDeSelect)="unSelectDistrict($event)" (onDeSelectAll)="unSelectAllDistricts($event)">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Branch</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Branch'" [data]="branches"
+                                        [settings]="branchDropdownSettings" [(ngModel)]="selectedBranches" (onSelect)="selectBranch($event)"
+                                        (onSelectAll)="selectAllBranches($event)" (onDeSelect)="unSelectBranch($event)"
+                                        (onDeSelectAll)="unSelectAllBranches($event)">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="startDate"
+                                            ngbDatepicker #s="ngbDatepicker">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="s.toggle()"
+                                                type="button"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="endDate"
+                                            ngbDatepicker #e="ngbDatepicker">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="e.toggle()"
+                                                type="button"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <button id="btnSubmit" name="btnSubmit" (click)="getReportData()">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="showReportData">
+            <div class="col-xl-12 connectedSortable">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="media-table-block">
+                            <table class="table media-table" style="border: 1;">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let column of reportData.columns" [class.active]="order === column"
+                                            (click)="setOrder(column)">
+                                            <span [innerHtml]="column" style="cursor: pointer;">
+                                                <span [hidden]="reverse">▼</span>
+                                                <span [hidden]="!reverse">▲</span>
+                                            </span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of reportData.data | orderBy: order:!reverse:'case-insensitive' | paginate: { itemsPerPage: 10, currentPage: page };">
+                                        <td *ngFor="let column of reportData.columns">
+                                            <span [innerHtml]="item[column]"></span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="!dataCount" style="text-align:center">
+                                        <td [attr.colspan]="noDataColspan">No data available</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td [attr.colspan]="grandTotalColspan">
+                                            Grand Total
+                                        </td>
+                                        <td *ngFor="let footerColumn of reportData.footerTotalValues">
+                                            {{footerColumn}}
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <pagination-controls *ngIf="dataCount" class="paginations-block" (pageChange)="page=$event"></pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

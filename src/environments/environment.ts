@@ -4,10 +4,21 @@
 
 export const environment = {
   production: false,
-  apiEndPoint: 'http://192.168.0.6:100/',
+  apiEndPoint: 'http://202.53.14.107/',
   retryFailedRequest: 3,
   commonConfig: {
-    getStates: 'api/common/states'
+    getStates: 'api/common/states',
+    getDistricts: 'api/common/districts/{stateIds}',
+    getBranches: 'api/common/branches/{districtIds}'
+  },
+  avReportConfig: {
+    getStateWiseUsageSummary: 'api/avreport/statewiseusagesummary/{stateCodes}/{startDate}/{endDate}',
+    getStateWiseUsageDetails: 'api/avreport/statewiseusagedetails/{stateCode}/{startDate}/{endDate}',
+    getDistrictWiseUsageSummary: 'api/avreport/districtwiseusagesummary/{stateCodes}/{startDate}/{endDate}',
+    getDistrictWiseUsageDetails: 'api/avreport/districtwiseusagedetails/{districtCode}/{startDate}/{endDate}',
+    getBranchWiseUsageSummary: 'api/avreport/branchwiseusagesummary/{stateCodes}/{districtCodes}/{startDate}/{endDate}',
+    getBranchWiseUsageDetails: 'api/avreport/branchwiseusagedetails/{stateCode}/{districtCode}/{branchCode}/{startDate}/{endDate}',
+    getClassWiseUsageSummary: 'api/avreport/classwiseusagesummary/{stateCodes}/{districtCodes}/{branchCodes}/{startDate}/{endDate}'
   }
 };
 
