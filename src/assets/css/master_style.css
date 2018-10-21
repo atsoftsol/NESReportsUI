@@ -7124,7 +7124,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
     font-weight: 600;
 }
 .table-bordered, .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
-    border: 1px solid #f4f4f4;
+    border: 1px solid #ddd;
 }
 .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
     border-bottom-width: 2px;
@@ -9306,3 +9306,18 @@ table.dataTable thead .sorting:after {
         background-size: 23px;
         background-position: center;
       }
+.input-group > .form-control:not(:last-child){    height: 29px;
+    border-radius: 4px;
+    border: 1px solid #adadad !important;}
+     .multiselect-dropdown .dropdown-btn{padding: 3px 0px  3px 2px  !important;
+    
+        font-size: 14px !important;
+        
+        line-height: 1.4 !important;}
+
+        .btn-theme {
+            background-color: #ff6028;
+            border-color: #ff6028;
+            color: #ffffff !important;
+            border-radius: 4px !important;
+        }

@@ -62,7 +62,7 @@
                             </div>
                             <div class="col-xl-3">
                                 <div class="form-group">
-                                    <button id="btnSubmit" name="btnSubmit" (click)="getReportData()">Submit</button>
+                                    <button id="btnSubmit" class="btn btn-theme mt-3" name="btnSubmit" (click)="getReportData()">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -75,15 +75,17 @@
                 <div class="box box-info">
                     <div class="box-body">
                         <div class="media-table-block">
-                            <table class="table media-table" style="border: 1;">
+                            <table class="table  table-striped table-bordered media-table" style="border: 1;">
                                 <thead>
                                     <tr>
                                         <th *ngFor="let column of reportData.columns" [class.active]="order === column"
                                             (click)="setOrder(column)">
-                                            <span [innerHtml]="column" style="cursor: pointer;">
+                                            <span  [innerHtml]="column" ></span>
+                                            <span style="cursor: pointer; float: right;">
                                                 <span [hidden]="reverse">▼</span>
-                                                <span [hidden]="!reverse">▲</span>
+                                                <span [hidden]="!reverse"> ▲</span>
                                             </span>
+                                             
                                         </th>
                                     </tr>
                                 </thead>
@@ -100,10 +102,11 @@
                                 <tfoot>
                                     <tr>
                                         <td [attr.colspan]="grandTotalColspan">
-                                            Grand Total
+                                          <b style="color: #333333"> Grand Total</b> 
                                         </td>
-                                        <td *ngFor="let footerColumn of reportData.footerTotalValues">
-                                            {{footerColumn}}
+                                        <td  *ngFor="let footerColumn of reportData.footerTotalValues">
+                                            
+                                                <b style="color: #333333"> {{footerColumn}} </b>
                                         </td>
                                     </tr>
                                 </tfoot>
