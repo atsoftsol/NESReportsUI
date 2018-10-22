@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { environment } from '../environments/environment';
 import 'rxjs/add/operator/retry';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Injectable()
 export class AppService {

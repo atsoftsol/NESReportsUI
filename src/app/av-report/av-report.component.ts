@@ -33,6 +33,17 @@ export class AVReportComponent implements OnInit {
     order: string;
     reverse: boolean = false;
     showReportData: boolean = false;
+    showModalPopup: string = 'none';
+    detailedReportType: string = '';
+    detailedReportData: any;
+    detailedReportName: string = '';
+    detailedReportGrandTotalColspan: number;
+    detailedReportPage: number = 1;
+    detailedReportDataCount: number;
+    detailedReportNoDataColspan: number;
+    detailedReportOrder: string;
+    detailedReportReverse: boolean = false;
+    showDetailedReportData: boolean = false;
 
     constructor(private calendar: NgbCalendar, private appService: AppService, private avReportService: AVReportService) {
         this.stateDropdownSettings = {
@@ -278,23 +289,34 @@ export class AVReportComponent implements OnInit {
 
     getReportData() {
         if (this.selectedStates.length > 0 && this.selectedDistricts.length === 0 && this.selectedBranches.length === 0) {
-            if (this.selectedStates.length === this.states.length) {
+            /* if (this.selectedStates.length === this.states.length) {
                 this.getStateWiseUsageSummary();
             }
             else {
                 this.getStateWiseUsageDetails();
-            }
+            } */
+            this.getStateWiseUsageSummary();
         }
         else if (this.selectedStates.length > 0 && this.selectedDistricts.length > 0 && this.selectedBranches.length === 0) {
-            if (this.selectedDistricts.length === this.districts.length) {
+            /* if (this.selectedDistricts.length === this.districts.length) {
                 this.getDistrictWiseUsageSummary();
             }
             else {
                 this.getDistrictWiseUsageDetails();
-            }
+            } */
+            this.getDistrictWiseUsageSummary();
         }
         else if (this.selectedStates.length > 0 && this.selectedDistricts.length > 0 && this.selectedBranches.length > 0) {
-            if (this.selectedBranches.length === this.branches.length) {
+            if (this.selectedCourses.length === 0 && this.selectedSubjects.length == 0) {
+                this.getBranchWiseUsageSummary();
+            }
+            else if (this.selectedCourses.length > 0 && this.selectedSubjects.length === 0) {
+                this.getCourseWiseUsageSummary();
+            }
+            else {
+                this.getSubjectWiseUsageSummary();
+            }
+            /* if (this.selectedBranches.length === this.branches.length) {
                 if (this.selectedCourses.length === 0) {
                     this.getBranchWiseUsageSummary();
                 }
@@ -359,17 +381,51 @@ export class AVReportComponent implements OnInit {
                         }
                     }
                 }
-            }
+            } */
         }
+    };
+
+    getDetailedReport(item: any) {
+        this.showModalPopup = 'block';
+        this.showDetailedReportData = true;
+
+        switch (this.detailedReportType) {
+            case 'stateWiseDetailedReport':
+                let state: any = this.states.filter((e) => e.stateName === item.State);
+                this.detailedReportName = item.State;
+                this.getStateWiseUsageDetails(state[0].stateCode);
+                break;
+            case 'districtWiseDetailedReport':
+                let district: any = this.districts.filter((e) => e.districtName === item.District);
+                this.detailedReportName = item.District;
+                this.getDistrictWiseUsageDetails(district[0].districtCode);
+                break;
+            case 'branchWiseDetailedReport':
+
+                break;
+        }
+    };
+
+    closeDetailedReport() {
+        this.showModalPopup = 'none';
     };
 
     getStateWiseUsageSummary() {
         let stateCodes: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.detailedReportType = 'stateWiseDetailedReport';
 
-        for (let i: number = 0; i < this.states.length; i++) {
-            stateCodes.push(this.states[i].stateCode);
+        if (this.selectedStates.length === 0) {
+            for (let i: number = 0; i < this.states.length; i++) {
+                stateCodes.push(this.states[i].stateCode);
+            }
+        }
+        else {
+            for (let i: number = 0; i < this.selectedStates.length; i++) {
+                let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
+                stateCodes.push(state[0].stateCode);
+            }
         }
 
         this.avReportService.getStateWiseUsageSummary(stateCodes.join(','), startDate, endDate)
@@ -379,23 +435,33 @@ export class AVReportComponent implements OnInit {
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
                 let totalSeconds: number = 0;
+                let targetTotalDuration: string;
+                let targetTotalSeconds: number = 0;
                 let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
                 let stateWiseData: any = JSON.parse(this.reportData.data);
 
                 for (let i: number = 0; i < stateWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(stateWiseData[i].Duration.split(':')[2]) + (60 * parseInt(stateWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Duration.split(':')[0]));
+                    let targetDurationInSeconds: number = parseInt(stateWiseData[i].Target.split(':')[2]) + (60 * parseInt(stateWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Target.split(':')[0]));
                     totalSeconds += durationInSeconds;
+                    targetTotalSeconds += targetDurationInSeconds;
                 }
 
                 let hours: number = Math.floor(totalSeconds / 3600);
                 totalSeconds %= 3600;
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
-                totalDuration = (paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds));
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
+                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                targetTotalSeconds %= 3600;
+                let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
+                let targetSeconds: number = targetTotalSeconds % 60;
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = stateWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
                 footerTotalValues.push(totalDuration);
+                footerTotalValues.push(targetTotalDuration);
                 footerTotalValues.push('');
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
@@ -412,42 +478,51 @@ export class AVReportComponent implements OnInit {
             });
     };
 
-    getStateWiseUsageDetails() {
-        let stateCodes: any[] = [];
+    getStateWiseUsageDetails(stateCode: string) {
+        //let stateCodes: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
 
-        for (let i: number = 0; i < this.selectedStates.length; i++) {
+        /* for (let i: number = 0; i < this.selectedStates.length; i++) {
             let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
             stateCodes.push(state[0].stateCode);
-        }
+        } */
 
-        this.avReportService.getStateWiseUsageDetails(stateCodes.join(','), startDate, endDate)
+        this.avReportService.getStateWiseUsageDetails(stateCode, startDate, endDate)
             .subscribe(data => {
-                this.showReportData = true;
-                this.reportData = data;
-                this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
+                this.detailedReportData = data;
+                this.detailedReportGrandTotalColspan = this.detailedReportData.columns.length - this.detailedReportData.footerTotalColumns.length;
                 let totalDuration: string;
                 let totalSeconds: number = 0;
+                let targetTotalDuration: string;
+                let targetTotalSeconds: number = 0;
                 let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
-                let stateWiseData: any = JSON.parse(this.reportData.data);
+                let stateWiseData: any = JSON.parse(this.detailedReportData.data);
 
                 for (let i: number = 0; i < stateWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(stateWiseData[i].Duration.split(':')[2]) + (60 * parseInt(stateWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Duration.split(':')[0]));
+                    let targetDurationInSeconds: number = parseInt(stateWiseData[i].Target.split(':')[2]) + (60 * parseInt(stateWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Target.split(':')[0]));
                     totalSeconds += durationInSeconds;
+                    targetTotalSeconds += targetDurationInSeconds;
                 }
 
                 let hours: number = Math.floor(totalSeconds / 3600);
                 totalSeconds %= 3600;
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
-                totalDuration = (paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds));
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
+                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                targetTotalSeconds %= 3600;
+                let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
+                let targetSeconds: number = targetTotalSeconds % 60;
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = stateWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
                 footerTotalValues.push(totalDuration);
+                footerTotalValues.push(targetTotalDuration);
                 footerTotalValues.push('');
-                this.reportData['footerTotalValues'] = footerTotalValues;
+                this.detailedReportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
 
                 for (let i: number = 0; i < stateWiseData.length; i++) {
@@ -455,97 +530,64 @@ export class AVReportComponent implements OnInit {
                     stateWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
                 }
 
-                this.reportData['data'] = stateWiseData;
-                this.dataCount = stateWiseData.length;
-                this.noDataColspan = this.reportData.columns.length;
-                this.order = this.reportData.sorting;
+                this.detailedReportData['data'] = stateWiseData;
+                this.detailedReportDataCount = stateWiseData.length;
+                this.detailedReportNoDataColspan = this.reportData.columns.length;
+                this.order = this.detailedReportData.sorting;
             });
     };
 
     getDistrictWiseUsageSummary() {
         let stateCodes: any[] = [];
+        let districtCodes: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.detailedReportType = 'districtWiseDetailedReport';
 
         for (let i: number = 0; i < this.selectedStates.length; i++) {
             let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
             stateCodes.push(state[0].stateCode);
         }
-
-        this.avReportService.getDistrictWiseUsageSummary(stateCodes.join(','), startDate, endDate)
-            .subscribe(data => {
-                this.showReportData = true;
-                this.reportData = data;
-                this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
-                let totalDuration: string;
-                let totalSeconds: number = 0;
-                let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
-                let districtWiseData: any = JSON.parse(this.reportData.data);
-
-                for (let i: number = 0; i < districtWiseData.length; i++) {
-                    let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
-                    totalSeconds += durationInSeconds;
-                }
-
-                let hours: number = Math.floor(totalSeconds / 3600);
-                totalSeconds %= 3600;
-                let minutes: number = Math.floor(totalSeconds / 60);
-                let seconds: number = totalSeconds % 60;
-                totalDuration = (paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds));
-                let totalStrength: number = districtWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
-                let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
-                this.reportData['footerTotalValues'] = footerTotalValues;
-                let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
-
-                for (let i: number = 0; i < districtWiseData.length; i++) {
-                    let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
-                    districtWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
-                }
-
-                this.reportData['data'] = districtWiseData;
-                this.dataCount = districtWiseData.length;
-                this.noDataColspan = this.reportData.columns.length;
-                this.order = this.reportData.sorting;
-            });
-    };
-
-    getDistrictWiseUsageDetails() {
-        let districtCodes: any[] = [];
-        let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
-        let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
 
         for (let i: number = 0; i < this.selectedDistricts.length; i++) {
             let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
             districtCodes.push(district[0].districtCode);
         }
 
-        this.avReportService.getDistrictWiseUsageDetails(districtCodes.join(','), startDate, endDate)
+        this.avReportService.getDistrictWiseUsageSummary(stateCodes.join(','), districtCodes.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showReportData = true;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
                 let totalSeconds: number = 0;
+                let targetTotalDuration: string;
+                let targetTotalSeconds: number = 0;
                 let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
                 let districtWiseData: any = JSON.parse(this.reportData.data);
 
                 for (let i: number = 0; i < districtWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
+                    let targetDurationInSeconds: number = parseInt(districtWiseData[i].Target.split(':')[2]) + (60 * parseInt(districtWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Target.split(':')[0]));
                     totalSeconds += durationInSeconds;
+                    targetTotalSeconds += targetDurationInSeconds;
                 }
 
                 let hours: number = Math.floor(totalSeconds / 3600);
                 totalSeconds %= 3600;
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
-                totalDuration = (paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds));
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
+                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                targetTotalSeconds %= 3600;
+                let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
+                let targetSeconds: number = targetTotalSeconds % 60;
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = districtWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
                 footerTotalValues.push(totalDuration);
+                footerTotalValues.push(targetTotalDuration);
                 footerTotalValues.push('');
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
@@ -559,14 +601,75 @@ export class AVReportComponent implements OnInit {
                 this.dataCount = districtWiseData.length;
                 this.noDataColspan = this.reportData.columns.length;
                 this.order = this.reportData.sorting;
+            });
+    };
+
+    getDistrictWiseUsageDetails(districtCode: string) {
+        //let districtCodes: any[] = [];
+        let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
+        let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+
+        /* for (let i: number = 0; i < this.selectedDistricts.length; i++) {
+            let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
+            districtCodes.push(district[0].districtCode);
+        } */
+
+        this.avReportService.getDistrictWiseUsageDetails(districtCode, startDate, endDate)
+            .subscribe(data => {
+                this.detailedReportData = data;
+                this.detailedReportGrandTotalColspan = this.detailedReportData.columns.length - this.detailedReportData.footerTotalColumns.length;
+                let totalDuration: string;
+                let totalSeconds: number = 0;
+                let targetTotalDuration: string;
+                let targetTotalSeconds: number = 0;
+                let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
+                let districtWiseData: any = JSON.parse(this.detailedReportData.data);
+
+                for (let i: number = 0; i < districtWiseData.length; i++) {
+                    let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
+                    let targetDurationInSeconds: number = parseInt(districtWiseData[i].Target.split(':')[2]) + (60 * parseInt(districtWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Target.split(':')[0]));
+                    totalSeconds += durationInSeconds;
+                    targetTotalSeconds += targetDurationInSeconds;
+                }
+
+                let hours: number = Math.floor(totalSeconds / 3600);
+                totalSeconds %= 3600;
+                let minutes: number = Math.floor(totalSeconds / 60);
+                let seconds: number = totalSeconds % 60;
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
+                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                targetTotalSeconds %= 3600;
+                let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
+                let targetSeconds: number = targetTotalSeconds % 60;
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
+                let totalStrength: number = districtWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
+                let footerTotalValues: any[] = [];
+                footerTotalValues.push(totalStrength);
+                footerTotalValues.push(totalDuration);
+                footerTotalValues.push(targetTotalDuration);
+                footerTotalValues.push('');
+                this.detailedReportData['footerTotalValues'] = footerTotalValues;
+                let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+
+                for (let i: number = 0; i < districtWiseData.length; i++) {
+                    let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
+                    districtWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                }
+
+                this.detailedReportData['data'] = districtWiseData;
+                this.detailedReportDataCount = districtWiseData.length;
+                this.detailedReportNoDataColspan = this.detailedReportData.columns.length;
+                this.detailedReportOrder = this.detailedReportData.sorting;
             });
     };
 
     getBranchWiseUsageSummary() {
         let stateCodes: any[] = [];
         let districtCodes: any[] = [];
+        let branchCodes: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.detailedReportType = 'branchWiseDetailedReport';
 
         for (let i: number = 0; i < this.selectedStates.length; i++) {
             let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
@@ -578,30 +681,45 @@ export class AVReportComponent implements OnInit {
             districtCodes.push(district[0].districtCode);
         }
 
-        this.avReportService.getBranchWiseUsageSummary(stateCodes.join(','), districtCodes.join(','), startDate, endDate)
+        for (let i: number = 0; i < this.selectedBranches.length; i++) {
+            let branch: any = this.branches.filter((item) => item.branchId === this.selectedBranches[i].branchId);
+            branchCodes.push(branch[0].eurekaBranchCode);
+        }
+
+        this.avReportService.getBranchWiseUsageSummary(stateCodes.join(','), districtCodes.join(','), branchCodes.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showReportData = true;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
                 let totalSeconds: number = 0;
+                let targetTotalDuration: string;
+                let targetTotalSeconds: number = 0;
                 let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
                 let branchWiseData: any = JSON.parse(this.reportData.data);
 
                 for (let i: number = 0; i < branchWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(branchWiseData[i].Duration.split(':')[2]) + (60 * parseInt(branchWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(branchWiseData[i].Duration.split(':')[0]));
+                    let targetDurationInSeconds: number = parseInt(branchWiseData[i].Target.split(':')[2]) + (60 * parseInt(branchWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(branchWiseData[i].Target.split(':')[0]));
                     totalSeconds += durationInSeconds;
+                    targetTotalSeconds += targetDurationInSeconds;
                 }
 
                 let hours: number = Math.floor(totalSeconds / 3600);
                 totalSeconds %= 3600;
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
-                totalDuration = (paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds));
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
+                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                targetTotalSeconds %= 3600;
+                let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
+                let targetSeconds: number = targetTotalSeconds % 60;
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = branchWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
                 footerTotalValues.push(totalDuration);
+                footerTotalValues.push(targetTotalDuration);
                 footerTotalValues.push('');
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
@@ -659,7 +777,7 @@ export class AVReportComponent implements OnInit {
                 totalSeconds %= 3600;
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
-                totalDuration = (paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds));
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
                 let totalStrength: number = branchWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
@@ -721,7 +839,7 @@ export class AVReportComponent implements OnInit {
                 totalSeconds %= 3600;
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
-                totalDuration = (paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds));
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
                 let totalStrength: number = courseWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
@@ -789,7 +907,7 @@ export class AVReportComponent implements OnInit {
                 totalSeconds %= 3600;
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
-                totalDuration = (paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds));
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
                 let totalStrength: number = courseWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
@@ -857,7 +975,7 @@ export class AVReportComponent implements OnInit {
                 totalSeconds %= 3600;
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
-                totalDuration = (paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds));
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
                 let totalStrength: number = subjectWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
@@ -931,7 +1049,7 @@ export class AVReportComponent implements OnInit {
                 totalSeconds %= 3600;
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
-                totalDuration = (paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds));
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
                 let totalStrength: number = subjectWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
@@ -958,5 +1076,13 @@ export class AVReportComponent implements OnInit {
         }
 
         this.order = value;
+    };
+
+    detailedReportSetOrder(value: string) {
+        if (this.detailedReportOrder === value) {
+            this.detailedReportReverse = !this.detailedReportReverse;
+        }
+
+        this.detailedReportOrder = value;
     };
 }
