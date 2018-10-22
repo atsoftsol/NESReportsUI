@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { environment } from '../environments/environment';
 import 'rxjs/add/operator/retry';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Injectable()
 export class AppService {
@@ -23,6 +24,18 @@ export class AppService {
     getBranches(districtIds: string): Observable<any> {
         return this.httpClient
             .get<any>(environment.apiEndPoint + environment.commonConfig.getBranches.replace(/{districtIds}/g, districtIds))
+            .retry(environment.retryFailedRequest);
+    };
+
+    getCourses(): Observable<any> {
+        return this.httpClient
+            .get<any>(environment.apiEndPoint + environment.commonConfig.getCourses)
+            .retry(environment.retryFailedRequest);
+    };
+
+    getSubjects(): Observable<any> {
+        return this.httpClient
+            .get<any>(environment.apiEndPoint + environment.commonConfig.getSubjects)
             .retry(environment.retryFailedRequest);
     };
 }

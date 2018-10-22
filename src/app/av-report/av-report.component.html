@@ -36,6 +36,25 @@
                             </div>
                             <div class="col-xl-3">
                                 <div class="form-group">
+                                    <label>Course</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Course'" [data]="courses"
+                                        [settings]="courseDropdownSettings" [(ngModel)]="selectedCourses" (onSelect)="selectCourse($event)"
+                                        (onSelectAll)="selectAllCourses($event)" (onDeSelect)="unSelectCourse($event)"
+                                        (onDeSelectAll)="unSelectAllCourses($event)">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Subject</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Subject'" [data]="subjects"
+                                        [settings]="subjectDropdownSettings" [(ngModel)]="selectedSubjects"
+                                        (onSelectAll)="selectAllSubjects($event)" (onDeSelectAll)="unSelectAllSubjects($event)">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
                                     <label>Start Date</label>
                                     <div class="input-group">
                                         <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="startDate"
@@ -80,12 +99,12 @@
                                     <tr>
                                         <th *ngFor="let column of reportData.columns" [class.active]="order === column"
                                             (click)="setOrder(column)">
-                                            <span  [innerHtml]="column" ></span>
+                                            <span [innerHtml]="column"></span>
                                             <span style="cursor: pointer; float: right;">
                                                 <span [hidden]="reverse">▼</span>
                                                 <span [hidden]="!reverse"> ▲</span>
                                             </span>
-                                             
+
                                         </th>
                                     </tr>
                                 </thead>
@@ -102,11 +121,11 @@
                                 <tfoot>
                                     <tr>
                                         <td [attr.colspan]="grandTotalColspan">
-                                          <b style="color: #333333"> Grand Total</b> 
+                                            <b style="color: #333333"> Grand Total</b>
                                         </td>
-                                        <td  *ngFor="let footerColumn of reportData.footerTotalValues">
-                                            
-                                                <b style="color: #333333"> {{footerColumn}} </b>
+                                        <td *ngFor="let footerColumn of reportData.footerTotalValues">
+
+                                            <b style="color: #333333"> {{footerColumn}} </b>
                                         </td>
                                     </tr>
                                 </tfoot>

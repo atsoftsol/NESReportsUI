@@ -5,11 +5,6 @@ import { InspectionReportComponent } from './inspection-report.component';
 
 const routes: Routes = [
     {
-        path: '',
-        redirectTo: '/inspection-report',
-        pathMatch: 'full'
-    },
-    {
         path: 'inspection-report',
         component: InspectionReportComponent
     }

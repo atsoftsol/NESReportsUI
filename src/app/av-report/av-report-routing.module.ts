@@ -5,8 +5,14 @@ import { AVReportComponent } from './av-report.component';
 
 const routes: Routes = [
     {
+        path: '',
+        redirectTo: '/av-report',
+        pathMatch: 'full'
+    },
+    {
         path: 'av-report',
-        component: AVReportComponent
+        component: AVReportComponent,
+        data: { title: 'AV Report' }
     }
 ];
 

@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [{
     path: '',
-    redirectTo: '/inspection-report',
+    redirectTo: '/av-report',
     pathMatch: 'full',
 }, {
     path: 'av-report',

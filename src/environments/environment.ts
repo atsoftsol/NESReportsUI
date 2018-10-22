@@ -9,7 +9,9 @@ export const environment = {
   commonConfig: {
     getStates: 'api/common/states',
     getDistricts: 'api/common/districts/{stateIds}',
-    getBranches: 'api/common/branches/{districtIds}'
+    getBranches: 'api/common/branches/{districtIds}',
+    getCourses: 'api/common/courses',
+    getSubjects: 'api/common/subjects'
   },
   avReportConfig: {
     getStateWiseUsageSummary: 'api/avreport/statewiseusagesummary/{stateCodes}/{startDate}/{endDate}',
@@ -18,7 +20,10 @@ export const environment = {
     getDistrictWiseUsageDetails: 'api/avreport/districtwiseusagedetails/{districtCode}/{startDate}/{endDate}',
     getBranchWiseUsageSummary: 'api/avreport/branchwiseusagesummary/{stateCodes}/{districtCodes}/{startDate}/{endDate}',
     getBranchWiseUsageDetails: 'api/avreport/branchwiseusagedetails/{stateCode}/{districtCode}/{branchCode}/{startDate}/{endDate}',
-    getClassWiseUsageSummary: 'api/avreport/classwiseusagesummary/{stateCodes}/{districtCodes}/{branchCodes}/{startDate}/{endDate}'
+    getCourseWiseUsageSummary: 'api/avreport/coursewiseusagesummary/{stateCodes}/{districtCodes}/{branchCodes}/{startDate}/{endDate}',
+    getCourseWiseUsageDetails: 'api/avreport/coursewiseusagedetails/{stateCodes}/{districtCodes}/{branchCodes}/{courseCode}/{startDate}/{endDate}',
+    getSubjectWiseUsageSummary: 'api/avreport/subjectwiseusagesummary/{stateCodes}/{districtCodes}/{branchCodes}/{courseCodes}/{startDate}/{endDate}',
+    getSubjectWiseUsageDetails: 'api/avreport/subjectwiseusagedetails/{stateCodes}/{districtCodes}/{branchCodes}/{courseCodes}/{subjectCode}/{startDate}/{endDate}'
   }
 };
 
