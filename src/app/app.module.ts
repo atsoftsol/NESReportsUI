@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AVReportModule } from '../app/av-report/av-report.module';
-import { InspectionReportModule } from '../app/inspection-report/inspection-report.module';
+import { InspectionModule } from '../app/inspection/inspection.module';
 
 import { AppService } from './app.service';
 
@@ -22,7 +22,7 @@ import { FooterComponent } from './core/footer/footer.component';
     BrowserModule,
     HttpClientModule,
     AVReportModule,
-    InspectionReportModule,
+    InspectionModule,
     AppRoutingModule
   ],
   providers: [
