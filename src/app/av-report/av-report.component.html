@@ -5,7 +5,7 @@
                 <div class="box box-info">
                     <div class="box-body">
                         <div class="row m-b-20">
-                            <div class="col-xl-3">
+                            <div class="col-xl-4">
                                 <div class="form-group">
                                     <label>State</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select State'" [data]="states" [settings]="stateDropdownSettings"
@@ -14,7 +14,7 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-                            <div class="col-xl-3">
+                            <div class="col-xl-4">
                                 <div class="form-group">
                                     <label>District</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select District'" [data]="districts"
@@ -24,7 +24,7 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-                            <div class="col-xl-3">
+                            <div class="col-xl-4">
                                 <div class="form-group">
                                     <label>Branch</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Branch'" [data]="branches"
@@ -34,7 +34,7 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-                            <div class="col-xl-3">
+                            <div class="col-xl-4">
                                 <div class="form-group">
                                     <label>Course</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Course'" [data]="courses"
@@ -44,7 +44,7 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-                            <div class="col-xl-3">
+                            <!-- <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>Subject</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Subject'" [data]="subjects"
@@ -52,8 +52,8 @@
                                         (onSelectAll)="selectAllSubjects($event)" (onDeSelectAll)="unSelectAllSubjects($event)">
                                     </ng-multiselect-dropdown>
                                 </div>
-                            </div>
-                            <div class="col-xl-3">
+                            </div> -->
+                            <div class="col-xl-4">
                                 <div class="form-group">
                                     <label>Start Date</label>
                                     <div class="input-group">
@@ -66,7 +66,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3">
+                            <div class="col-xl-4">
                                 <div class="form-group">
                                     <label>End Date</label>
                                     <div class="input-group">
@@ -79,11 +79,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3">
+                            <!-- <div class="col-xl-3">
                                 <div class="form-group">
                                     <button id="btnSubmit" class="btn btn-theme mt-3" name="btnSubmit" (click)="getReportData()">Submit</button>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                                         <th *ngFor="let column of reportData.columns" [class.active]="order === column"
                                             (click)="setOrder(column)">
                                             <span [innerHtml]="column"></span>
-                                            <span style="cursor: pointer; float: right;">
+                                            <span *ngIf="dataCount" style="cursor: pointer; float: right;">
                                                 <span [hidden]="reverse">▼</span>
                                                 <span [hidden]="!reverse">▲</span>
                                             </span>
@@ -118,7 +118,7 @@
                                         <td [attr.colspan]="noDataColspan">No data available</td>
                                     </tr>
                                 </tbody>
-                                <tfoot>
+                                <tfoot *ngIf="dataCount">
                                     <tr>
                                         <td [attr.colspan]="grandTotalColspan">
                                             <b style="color: #333333"> Grand Total</b>
@@ -148,7 +148,7 @@
                                                         <th *ngFor="let column of detailedReportData.columns"
                                                             [class.active]="detailedReportOrder === column" (click)="detailedReportSetOrder(column)">
                                                             <span [innerHtml]="column"></span>
-                                                            <span style="cursor: pointer; float: right;">
+                                                            <span *ngIf="detailedReportDataCount" style="cursor: pointer; float: right;">
                                                                 <span [hidden]="detailedReportReverse">▼</span>
                                                                 <span [hidden]="!detailedReportReverse">▲</span>
                                                             </span>
@@ -166,7 +166,7 @@
                                                             available</td>
                                                     </tr>
                                                 </tbody>
-                                                <tfoot>
+                                                <tfoot *ngIf="detailedReportDataCount">
                                                     <tr>
                                                         <td [attr.colspan]="detailedReportGrandTotalColspan">
                                                             <b style="color: #333333"> Grand Total</b>
@@ -183,6 +183,26 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="showReportData">
+            <div class="col-xl-12 connectedSortable">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="media-table-block">
+                            <ngx-charts-pie-chart [view]="pieChartView" [scheme]="pieChartColorScheme" [results]="pieChartData"
+                                [legend]="true" [explodeSlices]="false" [labels]="true" [doughnut]="false" [gradient]="false"
+                                [animations]="true" (select)="onSelectPieChart($event)">
+                                <!-- <ng-template #tooltipTemplate let-model="model">
+                                    <h1>
+                                        {{getFlag(model.name)}}
+                                    </h1>
+                                    <h2>{{model.name}}: {{model.value}}</h2>
+                                </ng-template> -->
+                            </ngx-charts-pie-chart>
                         </div>
                     </div>
                 </div>
