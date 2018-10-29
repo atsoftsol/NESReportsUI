@@ -97,7 +97,7 @@ export class AVReportComponent implements OnInit {
         this.getDates();
         this.getStates();
         this.getCourses();
-        this.getSubjects();
+        //this.getSubjects();
     };
 
     getDates() {
@@ -393,12 +393,12 @@ export class AVReportComponent implements OnInit {
             case 'stateWiseDetailedReport':
                 let state: any = this.states.filter((e) => e.stateName === item.State);
                 this.detailedReportName = item.State;
-                this.getStateWiseUsageDetails(state[0].stateCode);
+                this.getStateWiseUsageDetails(state[0].stateId);
                 break;
             case 'districtWiseDetailedReport':
                 let district: any = this.districts.filter((e) => e.districtName === item.District);
                 this.detailedReportName = item.District;
-                this.getDistrictWiseUsageDetails(district[0].districtCode);
+                this.getDistrictWiseUsageDetails(district[0].districtId);
                 break;
             case 'branchWiseDetailedReport':
 
@@ -411,40 +411,40 @@ export class AVReportComponent implements OnInit {
     };
 
     getStateWiseUsageSummary() {
-        let stateCodes: any[] = [];
+        let stateIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.detailedReportType = 'stateWiseDetailedReport';
 
         if (this.selectedStates.length === 0) {
             for (let i: number = 0; i < this.states.length; i++) {
-                stateCodes.push(this.states[i].stateCode);
+                stateIds.push(this.states[i].stateId);
             }
         }
         else {
             for (let i: number = 0; i < this.selectedStates.length; i++) {
                 let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
-                stateCodes.push(state[0].stateCode);
+                stateIds.push(state[0].stateId);
             }
         }
 
-        this.avReportService.getStateWiseUsageSummary(stateCodes.join(','), startDate, endDate)
+        this.avReportService.getStateWiseUsageSummary(stateIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showReportData = true;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
                 let totalSeconds: number = 0;
-                let targetTotalDuration: string;
-                let targetTotalSeconds: number = 0;
+                //let targetTotalDuration: string;
+                //let targetTotalSeconds: number = 0;
                 let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
                 let stateWiseData: any = JSON.parse(this.reportData.data);
 
                 for (let i: number = 0; i < stateWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(stateWiseData[i].Duration.split(':')[2]) + (60 * parseInt(stateWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Duration.split(':')[0]));
-                    let targetDurationInSeconds: number = parseInt(stateWiseData[i].Target.split(':')[2]) + (60 * parseInt(stateWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Target.split(':')[0]));
+                    //let targetDurationInSeconds: number = parseInt(stateWiseData[i].Target.split(':')[2]) + (60 * parseInt(stateWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Target.split(':')[0]));
                     totalSeconds += durationInSeconds;
-                    targetTotalSeconds += targetDurationInSeconds;
+                    //targetTotalSeconds += targetDurationInSeconds;
                 }
 
                 let hours: number = Math.floor(totalSeconds / 3600);
@@ -452,16 +452,16 @@ export class AVReportComponent implements OnInit {
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
                 totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
-                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                /* let targetHours: number = Math.floor(targetTotalSeconds / 3600);
                 targetTotalSeconds %= 3600;
                 let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
                 let targetSeconds: number = targetTotalSeconds % 60;
-                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds); */
                 let totalStrength: number = stateWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
                 footerTotalValues.push(totalDuration);
-                footerTotalValues.push(targetTotalDuration);
+                //footerTotalValues.push(targetTotalDuration);
                 footerTotalValues.push('');
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
@@ -478,7 +478,7 @@ export class AVReportComponent implements OnInit {
             });
     };
 
-    getStateWiseUsageDetails(stateCode: string) {
+    getStateWiseUsageDetails(stateId: string) {
         //let stateCodes: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
@@ -488,7 +488,7 @@ export class AVReportComponent implements OnInit {
             stateCodes.push(state[0].stateCode);
         } */
 
-        this.avReportService.getStateWiseUsageDetails(stateCode, startDate, endDate)
+        this.avReportService.getStateWiseUsageDetails(stateId, startDate, endDate)
             .subscribe(data => {
                 this.detailedReportData = data;
                 this.detailedReportGrandTotalColspan = this.detailedReportData.columns.length - this.detailedReportData.footerTotalColumns.length;
@@ -538,39 +538,46 @@ export class AVReportComponent implements OnInit {
     };
 
     getDistrictWiseUsageSummary() {
-        let stateCodes: any[] = [];
-        let districtCodes: any[] = [];
+        let stateIds: any[] = [];
+        let districtIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.detailedReportType = 'districtWiseDetailedReport';
 
         for (let i: number = 0; i < this.selectedStates.length; i++) {
             let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
-            stateCodes.push(state[0].stateCode);
+            stateIds.push(state[0].stateId);
         }
 
-        for (let i: number = 0; i < this.selectedDistricts.length; i++) {
-            let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
-            districtCodes.push(district[0].districtCode);
+        if (this.selectedDistricts.length === 0) {
+            for (let i: number = 0; i < this.districts.length; i++) {
+                districtIds.push(this.districts[i].districtId);
+            }
+        }
+        else {
+            for (let i: number = 0; i < this.selectedDistricts.length; i++) {
+                let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
+                districtIds.push(district[0].districtId);
+            }
         }
 
-        this.avReportService.getDistrictWiseUsageSummary(stateCodes.join(','), districtCodes.join(','), startDate, endDate)
+        this.avReportService.getDistrictWiseUsageSummary(stateIds.join(','), districtIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showReportData = true;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
                 let totalSeconds: number = 0;
-                let targetTotalDuration: string;
-                let targetTotalSeconds: number = 0;
+                //let targetTotalDuration: string;
+                //let targetTotalSeconds: number = 0;
                 let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
                 let districtWiseData: any = JSON.parse(this.reportData.data);
 
                 for (let i: number = 0; i < districtWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
-                    let targetDurationInSeconds: number = parseInt(districtWiseData[i].Target.split(':')[2]) + (60 * parseInt(districtWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Target.split(':')[0]));
+                    //let targetDurationInSeconds: number = parseInt(districtWiseData[i].Target.split(':')[2]) + (60 * parseInt(districtWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Target.split(':')[0]));
                     totalSeconds += durationInSeconds;
-                    targetTotalSeconds += targetDurationInSeconds;
+                    //targetTotalSeconds += targetDurationInSeconds;
                 }
 
                 let hours: number = Math.floor(totalSeconds / 3600);
@@ -578,16 +585,16 @@ export class AVReportComponent implements OnInit {
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
                 totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
-                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                /* let targetHours: number = Math.floor(targetTotalSeconds / 3600);
                 targetTotalSeconds %= 3600;
                 let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
                 let targetSeconds: number = targetTotalSeconds % 60;
-                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds); */
                 let totalStrength: number = districtWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength);
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
                 footerTotalValues.push(totalDuration);
-                footerTotalValues.push(targetTotalDuration);
+                // footerTotalValues.push(targetTotalDuration);
                 footerTotalValues.push('');
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
@@ -606,6 +613,7 @@ export class AVReportComponent implements OnInit {
 
     getDistrictWiseUsageDetails(districtCode: string) {
         //let districtCodes: any[] = [];
+        let stateCode: string;
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
 
@@ -614,7 +622,7 @@ export class AVReportComponent implements OnInit {
             districtCodes.push(district[0].districtCode);
         } */
 
-        this.avReportService.getDistrictWiseUsageDetails(districtCode, startDate, endDate)
+        this.avReportService.getDistrictWiseUsageDetails(stateCode, districtCode, startDate, endDate)
             .subscribe(data => {
                 this.detailedReportData = data;
                 this.detailedReportGrandTotalColspan = this.detailedReportData.columns.length - this.detailedReportData.footerTotalColumns.length;
@@ -802,6 +810,7 @@ export class AVReportComponent implements OnInit {
         let stateCodes: any[] = [];
         let districtCodes: any[] = [];
         let branchCodes: any[] = [];
+        let courseCode: string;
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
 
@@ -820,7 +829,7 @@ export class AVReportComponent implements OnInit {
             branchCodes.push(branch[0].eurekaBranchCode);
         }
 
-        this.avReportService.getCourseWiseUsageSummary(stateCodes.join(','), districtCodes.join(','), branchCodes.join(','), startDate, endDate)
+        this.avReportService.getCourseWiseUsageSummary(stateCodes.join(','), districtCodes.join(','), branchCodes.join(','), courseCode, startDate, endDate)
             .subscribe(data => {
                 this.showReportData = true;
                 this.reportData = data;

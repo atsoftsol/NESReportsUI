@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<!-- <div class="content-wrapper">
     <section class="content">
         <div class="row">
             <div class="col-xl-12 connectedSortable">
@@ -7,31 +7,43 @@
                         <div class="row m-b-20">
                             <div class="col-xl-3">
                                 <div class="form-group">
+                                    <label>Select Date</label>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date"
+                                            ngbDatepicker #e="ngbDatepicker">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="e.toggle()"
+                                                type="button"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
                                     <label>State</label>
-                                    <ng-multiselect-dropdown [placeholder]="'Select State'" [data]="states" [settings]="stateDropdownSettings"
-                                        [(ngModel)]="selectedStates" (onSelect)="selectState($event)" (onSelectAll)="selectAllStates($event)"
-                                        (onDeSelect)="unSelectState($event)" (onDeSelectAll)="unSelectAllStates($event)">
-                                    </ng-multiselect-dropdown>
+                                    <select (change)="getDistricts($event.target.value)">
+                                        <option value="0">Select State</option>
+                                        <option *ngFor="let state of states" [innerHtml]="state.stateName" [value]="state.stateId"></option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>District</label>
-                                    <ng-multiselect-dropdown [placeholder]="'Select District'" [data]="districts"
-                                        [settings]="districtDropdownSettings" [(ngModel)]="selectedDistricts"
-                                        (onSelect)="selectDistrict($event)" (onSelectAll)="selectAllDistricts($event)"
-                                        (onDeSelect)="unSelectDistrict($event)" (onDeSelectAll)="unSelectAllDistricts($event)">
-                                    </ng-multiselect-dropdown>
+                                    <select (change)="getBranches($event.target.value)">
+                                        <option value="0">Select District</option>
+                                        <option *ngFor="let district of districts" [innerHtml]="district.districtName"
+                                            [value]="district.districtId"></option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>Branch</label>
-                                    <ng-multiselect-dropdown [placeholder]="'Select Branch'" [data]="branches"
-                                        [settings]="branchDropdownSettings" [(ngModel)]="selectedBranches" (onSelect)="selectBranch($event)"
-                                        (onSelectAll)="selectAllBranches($event)" (onDeSelect)="unSelectBranch($event)"
-                                        (onDeSelectAll)="unSelectAllBranches($event)">
-                                    </ng-multiselect-dropdown>
+                                    <select>
+                                        <option value="0">Select Branch</option>
+                                        <option *ngFor="let branch of branches" [innerHtml]="branch.branchName" [value]="branch.branchId"></option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -52,8 +64,9 @@
                             </div>
                             <div class="col-xl-3">
                                 <div class="form-group">
-                                    <input type="radio" name="startTime" value="yes" ngModel>Yes
-                                    <input type="radio" name="startTime" value="no" ngModel>No
+                                    <input type="text" id="txtStartTime" name="txtStartTime" [ngModel]="startTime">
+                                    <input type="radio" id="startTime" name="startTime" value="yes" ngModel>Yes
+                                    <input type="radio" id="startTime" name="startTime" value="no" ngModel>No
                                 </div>
                             </div>
                             <div class="col-xl-3">
@@ -76,6 +89,7 @@
                             </div>
                             <div class="col-xl-3">
                                 <div class="form-group">
+                                    <input type="text" id="txtEndingTime" name="txtStartTime" [ngModel]="endingTime">
                                     <input type="radio" name="endingTime" value="yes" ngModel>Yes
                                     <input type="radio" name="endingTime" value="no" ngModel>No
                                 </div>
@@ -205,4 +219,4 @@
             </div>
         </div>
     </section>
-</div>
+</div> -->

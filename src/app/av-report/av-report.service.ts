@@ -14,9 +14,9 @@ export class AVReportService {
             .retry(environment.retryFailedRequest);
     };
 
-    getStateWiseUsageDetails(stateCode: string, startDate: string, endDate: string): Observable<any> {
+    getStateWiseUsageDetails(stateCodes: string, startDate: string, endDate: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.avReportConfig.getStateWiseUsageDetails.replace(/{stateCode}/g, stateCode).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getStateWiseUsageDetails.replace(/{stateCodes}/g, stateCodes).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
             .retry(environment.retryFailedRequest);
     };
 
@@ -26,9 +26,9 @@ export class AVReportService {
             .retry(environment.retryFailedRequest);
     };
 
-    getDistrictWiseUsageDetails(districtCode: string, startDate: string, endDate: string): Observable<any> {
+    getDistrictWiseUsageDetails(stateCode: string, districtCode: string, startDate: string, endDate: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.avReportConfig.getDistrictWiseUsageDetails.replace(/{districtCode}/g, districtCode).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getDistrictWiseUsageDetails.replace(/{stateCode}/g, stateCode).replace(/{districtCode}/g, districtCode).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
             .retry(environment.retryFailedRequest);
     };
 
@@ -44,15 +44,15 @@ export class AVReportService {
             .retry(environment.retryFailedRequest);
     };
 
-    getCourseWiseUsageSummary(stateCodes: string, districtCodes: string, branchCodes: string, startDate: string, endDate: string): Observable<any> {
+    getCourseWiseUsageSummary(stateCodes: string, districtCodes: string, branchCodes: string, courseCode: string, startDate: string, endDate: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.avReportConfig.getCourseWiseUsageSummary.replace(/{stateCodes}/g, stateCodes).replace(/{districtCodes}/g, districtCodes).replace(/{branchCodes}/g, branchCodes).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getCourseWiseUsageSummary.replace(/{stateCodes}/g, stateCodes).replace(/{districtCodes}/g, districtCodes).replace(/{branchCodes}/g, branchCodes).replace(/{courseCode}/g, courseCode).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
             .retry(environment.retryFailedRequest);
     };
 
-    getCourseWiseUsageDetails(stateCodes: string, districtCodes: string, branchCodes: string, courseCode: string, startDate: string, endDate: string): Observable<any> {
+    getCourseWiseUsageDetails(stateCode: string, districtCode: string, branchCode: string, courseCode: string, startDate: string, endDate: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.avReportConfig.getCourseWiseUsageDetails.replace(/{stateCodes}/g, stateCodes).replace(/{districtCodes}/g, districtCodes).replace(/{branchCodes}/g, branchCodes).replace(/{courseCode}/g, courseCode).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getCourseWiseUsageDetails.replace(/{stateCode}/g, stateCode).replace(/{districtCode}/g, districtCode).replace(/{branchCode}/g, branchCode).replace(/{courseCode}/g, courseCode).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
             .retry(environment.retryFailedRequest);
     };
 
