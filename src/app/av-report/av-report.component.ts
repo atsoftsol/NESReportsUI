@@ -44,24 +44,21 @@ export class AVReportComponent implements OnInit {
     detailedReportOrder: string;
     detailedReportReverse: boolean = false;
     showDetailedReportData: boolean = false;
+    reportType: string = '';
     pieChartView: any[] = [300, 280];
     pieChartColorScheme = {
         domain: [
             '#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'
         ]
-    }
-    pieChartData: any[] = [
-        {
-            'name': 'Germany',
-            'value': '60'
-        }, {
-            'name': 'USA',
-            'value': '30'
-        }, {
-            'name': 'France',
-            'value': '10'
-        }
-    ]
+    };
+    pieChartData: any[] = [];
+    barChartView: any[] = [300, 280];
+    barChartColorScheme = {
+        domain: [
+            '#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'
+        ]
+    };
+    barChartData: any[] = [];
 
     constructor(private calendar: NgbCalendar, private appService: AppService, private avReportService: AVReportService) {
         this.stateDropdownSettings = {
@@ -511,6 +508,7 @@ export class AVReportComponent implements OnInit {
         let stateIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'stateWiseUsageSummary';
         this.detailedReportType = 'stateWiseDetailedReport';
 
         if (this.selectedStates.length === 0) {
@@ -557,15 +555,20 @@ export class AVReportComponent implements OnInit {
                 let totalStrength: number = stateWiseData.length > 0 ? stateWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
                 footerTotalValues.push(targetTotalDuration);
+                footerTotalValues.push(totalDuration);
                 footerTotalValues.push('');
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+                this.pieChartData = [];
 
                 for (let i: number = 0; i < stateWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(stateWiseData[i].Duration.split(':')[2]) + (60 * parseInt(stateWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Duration.split(':')[0]));
                     stateWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    let pieChartDataObject: any = {};
+                    pieChartDataObject['name'] = stateWiseData[i].State;
+                    pieChartDataObject['value'] = durationInSeconds;
+                    this.pieChartData.push(pieChartDataObject);
                 }
 
                 this.reportData['data'] = stateWiseData;
@@ -579,6 +582,7 @@ export class AVReportComponent implements OnInit {
         //let stateCodes: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'stateWiseUsageDetails';
 
         /* for (let i: number = 0; i < this.selectedStates.length; i++) {
             let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
@@ -616,15 +620,20 @@ export class AVReportComponent implements OnInit {
                 let totalStrength: number = stateWiseData.length > 0 ? stateWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
                 footerTotalValues.push(targetTotalDuration);
+                footerTotalValues.push(totalDuration);
                 footerTotalValues.push('');
                 this.detailedReportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+                this.barChartData = [];
 
                 for (let i: number = 0; i < stateWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(stateWiseData[i].Duration.split(':')[2]) + (60 * parseInt(stateWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Duration.split(':')[0]));
                     stateWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    let barChartDataObject: any = {};
+                    barChartDataObject['name'] = stateWiseData[i].District;
+                    barChartDataObject['value'] = durationInSeconds;
+                    this.barChartData.push(barChartDataObject);
                 }
 
                 this.detailedReportData['data'] = stateWiseData;
@@ -639,6 +648,7 @@ export class AVReportComponent implements OnInit {
         let districtIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'districtWiseUsageSummary';
         this.detailedReportType = 'districtWiseDetailedReport';
 
         for (let i: number = 0; i < this.selectedStates.length; i++) {
@@ -690,15 +700,20 @@ export class AVReportComponent implements OnInit {
                 let totalStrength: number = districtWiseData.length > 0 ? districtWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
                 footerTotalValues.push(targetTotalDuration);
+                footerTotalValues.push(totalDuration);
                 footerTotalValues.push('');
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+                this.pieChartData = [];
 
                 for (let i: number = 0; i < districtWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
                     districtWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    let pieChartDataObject: any = {};
+                    pieChartDataObject['name'] = districtWiseData[i].District;
+                    pieChartDataObject['value'] = durationInSeconds;
+                    this.pieChartData.push(pieChartDataObject);
                 }
 
                 this.reportData['data'] = districtWiseData;
@@ -712,6 +727,7 @@ export class AVReportComponent implements OnInit {
         //let districtCodes: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'districtWiseUsageDetails';
 
         /* for (let i: number = 0; i < this.selectedDistricts.length; i++) {
             let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
@@ -749,15 +765,20 @@ export class AVReportComponent implements OnInit {
                 let totalStrength: number = districtWiseData.length > 0 ? districtWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
                 footerTotalValues.push(targetTotalDuration);
+                footerTotalValues.push(totalDuration);
                 footerTotalValues.push('');
                 this.detailedReportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+                this.barChartData = [];
 
                 for (let i: number = 0; i < districtWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
                     districtWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    let barChartDataObject: any = {};
+                    barChartDataObject['name'] = districtWiseData[i].Branch;
+                    barChartDataObject['value'] = durationInSeconds;
+                    this.barChartData.push(barChartDataObject);
                 }
 
                 this.detailedReportData['data'] = districtWiseData;
@@ -776,6 +797,7 @@ export class AVReportComponent implements OnInit {
         let branchIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'branchWiseUsageSummary';
         this.detailedReportType = 'branchWiseDetailedReport';
 
         /* for (let i: number = 0; i < this.selectedStates.length; i++) {
@@ -847,21 +869,27 @@ export class AVReportComponent implements OnInit {
                 let totalStrength: number = branchWiseData.length > 0 ? branchWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
                 footerTotalValues.push(targetTotalDuration);
+                footerTotalValues.push(totalDuration);
                 footerTotalValues.push('');
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+                this.pieChartData = [];
 
                 for (let i: number = 0; i < branchWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(branchWiseData[i].Duration.split(':')[2]) + (60 * parseInt(branchWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(branchWiseData[i].Duration.split(':')[0]));
                     branchWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    let pieChartDataObject: any = {};
+                    pieChartDataObject['name'] = branchWiseData[i].Branch;
+                    pieChartDataObject['value'] = durationInSeconds;
+                    this.pieChartData.push(pieChartDataObject);
                 }
 
                 this.reportData['data'] = branchWiseData;
                 this.dataCount = branchWiseData.length;
                 this.noDataColspan = this.reportData.columns.length;
                 this.order = this.reportData.sorting;
+                console.log(this.pieChartData);
             });
     };
 
@@ -871,6 +899,7 @@ export class AVReportComponent implements OnInit {
         let branchCodes: any[] = []; */
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'branchWiseUsageDetails';
 
         /* for (let i: number = 0; i < this.selectedStates.length; i++) {
             let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
@@ -918,15 +947,20 @@ export class AVReportComponent implements OnInit {
                 let totalStrength: number = branchWiseData.length > 0 ? branchWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
                 footerTotalValues.push(targetTotalDuration);
+                footerTotalValues.push(totalDuration);
                 footerTotalValues.push('');
                 this.detailedReportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+                this.barChartData = [];
 
                 for (let i: number = 0; i < branchWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(branchWiseData[i].Duration.split(':')[2]) + (60 * parseInt(branchWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(branchWiseData[i].Duration.split(':')[0]));
                     branchWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    let barChartDataObject: any = {};
+                    barChartDataObject['name'] = branchWiseData[i].Course;
+                    barChartDataObject['value'] = branchWiseData[i]['Per(%)'];
+                    this.barChartData.push(barChartDataObject);
                 }
 
                 this.detailedReportData['data'] = branchWiseData;
@@ -947,6 +981,7 @@ export class AVReportComponent implements OnInit {
         let courseIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'courseWiseUsageSummary';
         this.detailedReportType = 'courseWiseDetailedReport';
 
         /* for (let i: number = 0; i < this.selectedStates.length; i++) {
@@ -1023,15 +1058,20 @@ export class AVReportComponent implements OnInit {
                 let totalStrength: number = courseWiseData.length > 0 ? courseWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
                 footerTotalValues.push(targetTotalDuration);
+                footerTotalValues.push(totalDuration);
                 footerTotalValues.push('');
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+                this.pieChartData = [];
 
                 for (let i: number = 0; i < courseWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(courseWiseData[i].Duration.split(':')[2]) + (60 * parseInt(courseWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(courseWiseData[i].Duration.split(':')[0]));
                     courseWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    let pieChartDataObject: any = {};
+                    pieChartDataObject['name'] = courseWiseData[i].Course;
+                    pieChartDataObject['value'] = durationInSeconds;
+                    this.pieChartData.push(pieChartDataObject);
                 }
 
                 this.reportData['data'] = courseWiseData;
@@ -1048,6 +1088,7 @@ export class AVReportComponent implements OnInit {
         let courseCodes: any[] = []; */
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'courseWiseUsageDetails';
 
         /* for (let i: number = 0; i < this.selectedStates.length; i++) {
             let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
@@ -1100,15 +1141,20 @@ export class AVReportComponent implements OnInit {
                 let totalStrength: number = courseWiseData.length > 0 ? courseWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
                 footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
                 footerTotalValues.push(targetTotalDuration);
+                footerTotalValues.push(totalDuration);
                 footerTotalValues.push('');
                 this.detailedReportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+                this.barChartData = [];
 
                 for (let i: number = 0; i < courseWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(courseWiseData[i].Duration.split(':')[2]) + (60 * parseInt(courseWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(courseWiseData[i].Duration.split(':')[0]));
                     courseWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    let barChartDataObject: any = {};
+                    barChartDataObject['name'] = courseWiseData[i].Course;
+                    barChartDataObject['value'] = durationInSeconds;
+                    this.barChartData.push(barChartDataObject);
                 }
 
                 this.detailedReportData['data'] = courseWiseData;
@@ -1314,7 +1360,48 @@ export class AVReportComponent implements OnInit {
         this.detailedReportOrder = value;
     };
 
-    onSelectPieChart(event) {
-        console.log(event);
+    getTargetDuration(item: string) {
+        let state: any[] = [];
+        let district: any[] = [];
+        let branch: any[] = [];
+        let course: any[] = [];
+        let targetDuration: string = '';
+
+        switch (this.reportType) {
+            case 'stateWiseUsageSummary':
+                state = this.reportData.data.filter((e) => e.State === item);
+                targetDuration = state[0].Duration;//should show the difference between target and duration in hh:mm:ss format
+                break;
+            case 'stateWiseUsageDetails':
+                district = this.detailedReportData.data.filter((e) => e.District === item);
+                targetDuration = district[0].Duration;
+                break;
+            case 'districtWiseUsageSummary':
+                district = this.reportData.data.filter((e) => e.District === item);
+                targetDuration = district[0].Duration;
+                break;
+            case 'districtWiseUsageDetails':
+                branch = this.detailedReportData.data.filter((e) => e.Branch === item);
+                targetDuration = branch[0].Duration;
+                break;
+            case 'branchWiseUsageSummary':
+                branch = this.reportData.data.filter((e) => e.Branch === item);
+                targetDuration = branch[0].Duration;
+                break;
+            case 'branchWiseUsageDetails':
+                course = this.detailedReportData.data.filter((e) => e.Course === item);
+                targetDuration = course[0].Duration;
+                break;
+            case 'courseWiseUsageSummary':
+                course = this.reportData.data.filter((e) => e.Course === item);
+                targetDuration = course[0].Duration;
+                break;
+            case 'courseWiseUsageDetails':
+                course = this.detailedReportData.data.filter((e) => e.Course === item);
+                targetDuration = course[0].Duration;
+                break;
+        }
+
+        return targetDuration;
     };
 }
