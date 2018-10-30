@@ -44,7 +44,7 @@ export class AVReportComponent implements OnInit {
     detailedReportOrder: string;
     detailedReportReverse: boolean = false;
     showDetailedReportData: boolean = false;
-    pieChartView: any[] = [700, 400];
+    pieChartView: any[] = [300, 280];
     pieChartColorScheme = {
         domain: [
             '#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'

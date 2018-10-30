@@ -5,7 +5,7 @@
                 <div class="box box-info">
                     <div class="box-body">
                         <div class="row m-b-20">
-                            <div class="col-xl-4">
+                            <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>State</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select State'" [data]="states" [settings]="stateDropdownSettings"
@@ -14,7 +14,7 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-                            <div class="col-xl-4">
+                            <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>District</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select District'" [data]="districts"
@@ -24,7 +24,7 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-                            <div class="col-xl-4">
+                            <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>Branch</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Branch'" [data]="branches"
@@ -34,7 +34,7 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-                            <div class="col-xl-4">
+                            <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>Course</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Course'" [data]="courses"
@@ -53,7 +53,12 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div> -->
-                            <div class="col-xl-4">
+
+                            <!-- <div class="col-xl-6 center">
+<h2 class="text-danger mt-3">Audio Video Modules Reports</h2>
+
+                            </div> -->
+                            <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>Start Date</label>
                                     <div class="input-group">
@@ -66,7 +71,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-4">
+                            <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>End Date</label>
                                     <div class="input-group">
@@ -89,10 +94,10 @@
                 </div>
             </div>
         </div>
-        <div class="row" *ngIf="showReportData">
-            <div class="col-xl-12 connectedSortable">
+        <div class="row mt-2" *ngIf="showReportData"> 
+            <div class="col-xl-8 connectedSortable">
                 <div class="box box-info">
-                    <div class="box-body">
+                    <div class="box-body rowheight">
                         <div class="media-table-block">
                             <table class="table table-striped table-bordered media-table" style="border: 1;">
                                 <thead>
@@ -133,14 +138,16 @@
                             <pagination-controls *ngIf="dataCount" class="paginations-block" (pageChange)="page=$event"></pagination-controls>
                         </div>
                         <div id="divSelectedRowModal" class="modal" [ngStyle]="{'display':showModalPopup}" *ngIf="showDetailedReportData">
-                            <div class="modal-dialog" role="document">
+                            <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <span>Detailed report for {{detailedReportName}}</span>
+                                        <h6 class="mt-2">Detailed report for {{detailedReportName}}</h6>
                                         <button type="button" class="close" aria-label="Close" (click)="closeDetailedReport()"><span
                                                 aria-hidden="true">&times;</span></button>
                                     </div>
                                     <div class="modal-body">
+<div style="width: 68%; float: left; padding:5px;">
+
                                         <div class="media-table-block">
                                             <table class="table table-striped table-bordered media-table" style="border: 1;">
                                                 <thead>
@@ -180,6 +187,9 @@
                                             <pagination-controls *ngIf="detailedReportDataCount" class="paginations-block"
                                                 (pageChange)="detailedReportPage=$event"></pagination-controls>
                                         </div>
+
+                                    </div>
+                                    <div  style="width: 28%;  float: left; padding:5px;"> bind chart here</div>
                                     </div>
                                 </div>
                             </div>
@@ -187,11 +197,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row" *ngIf="showReportData">
-            <div class="col-xl-12 connectedSortable">
+            <div class="col-xl-4 connectedSortable "  *ngIf="showReportData" style="padding-left: 0px;">
                 <div class="box box-info">
-                    <div class="box-body">
+                    <div class="box-body rowheight">
                         <div class="media-table-block">
                             <ngx-charts-pie-chart [view]="pieChartView" [scheme]="pieChartColorScheme" [results]="pieChartData"
                                 [legend]="true" [explodeSlices]="false" [labels]="true" [doughnut]="false" [gradient]="false"
@@ -207,6 +215,8 @@
                     </div>
                 </div>
             </div>
+
         </div>
+        
     </section>
 </div>

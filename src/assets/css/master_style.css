@@ -75,7 +75,7 @@ Body :		Poppins, sans-serif;
 }
 body {
     font-weight: 400;
-	font-size: 14px;
+	font-size: 12px;
 }
 h4, .h4, h5, .h5, h6, .h6 {
     margin-bottom: 10px;
@@ -131,7 +131,7 @@ h6 {
     -moz-transition: -moz-transform .3s ease-in-out, margin .3s ease-in-out;
     -o-transition: -o-transform .3s ease-in-out, margin .3s ease-in-out;
     transition: transform .3s ease-in-out, margin .3s ease-in-out;
-    margin-left: 230px;
+    margin-left: 170px;
     z-index: 820;
 }
 .layout-top-nav .content-wrapper, .layout-top-nav .main-footer {
@@ -145,10 +145,11 @@ h6 {
     min-height: 100%;
     background-color: #ecf0f5;
     z-index: 800;
+    min-height: 530px;
 }
 .main-footer {
     background: #fff;
-    padding: 15px;
+    padding: 10px;
     color: #444;
     border-top: 1px solid #d2d6de;
 }
@@ -184,8 +185,8 @@ h6 {
     transition: none;
 }
 .content {
-    min-height: 250px;
-    padding: 10px;
+ /*   min-height: 250px; */
+    padding:  5px 10px 5px 10px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -428,7 +429,7 @@ a:active, a:focus, a:hover {
     left: 0;
     padding-top: 50px;
     min-height: 100%;
-    width: 230px;
+    width: 170px;
     z-index: 810;
     -webkit-transition: -webkit-transform .3s ease-in-out, width .3s ease-in-out;
     -moz-transition: -moz-transform .3s ease-in-out, width .3s ease-in-out;
@@ -542,7 +543,7 @@ a:active, a:focus, a:hover {
     padding: 0;
 }
 .sidebar-menu>li>a {
-    padding: 18px 5px 18px 15px;
+    padding: 15px 5px 15px 15px;
     display: block;
 }
 .sidebar-menu>li>a>.fa, .sidebar-menu>li>a>.glyphicon, .sidebar-menu>li>a>.ion {
@@ -2217,7 +2218,7 @@ input[type="color"] {
 }.box {
     position: relative;
     border-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     width: 100%;
     background: #fff;
     -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .2);
@@ -9226,6 +9227,7 @@ table.dataTable thead .sorting:after {
 .connectedSortable {
     min-height: 100px;
 }
+.rowheight{min-height: 300px}
 .ui-helper-hidden-accessible {
     border: 0;
     clip: rect(0 0 0 0);
@@ -9290,10 +9292,12 @@ table.dataTable thead .sorting:after {
 
 .selected-item {border: 1px solid #ff6028 !important;
     margin-right: 4px;
+
     background: #ff6028 !important;
     padding: 0 5px;
     color: #fff;
-    margin: 2px;
+      font-size: 11px;
+    margin: 1px;
     border-radius: 2px;
     float: left;}
     .multiselect-item-checkbox  input[type=checkbox] + div:before{    border: 2px solid #ff6028 !important;}
@@ -9306,7 +9310,7 @@ table.dataTable thead .sorting:after {
         background-size: 23px;
         background-position: center;
       }
-.input-group > .form-control:not(:last-child){    height: 29px;
+.input-group > .form-control:not(:last-child){    height: 25px;
     border-radius: 4px;
     border: 1px solid #adadad !important;}
      .multiselect-dropdown .dropdown-btn{padding: 3px 0px  3px 2px  !important;
