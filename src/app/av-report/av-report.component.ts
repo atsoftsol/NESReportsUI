@@ -33,6 +33,7 @@ export class AVReportComponent implements OnInit {
     order: string;
     reverse: boolean = false;
     showReportData: boolean = false;
+    showChartData: boolean = false;
     showModalPopup: string = 'none';
     detailedReportType: string = '';
     detailedReportData: any;
@@ -45,20 +46,18 @@ export class AVReportComponent implements OnInit {
     detailedReportReverse: boolean = false;
     showDetailedReportData: boolean = false;
     reportType: string = '';
-    pieChartView: any[] = [300, 280];
+    /* pieChartView: any[] = [250, 280];
     pieChartColorScheme = {
-        domain: [
-            '#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'
-        ]
+        domain: []
     };
-    pieChartData: any[] = [];
-    barChartView: any[] = [300, 280];
+    pieChartData: any[] = []; */
+    barChartView: any[] = [800, 300];
     barChartColorScheme = {
-        domain: [
-            '#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'
-        ]
+        domain: []
     };
     barChartData: any[] = [];
+    barChartXAxisLabel: string;
+    barChartYAxisLabel: string;
 
     constructor(private calendar: NgbCalendar, private appService: AppService, private avReportService: AVReportService) {
         this.stateDropdownSettings = {
@@ -199,6 +198,7 @@ export class AVReportComponent implements OnInit {
         }
         else {
             this.showReportData = false;
+            this.showChartData = false;
         }
 
         this.appService.getDistricts(stateIds.join(','))
@@ -215,6 +215,7 @@ export class AVReportComponent implements OnInit {
         this.districts = [];
         this.branches = [];
         this.showReportData = false;
+        this.showChartData = false;
     };
 
     selectDistrict(item: any) {
@@ -526,6 +527,7 @@ export class AVReportComponent implements OnInit {
         this.avReportService.getStateWiseUsageSummary(stateIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showReportData = true;
+                this.showChartData = false;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
@@ -554,23 +556,46 @@ export class AVReportComponent implements OnInit {
                 targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = stateWiseData.length > 0 ? stateWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(targetTotalDuration);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
+                let footerTotalStrengthObject: any = {};
+                footerTotalStrengthObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Strength')[0].align;
+                footerTotalStrengthObject['value'] = totalStrength;
+                footerTotalValues.push(footerTotalStrengthObject);
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
-                this.pieChartData = [];
+                this.barChartData = [];
+                this.barChartColorScheme.domain = [];
 
                 for (let i: number = 0; i < stateWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(stateWiseData[i].Duration.split(':')[2]) + (60 * parseInt(stateWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Duration.split(':')[0]));
                     stateWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
-                    let pieChartDataObject: any = {};
-                    pieChartDataObject['name'] = stateWiseData[i].State;
-                    pieChartDataObject['value'] = durationInSeconds;
-                    this.pieChartData.push(pieChartDataObject);
+                    let barChartDataObject: any = {};
+                    barChartDataObject['name'] = stateWiseData[i].State;
+                    barChartDataObject['value'] = stateWiseData[i]['Per(%)'];
+                    this.barChartData.push(barChartDataObject);
                 }
 
+                for (let i: number = 0; i < this.barChartData.length; i++) {
+                    this.barChartColorScheme.domain.push('#' + Math.random().toString(16).slice(-6));
+                }
+
+                this.barChartXAxisLabel = 'State';
+                this.barChartYAxisLabel = 'Percentage';
                 this.reportData['data'] = stateWiseData;
                 this.dataCount = stateWiseData.length;
                 this.noDataColspan = this.reportData.columns.length;
@@ -619,21 +644,32 @@ export class AVReportComponent implements OnInit {
                 targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = stateWiseData.length > 0 ? stateWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(targetTotalDuration);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
+                let footerTotalStrengthObject: any = {};
+                footerTotalStrengthObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Strength')[0].align;
+                footerTotalStrengthObject['value'] = totalStrength;
+                footerTotalValues.push(footerTotalStrengthObject);
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
                 this.detailedReportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
-                this.barChartData = [];
 
                 for (let i: number = 0; i < stateWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(stateWiseData[i].Duration.split(':')[2]) + (60 * parseInt(stateWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Duration.split(':')[0]));
                     stateWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
-                    let barChartDataObject: any = {};
-                    barChartDataObject['name'] = stateWiseData[i].District;
-                    barChartDataObject['value'] = durationInSeconds;
-                    this.barChartData.push(barChartDataObject);
                 }
 
                 this.detailedReportData['data'] = stateWiseData;
@@ -671,6 +707,7 @@ export class AVReportComponent implements OnInit {
         this.avReportService.getDistrictWiseUsageSummary(stateIds.join(','), districtIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showReportData = true;
+                this.showChartData = false;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
@@ -699,23 +736,46 @@ export class AVReportComponent implements OnInit {
                 targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = districtWiseData.length > 0 ? districtWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(targetTotalDuration);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
+                let footerTotalStrengthObject: any = {};
+                footerTotalStrengthObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Strength')[0].align;
+                footerTotalStrengthObject['value'] = totalStrength;
+                footerTotalValues.push(footerTotalStrengthObject);
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
-                this.pieChartData = [];
+                this.barChartData = [];
+                this.barChartColorScheme.domain = [];
 
                 for (let i: number = 0; i < districtWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
                     districtWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
-                    let pieChartDataObject: any = {};
-                    pieChartDataObject['name'] = districtWiseData[i].District;
-                    pieChartDataObject['value'] = durationInSeconds;
-                    this.pieChartData.push(pieChartDataObject);
+                    let barChartDataObject: any = {};
+                    barChartDataObject['name'] = districtWiseData[i].District;
+                    barChartDataObject['value'] = districtWiseData[i]['Per(%)'];
+                    this.barChartData.push(barChartDataObject);
                 }
 
+                for (let i: number = 0; i < this.barChartData.length; i++) {
+                    this.barChartColorScheme.domain.push('#' + Math.random().toString(16).slice(-6));
+                }
+
+                this.barChartXAxisLabel = 'District';
+                this.barChartYAxisLabel = 'Percentage';
                 this.reportData['data'] = districtWiseData;
                 this.dataCount = districtWiseData.length;
                 this.noDataColspan = this.reportData.columns.length;
@@ -764,21 +824,32 @@ export class AVReportComponent implements OnInit {
                 targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = districtWiseData.length > 0 ? districtWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(targetTotalDuration);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
+                let footerTotalStrengthObject: any = {};
+                footerTotalStrengthObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Strength')[0].align;
+                footerTotalStrengthObject['value'] = totalStrength;
+                footerTotalValues.push(footerTotalStrengthObject);
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
                 this.detailedReportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
-                this.barChartData = [];
 
                 for (let i: number = 0; i < districtWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
                     districtWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
-                    let barChartDataObject: any = {};
-                    barChartDataObject['name'] = districtWiseData[i].Branch;
-                    barChartDataObject['value'] = durationInSeconds;
-                    this.barChartData.push(barChartDataObject);
                 }
 
                 this.detailedReportData['data'] = districtWiseData;
@@ -840,6 +911,7 @@ export class AVReportComponent implements OnInit {
         this.avReportService.getBranchWiseUsageSummary(stateIds.join(','), districtIds.join(','), branchIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showReportData = true;
+                this.showChartData = false;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
@@ -868,28 +940,50 @@ export class AVReportComponent implements OnInit {
                 targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = branchWiseData.length > 0 ? branchWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(targetTotalDuration);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
+                let footerTotalStrengthObject: any = {};
+                footerTotalStrengthObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Strength')[0].align;
+                footerTotalStrengthObject['value'] = totalStrength;
+                footerTotalValues.push(footerTotalStrengthObject);
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
-                this.pieChartData = [];
+                this.barChartData = [];
+                this.barChartColorScheme.domain = [];
 
                 for (let i: number = 0; i < branchWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(branchWiseData[i].Duration.split(':')[2]) + (60 * parseInt(branchWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(branchWiseData[i].Duration.split(':')[0]));
                     branchWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
-                    let pieChartDataObject: any = {};
-                    pieChartDataObject['name'] = branchWiseData[i].Branch;
-                    pieChartDataObject['value'] = durationInSeconds;
-                    this.pieChartData.push(pieChartDataObject);
+                    let barChartDataObject: any = {};
+                    barChartDataObject['name'] = branchWiseData[i].Branch;
+                    barChartDataObject['value'] = branchWiseData[i]['Per(%)'];
+                    this.barChartData.push(barChartDataObject);
                 }
 
+                for (let i: number = 0; i < this.barChartData.length; i++) {
+                    this.barChartColorScheme.domain.push('#' + Math.random().toString(16).slice(-6));
+                }
+
+                this.barChartXAxisLabel = 'Branch';
+                this.barChartYAxisLabel = 'Percentage';
                 this.reportData['data'] = branchWiseData;
                 this.dataCount = branchWiseData.length;
                 this.noDataColspan = this.reportData.columns.length;
                 this.order = this.reportData.sorting;
-                console.log(this.pieChartData);
             });
     };
 
@@ -946,21 +1040,32 @@ export class AVReportComponent implements OnInit {
                 targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = branchWiseData.length > 0 ? branchWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(targetTotalDuration);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
+                let footerTotalStrengthObject: any = {};
+                footerTotalStrengthObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Strength')[0].align;
+                footerTotalStrengthObject['value'] = totalStrength;
+                footerTotalValues.push(footerTotalStrengthObject);
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
                 this.detailedReportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
-                this.barChartData = [];
 
                 for (let i: number = 0; i < branchWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(branchWiseData[i].Duration.split(':')[2]) + (60 * parseInt(branchWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(branchWiseData[i].Duration.split(':')[0]));
                     branchWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
-                    let barChartDataObject: any = {};
-                    barChartDataObject['name'] = branchWiseData[i].Course;
-                    barChartDataObject['value'] = branchWiseData[i]['Per(%)'];
-                    this.barChartData.push(barChartDataObject);
                 }
 
                 this.detailedReportData['data'] = branchWiseData;
@@ -1029,6 +1134,7 @@ export class AVReportComponent implements OnInit {
         this.avReportService.getCourseWiseUsageSummary(stateIds.join(','), districtIds.join(','), branchIds.join(','), courseIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showReportData = true;
+                this.showChartData = false;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
@@ -1057,23 +1163,46 @@ export class AVReportComponent implements OnInit {
                 targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = courseWiseData.length > 0 ? courseWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(targetTotalDuration);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
+                let footerTotalStrengthObject: any = {};
+                footerTotalStrengthObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Strength')[0].align;
+                footerTotalStrengthObject['value'] = totalStrength;
+                footerTotalValues.push(footerTotalStrengthObject);
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
-                this.pieChartData = [];
+                this.barChartData = [];
+                this.barChartColorScheme.domain = [];
 
                 for (let i: number = 0; i < courseWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(courseWiseData[i].Duration.split(':')[2]) + (60 * parseInt(courseWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(courseWiseData[i].Duration.split(':')[0]));
                     courseWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
-                    let pieChartDataObject: any = {};
-                    pieChartDataObject['name'] = courseWiseData[i].Course;
-                    pieChartDataObject['value'] = durationInSeconds;
-                    this.pieChartData.push(pieChartDataObject);
+                    let barChartDataObject: any = {};
+                    barChartDataObject['name'] = courseWiseData[i].Course;
+                    barChartDataObject['value'] = courseWiseData[i]['Per(%)'];
+                    this.barChartData.push(barChartDataObject);
                 }
 
+                for (let i: number = 0; i < this.barChartData.length; i++) {
+                    this.barChartColorScheme.domain.push('#' + Math.random().toString(16).slice(-6));
+                }
+
+                this.barChartXAxisLabel = 'Course';
+                this.barChartYAxisLabel = 'Percentage';
                 this.reportData['data'] = courseWiseData;
                 this.dataCount = courseWiseData.length;
                 this.noDataColspan = this.reportData.columns.length;
@@ -1140,21 +1269,32 @@ export class AVReportComponent implements OnInit {
                 targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
                 let totalStrength: number = courseWiseData.length > 0 ? courseWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
                 let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(targetTotalDuration);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
+                let footerTotalStrengthObject: any = {};
+                footerTotalStrengthObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Strength')[0].align;
+                footerTotalStrengthObject['value'] = totalStrength;
+                footerTotalValues.push(footerTotalStrengthObject);
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
                 this.detailedReportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
-                this.barChartData = [];
 
                 for (let i: number = 0; i < courseWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(courseWiseData[i].Duration.split(':')[2]) + (60 * parseInt(courseWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(courseWiseData[i].Duration.split(':')[0]));
                     courseWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
-                    let barChartDataObject: any = {};
-                    barChartDataObject['name'] = courseWiseData[i].Course;
-                    barChartDataObject['value'] = durationInSeconds;
-                    this.barChartData.push(barChartDataObject);
                 }
 
                 this.detailedReportData['data'] = courseWiseData;
@@ -1233,6 +1373,7 @@ export class AVReportComponent implements OnInit {
         this.avReportService.getSubjectWiseUsageSummary(stateIds.join(','), districtIds.join(','), branchIds.join(','), courseIds.join(','), subjectIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showReportData = true;
+                this.showChartData = false;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
@@ -1329,6 +1470,7 @@ export class AVReportComponent implements OnInit {
                 footerTotalValues.push(totalStrength);
                 footerTotalValues.push(totalDuration);
                 footerTotalValues.push('');
+                footerTotalValues.push('');
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
 
@@ -1403,5 +1545,15 @@ export class AVReportComponent implements OnInit {
         }
 
         return targetDuration;
+    };
+
+    showTable() {
+        this.showReportData = true;
+        this.showChartData = false;
+    };
+
+    showChart() {
+        this.showReportData = false;
+        this.showChartData = true;
     };
 }
