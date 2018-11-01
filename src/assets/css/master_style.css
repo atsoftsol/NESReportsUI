@@ -132,7 +132,7 @@ h6 {
     -moz-transition: -moz-transform .3s ease-in-out, margin .3s ease-in-out;
     -o-transition: -o-transform .3s ease-in-out, margin .3s ease-in-out;
     transition: transform .3s ease-in-out, margin .3s ease-in-out;
-    margin-left: 230px;
+    margin-left: 234px;
     z-index: 820;
 }
 .layout-top-nav .content-wrapper, .layout-top-nav .main-footer {
@@ -1882,8 +1882,9 @@ a:active, a:focus, a:hover {
 }
 [type=radio]:checked+label, [type=radio]:not(:checked)+label {
     font-weight: 400;
-    position: relative;
-    padding-left: 35px;
+    position: relative; 
+    padding-left: 24px;
+    padding-right: 24px;
     cursor: pointer;
     display: inline-block;
     height: 25px;
@@ -1926,10 +1927,10 @@ a:active, a:focus, a:hover {
     animation: ripple .2s linear forwards;
 }
 [type=radio].with-gap:checked+label:after, [type=radio].with-gap:checked+label:before, [type=radio]:checked+label:after {
-    border: 2px solid #45aef1;
+    border: 2px solid #0b84b9;
 }
 [type=radio].with-gap:checked+label:after, [type=radio]:checked+label:after {
-    background-color: #45aef1;
+    background-color: #0b84b9;
     z-index: 0;
 }
 [type=radio]:checked+label:after {
@@ -7120,7 +7121,7 @@ button.btn.dropdown-toggle::after, .wysihtml5-toolbar .btn.dropdown-toggle::afte
 }
 .table>thead>tr>th { 
     text-transform: capitalize;
-    background-color: #ff6028;
+    background-color: #0b84b9;
     border-bottom: 2px solid #f4f4f4;
     color: #fff;
 }
@@ -9299,18 +9300,18 @@ table.dataTable thead .sorting:after {
 }
 }
 
-.selected-item {border: 1px solid #ff6028 !important;
+.selected-item {border: 1px solid #0b84b9  !important;
     margin-right: 4px;
 
-    background: #ff6028 !important;
+    background: #0b84b9  !important;
     padding: 0 5px;
     color: #fff;
       font-size: 11px;
     margin: 1px;
     border-radius: 2px;
     float: left;}
-    .multiselect-item-checkbox  input[type=checkbox] + div:before{    border: 2px solid #ff6028 !important;}
-    .multiselect-item-checkbox input[type=checkbox]:checked + div:before{    background: #ff6028 !important;}
+    .multiselect-item-checkbox  input[type=checkbox] + div:before{    border: 2px solid #0b84b9  !important;}
+    .multiselect-item-checkbox input[type=checkbox]:checked + div:before{    background: #0b84b9  !important;}
 
     button.calendar, button.calendar:active {
         width: 2.75rem;
@@ -9334,3 +9335,19 @@ table.dataTable thead .sorting:after {
             color: #ffffff !important;
             border-radius: 4px !important;
         }
+
+        .scrollbar { 
+            float: left;
+            height: 380px; 
+            width: 100%;
+            overflow-y: auto; 
+        }
+        
+        .force-overflow {
+            min-height: 400px;
+            padding-right: 5px;
+        }
+        #style-1::-webkit-scrollbar {
+            width: 6px; 
+            background-color: #0b84b9;
+        } 

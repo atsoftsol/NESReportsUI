@@ -1482,7 +1482,10 @@
 /*---Skin: orange light---*/
 /*---light sidebar---*/
 .skin-orange-light .main-header .navbar {
-  background-color: #ff6028;
+  background-color: #0b84b9;
+ /* background-color: #ff6028;*/
+
+  
 }
 .skin-orange-light .main-header .navbar .nav > li > a {
   color: #ffffff;
