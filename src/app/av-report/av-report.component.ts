@@ -27,7 +27,6 @@ export class AVReportComponent implements OnInit {
     endDate: NgbDateStruct;
     reportData: any;
     grandTotalColspan: number;
-    page: number = 1;
     dataCount: number;
     noDataColspan: number;
     order: string;
@@ -39,25 +38,28 @@ export class AVReportComponent implements OnInit {
     detailedReportData: any;
     detailedReportName: string = '';
     detailedReportGrandTotalColspan: number;
-    detailedReportPage: number = 1;
     detailedReportDataCount: number;
     detailedReportNoDataColspan: number;
     detailedReportOrder: string;
     detailedReportReverse: boolean = false;
     showDetailedReportData: boolean = false;
     reportType: string = '';
-    /* pieChartView: any[] = [250, 280];
-    pieChartColorScheme = {
-        domain: []
-    };
-    pieChartData: any[] = []; */
-    barChartView: any[] = [800, 300];
+    barChartView: any[] = [800, 400];
     barChartColorScheme = {
         domain: []
     };
     barChartData: any[] = [];
     barChartXAxisLabel: string;
     barChartYAxisLabel: string;
+    groupBarChartView: any[] = [800, 400];
+    groupBarChartColorScheme = {
+        domain: []
+    };
+    groupBarChartData: any[] = [];
+    groupBarChartXAxisLabel: string;
+    groupBarChartYAxisLabel: string;
+    showBarChart: boolean = false;
+    showGroupBarChart: boolean = false;
 
     constructor(private calendar: NgbCalendar, private appService: AppService, private avReportService: AVReportService) {
         this.stateDropdownSettings = {
@@ -111,7 +113,6 @@ export class AVReportComponent implements OnInit {
         this.getDates();
         this.getStates();
         this.getCourses();
-        //this.getSubjects();
     };
 
     getDates() {
@@ -354,104 +355,6 @@ export class AVReportComponent implements OnInit {
         this.selectedSubjects = [];
     };
 
-    getReportData() {
-        if (this.selectedStates.length > 0 && this.selectedDistricts.length === 0 && this.selectedBranches.length === 0) {
-            /* if (this.selectedStates.length === this.states.length) {
-                this.getStateWiseUsageSummary();
-            }
-            else {
-                this.getStateWiseUsageDetails();
-            } */
-            this.getStateWiseUsageSummary();
-        }
-        else if (this.selectedStates.length > 0 && this.selectedDistricts.length > 0 && this.selectedBranches.length === 0) {
-            /* if (this.selectedDistricts.length === this.districts.length) {
-                this.getDistrictWiseUsageSummary();
-            }
-            else {
-                this.getDistrictWiseUsageDetails();
-            } */
-            this.getDistrictWiseUsageSummary();
-        }
-        else if (this.selectedStates.length > 0 && this.selectedDistricts.length > 0 && this.selectedBranches.length > 0) {
-            if (this.selectedCourses.length === 0 && this.selectedSubjects.length == 0) {
-                this.getBranchWiseUsageSummary();
-            }
-            else if (this.selectedCourses.length > 0 && this.selectedSubjects.length === 0) {
-                this.getCourseWiseUsageSummary();
-            }
-            else {
-                this.getSubjectWiseUsageSummary();
-            }
-            /* if (this.selectedBranches.length === this.branches.length) {
-                if (this.selectedCourses.length === 0) {
-                    this.getBranchWiseUsageSummary();
-                }
-                else {
-                    if (this.selectedCourses.length === this.courses.length) {
-                        if (this.selectedSubjects.length === 0) {
-                            this.getCourseWiseUsageSummary();
-                        }
-                        else {
-                            if (this.selectedSubjects.length === this.subjects.length) {
-                                this.getSubjectWiseUsageSummary();
-                            }
-                            else {
-                                this.getSubjectWiseUsageDetails();
-                            }
-                        }
-                    }
-                    else {
-                        if (this.selectedSubjects.length == 0) {
-                            this.getCourseWiseUsageDetails();
-                        }
-                        else {
-                            if (this.selectedSubjects.length === this.subjects.length) {
-                                this.getSubjectWiseUsageSummary();
-                            }
-                            else {
-                                this.getSubjectWiseUsageDetails();
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                if (this.selectedCourses.length === 0) {
-                    this.getBranchWiseUsageDetails();
-                }
-                else {
-                    if (this.selectedCourses.length === this.courses.length) {
-                        if (this.selectedSubjects.length === 0) {
-                            this.getCourseWiseUsageSummary();
-                        }
-                        else {
-                            if (this.selectedSubjects.length === this.subjects.length) {
-                                this.getSubjectWiseUsageSummary();
-                            }
-                            else {
-                                this.getSubjectWiseUsageDetails();
-                            }
-                        }
-                    }
-                    else {
-                        if (this.selectedSubjects.length == 0) {
-                            this.getCourseWiseUsageDetails();
-                        }
-                        else {
-                            if (this.selectedSubjects.length === this.subjects.length) {
-                                this.getSubjectWiseUsageSummary();
-                            }
-                            else {
-                                this.getSubjectWiseUsageDetails();
-                            }
-                        }
-                    }
-                }
-            } */
-        }
-    };
-
     getDetailedReport(item: any) {
         this.showModalPopup = 'block';
         this.showDetailedReportData = true;
@@ -528,6 +431,8 @@ export class AVReportComponent implements OnInit {
             .subscribe(data => {
                 this.showReportData = true;
                 this.showChartData = false;
+                this.showBarChart = false;
+                this.showGroupBarChart = false;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
@@ -604,15 +509,9 @@ export class AVReportComponent implements OnInit {
     };
 
     getStateWiseUsageDetails(stateId: string) {
-        //let stateCodes: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.reportType = 'stateWiseUsageDetails';
-
-        /* for (let i: number = 0; i < this.selectedStates.length; i++) {
-            let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
-            stateCodes.push(state[0].stateCode);
-        } */
 
         this.avReportService.getStateWiseUsageDetails(stateId, startDate, endDate)
             .subscribe(data => {
@@ -708,6 +607,8 @@ export class AVReportComponent implements OnInit {
             .subscribe(data => {
                 this.showReportData = true;
                 this.showChartData = false;
+                this.showBarChart = false;
+                this.showGroupBarChart = false;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
@@ -784,15 +685,9 @@ export class AVReportComponent implements OnInit {
     };
 
     getDistrictWiseUsageDetails(stateId: string, districtId: string) {
-        //let districtCodes: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.reportType = 'districtWiseUsageDetails';
-
-        /* for (let i: number = 0; i < this.selectedDistricts.length; i++) {
-            let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
-            districtCodes.push(district[0].districtCode);
-        } */
 
         this.avReportService.getDistrictWiseUsageDetails(stateId, districtId, startDate, endDate)
             .subscribe(data => {
@@ -860,9 +755,6 @@ export class AVReportComponent implements OnInit {
     };
 
     getBranchWiseUsageSummary() {
-        /* let stateCodes: any[] = [];
-        let districtCodes: any[] = [];
-        let branchCodes: any[] = []; */
         let stateIds: any[] = [];
         let districtIds: any[] = [];
         let branchIds: any[] = [];
@@ -870,21 +762,6 @@ export class AVReportComponent implements OnInit {
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.reportType = 'branchWiseUsageSummary';
         this.detailedReportType = 'branchWiseDetailedReport';
-
-        /* for (let i: number = 0; i < this.selectedStates.length; i++) {
-            let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
-            stateCodes.push(state[0].stateCode);
-        }
-
-        for (let i: number = 0; i < this.selectedDistricts.length; i++) {
-            let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
-            districtCodes.push(district[0].districtCode);
-        }
-
-        for (let i: number = 0; i < this.selectedBranches.length; i++) {
-            let branch: any = this.branches.filter((item) => item.branchId === this.selectedBranches[i].branchId);
-            branchCodes.push(branch[0].eurekaBranchCode);
-        } */
 
         for (let i: number = 0; i < this.selectedStates.length; i++) {
             let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
@@ -912,6 +789,8 @@ export class AVReportComponent implements OnInit {
             .subscribe(data => {
                 this.showReportData = true;
                 this.showChartData = false;
+                this.showBarChart = false;
+                this.showGroupBarChart = false;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
@@ -988,27 +867,9 @@ export class AVReportComponent implements OnInit {
     };
 
     getBranchWiseUsageDetails(stateId: string, districtId: string, branchId: string) {
-        /* let stateCodes: any[] = [];
-        let districtCodes: any[] = [];
-        let branchCodes: any[] = []; */
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.reportType = 'branchWiseUsageDetails';
-
-        /* for (let i: number = 0; i < this.selectedStates.length; i++) {
-            let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
-            stateCodes.push(state[0].stateCode);
-        }
-
-        for (let i: number = 0; i < this.selectedDistricts.length; i++) {
-            let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
-            districtCodes.push(district[0].districtCode);
-        }
-
-        for (let i: number = 0; i < this.selectedBranches.length; i++) {
-            let branch: any = this.branches.filter((item) => item.branchId === this.selectedBranches[i].branchId);
-            branchCodes.push(branch[0].eurekaBranchCode);
-        } */
 
         this.avReportService.getBranchWiseUsageDetails(stateId, districtId, branchId, startDate, endDate)
             .subscribe(data => {
@@ -1076,10 +937,6 @@ export class AVReportComponent implements OnInit {
     };
 
     getCourseWiseUsageSummary() {
-        /* let stateCodes: any[] = [];
-        let districtCodes: any[] = [];
-        let branchCodes: any[] = [];
-        let courseCode: string; */
         let stateIds: any[] = [];
         let districtIds: any[] = [];
         let branchIds: any[] = [];
@@ -1088,21 +945,6 @@ export class AVReportComponent implements OnInit {
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.reportType = 'courseWiseUsageSummary';
         this.detailedReportType = 'courseWiseDetailedReport';
-
-        /* for (let i: number = 0; i < this.selectedStates.length; i++) {
-            let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
-            stateCodes.push(state[0].stateCode);
-        }
-
-        for (let i: number = 0; i < this.selectedDistricts.length; i++) {
-            let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
-            districtCodes.push(district[0].districtCode);
-        }
-
-        for (let i: number = 0; i < this.selectedBranches.length; i++) {
-            let branch: any = this.branches.filter((item) => item.branchId === this.selectedBranches[i].branchId);
-            branchCodes.push(branch[0].eurekaBranchCode);
-        } */
 
         for (let i: number = 0; i < this.selectedStates.length; i++) {
             let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
@@ -1135,6 +977,8 @@ export class AVReportComponent implements OnInit {
             .subscribe(data => {
                 this.showReportData = true;
                 this.showChartData = false;
+                this.showBarChart = false;
+                this.showGroupBarChart = false;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
@@ -1185,24 +1029,47 @@ export class AVReportComponent implements OnInit {
                 footerTotalValues.push(footerTotalPercentageObject);
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
-                this.barChartData = [];
-                this.barChartColorScheme.domain = [];
+                this.groupBarChartData = [];
+                this.groupBarChartColorScheme.domain = [];
 
                 for (let i: number = 0; i < courseWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(courseWiseData[i].Duration.split(':')[2]) + (60 * parseInt(courseWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(courseWiseData[i].Duration.split(':')[0]));
                     courseWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
-                    let barChartDataObject: any = {};
-                    barChartDataObject['name'] = courseWiseData[i].Course;
-                    barChartDataObject['value'] = courseWiseData[i]['Per(%)'];
-                    this.barChartData.push(barChartDataObject);
                 }
 
-                for (let i: number = 0; i < this.barChartData.length; i++) {
-                    this.barChartColorScheme.domain.push('#' + Math.random().toString(16).slice(-6));
+                let distinctBranchNames: any = [];
+
+                for (let i: number = 0; i < courseWiseData.length; i++) {
+                    if (distinctBranchNames.indexOf(courseWiseData[i].Branch) == -1) {
+                        distinctBranchNames.push(courseWiseData[i].Branch);
+                    }
                 }
 
-                this.barChartXAxisLabel = 'Course';
-                this.barChartYAxisLabel = 'Percentage';
+                distinctBranchNames = distinctBranchNames.sort();
+
+                distinctBranchNames.forEach((item, index) => {
+                    let groupBarChartDataObject: any = {};
+                    groupBarChartDataObject['name'] = item;
+                    let branchData: any = courseWiseData.filter((e) => e.Branch === item);
+                    let branchSeries: any[] = [];
+
+                    branchData.forEach((item, index) => {
+                        let branchSeriesObject: any = {};
+                        branchSeriesObject['name'] = item.Course;
+                        branchSeriesObject['value'] = item['Per(%)'];
+                        branchSeries.push(branchSeriesObject);
+                    });
+
+                    groupBarChartDataObject['series'] = branchSeries;
+                    this.groupBarChartData.push(groupBarChartDataObject);
+                });
+
+                for (let i: number = 0; i < this.groupBarChartData.length; i++) {
+                    this.groupBarChartColorScheme.domain.push('#' + Math.random().toString(16).slice(-6));
+                }
+
+                this.groupBarChartXAxisLabel = 'Branch';
+                this.groupBarChartYAxisLabel = 'Percentage';
                 this.reportData['data'] = courseWiseData;
                 this.dataCount = courseWiseData.length;
                 this.noDataColspan = this.reportData.columns.length;
@@ -1211,33 +1078,9 @@ export class AVReportComponent implements OnInit {
     };
 
     getCourseWiseUsageDetails(stateId: string, districtId: string, branchId: string, courseId: string) {
-        /* let stateCodes: any[] = [];
-        let districtCodes: any[] = [];
-        let branchCodes: any[] = [];
-        let courseCodes: any[] = []; */
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.reportType = 'courseWiseUsageDetails';
-
-        /* for (let i: number = 0; i < this.selectedStates.length; i++) {
-            let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
-            stateCodes.push(state[0].stateCode);
-        }
-
-        for (let i: number = 0; i < this.selectedDistricts.length; i++) {
-            let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
-            districtCodes.push(district[0].districtCode);
-        }
-
-        for (let i: number = 0; i < this.selectedBranches.length; i++) {
-            let branch: any = this.branches.filter((item) => item.branchId === this.selectedBranches[i].branchId);
-            branchCodes.push(branch[0].eurekaBranchCode);
-        }
-
-        for (let i: number = 0; i < this.selectedCourses.length; i++) {
-            let course: any = this.courses.filter((item) => item.courseId === this.selectedCourses[i].courseId);
-            courseCodes.push(course[0].courseShortName);
-        } */
 
         this.avReportService.getCourseWiseUsageDetails(stateId, districtId, branchId, courseId, startDate, endDate)
             .subscribe(data => {
@@ -1305,10 +1148,6 @@ export class AVReportComponent implements OnInit {
     };
 
     getSubjectWiseUsageSummary() {
-        /* let stateCodes: any[] = [];
-        let districtCodes: any[] = [];
-        let branchCodes: any[] = [];
-        let courseCodes: any[] = []; */
         let stateIds: any[] = [];
         let districtIds: any[] = [];
         let branchIds: any[] = [];
@@ -1317,26 +1156,6 @@ export class AVReportComponent implements OnInit {
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.detailedReportType = 'subjectWiseDetailedReport';
-
-        /* for (let i: number = 0; i < this.selectedStates.length; i++) {
-            let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
-            stateCodes.push(state[0].stateCode);
-        }
-
-        for (let i: number = 0; i < this.selectedDistricts.length; i++) {
-            let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
-            districtCodes.push(district[0].districtCode);
-        }
-
-        for (let i: number = 0; i < this.selectedBranches.length; i++) {
-            let branch: any = this.branches.filter((item) => item.branchId === this.selectedBranches[i].branchId);
-            branchCodes.push(branch[0].eurekaBranchCode);
-        }
-
-        for (let i: number = 0; i < this.selectedCourses.length; i++) {
-            let course: any = this.courses.filter((item) => item.courseId === this.selectedCourses[i].courseId);
-            courseCodes.push(course[0].courseShortName);
-        } */
 
         for (let i: number = 0; i < this.selectedStates.length; i++) {
             let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
@@ -1374,6 +1193,8 @@ export class AVReportComponent implements OnInit {
             .subscribe(data => {
                 this.showReportData = true;
                 this.showChartData = false;
+                this.showBarChart = false;
+                this.showGroupBarChart = false;
                 this.reportData = data;
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
@@ -1412,38 +1233,8 @@ export class AVReportComponent implements OnInit {
     };
 
     getSubjectWiseUsageDetails(stateId: string, districtId: string, branchId: string, courseId: string, subjectId: string) {
-        /* let stateCodes: any[] = [];
-        let districtCodes: any[] = [];
-        let branchCodes: any[] = [];
-        let courseCodes: any[] = [];
-        let subjectCodes: any[] = []; */
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
-
-        /* for (let i: number = 0; i < this.selectedStates.length; i++) {
-            let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
-            stateCodes.push(state[0].stateCode);
-        }
-
-        for (let i: number = 0; i < this.selectedDistricts.length; i++) {
-            let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
-            districtCodes.push(district[0].districtCode);
-        }
-
-        for (let i: number = 0; i < this.selectedBranches.length; i++) {
-            let branch: any = this.branches.filter((item) => item.branchId === this.selectedBranches[i].branchId);
-            branchCodes.push(branch[0].eurekaBranchCode);
-        }
-
-        for (let i: number = 0; i < this.selectedCourses.length; i++) {
-            let course: any = this.courses.filter((item) => item.courseId === this.selectedCourses[i].courseId);
-            courseCodes.push(course[0].courseShortName);
-        }
-
-        for (let i: number = 0; i < this.selectedSubjects.length; i++) {
-            let subject: any = this.subjects.filter((item) => item.subjectId === this.selectedSubjects[i].subjectId);
-            subjectCodes.push(subject[0].subjectName);
-        } */
 
         this.avReportService.getSubjectWiseUsageDetails(stateId, districtId, branchId, courseId, subjectId, startDate, endDate)
             .subscribe(data => {
@@ -1512,7 +1303,7 @@ export class AVReportComponent implements OnInit {
         switch (this.reportType) {
             case 'stateWiseUsageSummary':
                 state = this.reportData.data.filter((e) => e.State === item);
-                targetDuration = state[0].Duration;//should show the difference between target and duration in hh:mm:ss format
+                targetDuration = state[0].Duration;
                 break;
             case 'stateWiseUsageDetails':
                 district = this.detailedReportData.data.filter((e) => e.District === item);
@@ -1555,5 +1346,10 @@ export class AVReportComponent implements OnInit {
     showChart() {
         this.showReportData = false;
         this.showChartData = true;
+
+        if (this.reportType !== 'courseWiseUsageSummary')
+            this.showBarChart = true;
+        else
+            this.showGroupBarChart = true;
     };
 }
