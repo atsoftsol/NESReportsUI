@@ -65,7 +65,8 @@ Body :		Poppins, sans-serif;
     overflow-y: auto;
 }
 .h1, .h2, .h3, .h4, .h5, .h6, body, h1, h2, h3, h4, h5, h6 {
-    font-family: Poppins, sans-serif;
+ /*   font-family: Poppins, sans-serif;*/
+    font-family: 'Lato', sans-serif;
 }
 .btn.uppercase, .fc th.fc-widget-header, .fc-toolbar h2, .info-box-text, .flex-column>li.header {
     text-transform: uppercase;
@@ -131,7 +132,7 @@ h6 {
     -moz-transition: -moz-transform .3s ease-in-out, margin .3s ease-in-out;
     -o-transition: -o-transform .3s ease-in-out, margin .3s ease-in-out;
     transition: transform .3s ease-in-out, margin .3s ease-in-out;
-    margin-left: 170px;
+    margin-left: 230px;
     z-index: 820;
 }
 .layout-top-nav .content-wrapper, .layout-top-nav .main-footer {
@@ -145,13 +146,20 @@ h6 {
     min-height: 100%;
     background-color: #ecf0f5;
     z-index: 800;
-    min-height: 530px;
+    min-height: 90vh;
+
 }
 .main-footer {
     background: #fff;
     padding: 10px;
     color: #444;
-    border-top: 1px solid #d2d6de;
+    border-top: 1px solid #d2d6de;    
+    border-left: 1px solid #d2d6de;
+    border-radius: 2px;
+    position: fixed;
+    left: 5px;
+    bottom: 0;
+    width: 100%;
 }
 .fixed .left-side, .fixed .main-header, .fixed .main-sidebar {
     position: fixed;
@@ -429,7 +437,7 @@ a:active, a:focus, a:hover {
     left: 0;
     padding-top: 50px;
     min-height: 100%;
-    width: 170px;
+    width: 230px;
     z-index: 810;
     -webkit-transition: -webkit-transform .3s ease-in-out, width .3s ease-in-out;
     -moz-transition: -moz-transform .3s ease-in-out, width .3s ease-in-out;
@@ -543,7 +551,7 @@ a:active, a:focus, a:hover {
     padding: 0;
 }
 .sidebar-menu>li>a {
-    padding: 15px 5px 15px 15px;
+    padding: 15px 5px 15px 35px;
     display: block;
 }
 .sidebar-menu>li>a>.fa, .sidebar-menu>li>a>.glyphicon, .sidebar-menu>li>a>.ion {
@@ -1702,6 +1710,7 @@ a:active, a:focus, a:hover {
     font-weight: 400;
     position: relative;
     padding-left: 35px;
+    padding-right: 25px;
     cursor: pointer;
     display: inline-block;
     height: 25px;

@@ -7,8 +7,8 @@
                         <div class="row m-b-20">
                             <div class="col-xl-3">
                                 <div class="form-group">
-                                    <label>State</label>
-                                    <ng-multiselect-dropdown [placeholder]="'Select State'" [data]="states" [settings]="stateDropdownSettings"
+                                    <label >State</label>
+                                    <ng-multiselect-dropdown  [placeholder]="'Select State'" [data]="states" [settings]="stateDropdownSettings"
                                         [(ngModel)]="selectedStates" (onSelect)="selectState($event)" (onSelectAll)="selectAllStates($event)"
                                         (onDeSelect)="unSelectState($event)" (onDeSelectAll)="unSelectAllStates($event)">
                                     </ng-multiselect-dropdown>
@@ -85,12 +85,20 @@
                                 </div>
                             </div>
                             <div class="col-xl-3">
-                                <div class="form-group">
+                                    <div class="form-group mt-3">
+                                    <input type="checkbox" value=" "  id="cbhshowtable"> <label for="cbhshowtable" (click)="showTable()"> Show Table</label>
+
+
+
+                                    <input type="checkbox" value=" "  id="cbhshowchart"> <label for="cbhshowchart"  (click)="showChart()"> Show Chart</label>
+                                    
+                                </div>
+                                <!-- <div class="form-group">
                                     <button id="btnShowTable" class="btn btn-theme mt-3" name="btnShowTable" (click)="showTable()">Show
                                         Table</button>&nbsp;
                                     <button id="btnShowChart" class="btn btn-theme mt-3" name="btnShowChart" (click)="showChart()">Show
                                         Chart</button>
-                                </div>
+                                </div> -->
                             </div>
                             <!-- <div class="col-xl-3">
                                 <div class="form-group">
@@ -102,11 +110,14 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-2" *ngIf="showReportData">
+        <div class="row mt-2">
             <div class="col-xl-12 connectedSortable">
                 <div class="box box-info">
                     <div class="box-body rowheight">
-                        <div class="media-table-block">
+                            <div id="" style="overflow-y:auto; height:400px;" >
+
+
+                        <div class="media-table-block"  *ngIf="showReportData">
                             <table class="table table-striped table-bordered media-table" style="border: 1;">
                                 <thead>
                                     <tr>
@@ -144,6 +155,9 @@
                             </table>
                             <pagination-controls *ngIf="dataCount" class="paginations-block" (pageChange)="page=$event"></pagination-controls>
                         </div>
+
+                    </div>
+
                         <div id="divSelectedRowModal" class="modal" [ngStyle]="{'display':showModalPopup}" *ngIf="showDetailedReportData">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
@@ -215,6 +229,7 @@
             </div>
         </div>
         <div class="row mt-2" *ngIf="showChartData">
+            <div class="col-xl-12 connectedSortable">
             <div class="box box-info">
                 <div class="box-body rowheight">
                     <div class="media-table-block">
@@ -232,15 +247,18 @@
                             [gradient]="false" [xAxis]="true" [yAxis]="true" [showXAxisLabel]="true" [showYAxisLabel]="true"
                             [legend]="true" [showDataLabel]="true" [xAxisLabel]="barChartXAxisLabel" [yAxisLabel]="barChartYAxisLabel">
                             <ng-template #tooltipTemplate let-model="model">
-                                <h1>
+                                <p>
                                     {{model.name}}
-                                </h1>
-                                <h2>{{getTargetDuration(model.name)}}</h2>
+                                </p>
+                                <p>{{getTargetDuration(model.name)}}</p>
                             </ng-template>
                         </ngx-charts-bar-vertical>
                     </div>
                 </div>
             </div>
+
+        </div>
+
         </div>
     </section>
 </div>

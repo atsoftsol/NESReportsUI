@@ -1523,12 +1523,12 @@
   }
 }
 .skin-orange-light .main-header .logo {
-  background-color: #de4f1e;
+  background-color: #ffffff;
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
 .skin-orange-light .main-header .logo:hover {
-  background-color: #ff6028;
+  background-color: #ffffff;
 }
 .skin-orange-light .main-header li.user-header {
   background-color: #fff;
@@ -1542,7 +1542,7 @@
 .skin-orange-light .wrapper,
 .skin-orange-light .main-sidebar,
 .skin-orange-light .left-side {
-  background-color: #ffffff;
+  background-color: #ecf0f5;
   box-shadow: 1px 0px 20px rgba(0,0,0,0.08);
 }
 .skin-orange-light .user-panel > .info,
