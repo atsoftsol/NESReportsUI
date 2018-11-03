@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { environment } from '../../environments/environment';
 import 'rxjs/add/operator/retry';
@@ -10,7 +10,7 @@ export class AVReportService {
 
     getStateWiseUsageSummary(stateIds: string, startDate: string, endDate: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.avReportConfig.getStateWiseUsageSummary.replace(/{stateIds}/g, stateIds).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getStateWiseUsageSummary, { params: new HttpParams().set('stateIds', stateIds).set('startDate', startDate).set('endDate', endDate) })
             .retry(environment.retryFailedRequest);
     };
 
@@ -22,7 +22,7 @@ export class AVReportService {
 
     getDistrictWiseUsageSummary(stateIds: string, districtIds: string, startDate: string, endDate: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.avReportConfig.getDistrictWiseUsageSummary.replace(/{stateIds}/g, stateIds).replace(/{districtIds}/g, districtIds).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getDistrictWiseUsageSummary, { params: new HttpParams().set('stateIds', stateIds).set('districtIds', districtIds).set('startDate', startDate).set('endDate', endDate) })
             .retry(environment.retryFailedRequest);
     };
 
@@ -34,7 +34,7 @@ export class AVReportService {
 
     getBranchWiseUsageSummary(stateIds: string, districtIds: string, branchIds: string, startDate: string, endDate: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.avReportConfig.getBranchWiseUsageSummary.replace(/{stateIds}/g, stateIds).replace(/{districtIds}/g, districtIds).replace(/{branchIds}/g, branchIds).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getBranchWiseUsageSummary, { params: new HttpParams().set('stateIds', stateIds).set('districtIds', districtIds).set('branchIds', branchIds).set('startDate', startDate).set('endDate', endDate) })
             .retry(environment.retryFailedRequest);
     };
 
@@ -46,7 +46,7 @@ export class AVReportService {
 
     getCourseWiseUsageSummary(stateIds: string, districtIds: string, branchIds: string, courseIds: string, startDate: string, endDate: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.avReportConfig.getCourseWiseUsageSummary.replace(/{stateIds}/g, stateIds).replace(/{districtIds}/g, districtIds).replace(/{branchIds}/g, branchIds).replace(/{courseIds}/g, courseIds).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getCourseWiseUsageSummary, { params: new HttpParams().set('stateIds', stateIds).set('districtIds', districtIds).set('branchIds', branchIds).set('courseIds', courseIds).set('startDate', startDate).set('endDate', endDate) })
             .retry(environment.retryFailedRequest);
     };
 
@@ -58,7 +58,7 @@ export class AVReportService {
 
     getSubjectWiseUsageSummary(stateIds: string, districtIds: string, branchIds: string, courseIds: string, subjectIds: string, startDate: string, endDate: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.avReportConfig.getSubjectWiseUsageSummary.replace(/{stateIds}/g, stateIds).replace(/{districtIds}/g, districtIds).replace(/{branchIds}/g, branchIds).replace(/{courseIds}/g, courseIds).replace(/{subjectIds}/g, subjectIds).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getSubjectWiseUsageSummary, { params: new HttpParams().set('stateIds', stateIds).set('districtIds', districtIds).set('branchIds', branchIds).set('courseIds', courseIds).set('subjectIds', subjectIds).set('startDate', startDate).set('endDate', endDate) })
             .retry(environment.retryFailedRequest);
     };
 

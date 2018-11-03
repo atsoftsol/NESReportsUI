@@ -2,12 +2,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AVReportModule } from '../app/av-report/av-report.module';
 import { InspectionModule } from '../app/inspection/inspection.module';
 
 import { AppService } from './app.service';
+import { NgbDateCustomParserFormatter } from '../app/customFormats/dateFormat';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/header/header.component';
@@ -28,7 +30,8 @@ import { FooterComponent } from './core/footer/footer.component';
     AppRoutingModule
   ],
   providers: [
-    AppService
+    AppService,
+    { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter }
   ],
   bootstrap: [
     AppComponent

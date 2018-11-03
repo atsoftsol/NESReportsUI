@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { environment } from '../environments/environment';
 import 'rxjs/add/operator/retry';
@@ -16,13 +16,13 @@ export class AppService {
 
     getDistricts(stateIds: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.commonConfig.getDistricts.replace(/{stateIds}/g, stateIds))
+            .get<any>(environment.apiEndPoint + environment.commonConfig.getDistricts, { params: new HttpParams().set('stateIds', stateIds) })
             .retry(environment.retryFailedRequest);
     }
 
     getBranches(districtIds: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.commonConfig.getBranches.replace(/{districtIds}/g, districtIds))
+            .get<any>(environment.apiEndPoint + environment.commonConfig.getBranches, { params: new HttpParams().set('districtIds', districtIds) })
             .retry(environment.retryFailedRequest);
     };
 

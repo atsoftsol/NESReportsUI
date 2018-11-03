@@ -4,21 +4,21 @@ export const environment = {
   retryFailedRequest: 3,
   commonConfig: {
     getStates: 'api/common/states',
-    getDistricts: 'api/common/districts/{stateIds}',
-    getBranches: 'api/common/branches/{districtIds}',
+    getDistricts: 'api/common/districts',
+    getBranches: 'api/common/branches',
     getCourses: 'api/common/courses',
     getSubjects: 'api/common/subjects'
   },
   avReportConfig: {
-    getStateWiseUsageSummary: 'api/audiovideoreport/statewiseusagesummary/{stateIds}/{startDate}/{endDate}',
+    getStateWiseUsageSummary: 'api/audiovideoreport/statewiseusagesummary',
     getStateWiseUsageDetails: 'api/audiovideoreport/statewiseusagedetail/{stateId}/{startDate}/{endDate}',
-    getDistrictWiseUsageSummary: 'api/audiovideoreport/districtwiseusagesummary/{stateIds}/{districtIds}/{startDate}/{endDate}',
+    getDistrictWiseUsageSummary: 'api/audiovideoreport/districtwiseusagesummary',
     getDistrictWiseUsageDetails: 'api/audiovideoreport/districtwiseusagedetail/{stateId}/{districtId}/{startDate}/{endDate}',
-    getBranchWiseUsageSummary: 'api/audiovideoreport/branchwiseusagesummary/{stateIds}/{districtIds}/{branchIds}/{startDate}/{endDate}',
+    getBranchWiseUsageSummary: 'api/audiovideoreport/branchwiseusagesummary',
     getBranchWiseUsageDetails: 'api/audiovideoreport/branchwiseusagedetail/{stateId}/{districtId}/{branchId}/{startDate}/{endDate}',
-    getCourseWiseUsageSummary: 'api/audiovideoreport/coursewiseusagesummary/{stateIds}/{districtIds}/{branchIds}/{courseIds}/{startDate}/{endDate}',
+    getCourseWiseUsageSummary: 'api/audiovideoreport/coursewiseusagesummary',
     getCourseWiseUsageDetails: 'api/audiovideoreport/coursewiseusagedetail/{stateId}/{districtId}/{branchId}/{courseId}/{startDate}/{endDate}',
-    getSubjectWiseUsageSummary: 'api/audiovideoreport/subjectwiseusagesummary/{stateIds}/{districtIds}/{branchIds}/{courseIds}/{subjectIds}/{startDate}/{endDate}',
+    getSubjectWiseUsageSummary: 'api/audiovideoreport/subjectwiseusagesummary',
     getSubjectWiseUsageDetails: 'api/audiovideoreport/subjectwiseusagedetails/{stateId}/{districtId}/{branchId}/{courseId}/{subjectId}/{startDate}/{endDate}'
   }
 };
