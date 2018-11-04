@@ -25,7 +25,8 @@ export class AVReportComponent implements OnInit {
     selectedSubjects: any[] = [];
     startDate: NgbDateStruct;
     endDate: NgbDateStruct;
-    reportData: any;
+    serial: number = 1;
+    reportData: any = [];
     grandTotalColspan: number;
     dataCount: number;
     noDataColspan: number;
@@ -35,7 +36,7 @@ export class AVReportComponent implements OnInit {
     showChartData: boolean = false;
     showModalPopup: string = 'none';
     detailedReportType: string = '';
-    detailedReportData: any;
+    detailedReportData: any = [];
     detailedReportName: string = '';
     detailedReportGrandTotalColspan: number;
     detailedReportDataCount: number;
