@@ -6,7 +6,6 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { OrderModule } from 'ngx-order-pipe';
-import { AVReportBranchWiseComponent } from './branch-wise/branch-wise.component';
 import { AVReportComponent } from './av-report.component';
 import { AVReportService } from './av-report.service';
 import { AVReportRoutingModule } from './av-report-routing.module';
@@ -23,7 +22,6 @@ import { AVReportRoutingModule } from './av-report-routing.module';
         AVReportRoutingModule
     ],
     declarations: [
-        AVReportBranchWiseComponent,
         AVReportComponent
     ],
     providers: [
