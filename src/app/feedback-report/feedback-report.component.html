@@ -1,0 +1,126 @@
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row mt-1">
+            <div class="col-xl-8 connectedSortable">
+                <div class="box box-info">
+                    <div class="box-body">
+                        <div class="row m-b-20">
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select State'" [data]="states" [settings]="stateDropdownSettings"
+                                        [(ngModel)]="selectedStates" (onSelect)="selectState()" (onSelectAll)="selectAllStates()"
+                                        (onDeSelect)="unSelectState()" (onDeSelectAll)="unSelectAllStates()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>District</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select District'" [data]="districts"
+                                        [settings]="districtDropdownSettings" [(ngModel)]="selectedDistricts"
+                                        (onSelect)="selectDistrict()" (onSelectAll)="selectAllDistricts()" (onDeSelect)="unSelectDistrict()"
+                                        (onDeSelectAll)="unSelectAllDistricts()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Branch</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Branch'" [data]="branches"
+                                        [settings]="branchDropdownSettings" [(ngModel)]="selectedBranches" (onSelect)="selectBranch()"
+                                        (onSelectAll)="selectAllBranches()" (onDeSelect)="unSelectBranch()"
+                                        (onDeSelectAll)="unSelectAllBranches()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Course</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Course'" [data]="courses"
+                                        [settings]="courseDropdownSettings" [(ngModel)]="selectedCourses" (onSelect)="selectCourse()"
+                                        (onSelectAll)="selectAllCourses()" (onDeSelect)="unSelectCourse()"
+                                        (onDeSelectAll)="unSelectAllCourses()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
+                                            [(ngModel)]="startDate" ngbDatepicker #s="ngbDatepicker" (dateSelect)="onStartDateSelect()">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="s.toggle()"
+                                                type="button"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
+                                            [(ngModel)]="endDate" ngbDatepicker #e="ngbDatepicker" (dateSelect)="onEndDateSelect()">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="e.toggle()"
+                                                type="button"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box box-info  mt-2">
+                    <div class="box-body rowheight" style=" height:403px;">
+                        <div>
+                            <div class="scrollbar" id="style-1" *ngIf="showFeedbackData">
+                                <div class="media-table-block force-overflow">
+                                    <table class="table table-striped table-bordered media-table" style="border: 1;">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center;">
+                                                    <span>S.No</span>
+                                                </th>
+                                                <th *ngFor="let column of feedbackData.columns" [class.active]="order === column.name"
+                                                    [ngStyle]="{'text-align':column.align}" (click)="setOrder(column.name)">
+                                                    <span [innerHtml]="column.name"></span>
+                                                    <span *ngIf="dataCount" style="cursor: pointer; float: right;">
+                                                        <span [hidden]="reverse">▼</span>
+                                                        <span [hidden]="!reverse">▲</span>
+                                                    </span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of feedbackData.data | orderBy: order:!reverse:'case-insensitive'; let i = index">
+                                                <td style="text-align:center">
+                                                    <span [innerHtml]=i+serial></span>
+                                                </td>
+                                                <td *ngFor="let column of feedbackData.columns" [ngStyle]="{'text-align':column.align}">
+                                                    <span [innerHtml]="item[column.name]"></span>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="!dataCount" style="text-align:center">
+                                                <td [attr.colspan]="noDataColspan + 1">No data available</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 connectedSortable" style="padding-left: 0px;">
+                <div class="box box-info">
+                    <div class="box-body" style="height: 561px;">
+                        <img src="../assets/images/DgclsPurpose.jpg" width="100%" alt="User Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

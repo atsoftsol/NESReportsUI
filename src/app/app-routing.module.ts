@@ -12,6 +12,10 @@ const routes: Routes = [
         loadChildren: 'app/av-report/av-report.module#AVReportModule'
     },
     {
+        path: 'feedback-report',
+        loadChildren: 'app/feedback-report/feedback-report.module#FeedbackReportModule'
+    },
+    {
         path: 'inspection',
         loadChildren: 'app/inspection/inspection.module#InspectionModule'
     }

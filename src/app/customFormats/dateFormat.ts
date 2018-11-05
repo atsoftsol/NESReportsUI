@@ -17,21 +17,21 @@ export class NgbDateCustomParserFormatter extends NgbDateParserFormatter {
         }
 
         return null;
-    }
+    };
 
     format(date: NgbDateStruct): string {
         return date ?
             `${this.isNumber(date.day) ? this.padNumber(date.day) : ''}-${this.isNumber(date.month) ? this.padNumber(date.month) : ''}-${date.year}` :
             '';
-    }
+    };
 
     toInteger(value: any): number {
         return parseInt(`${value}`, 10);
-    }
+    };
 
     isNumber(value: any): value is number {
         return !isNaN(this.toInteger(value));
-    }
+    };
 
     padNumber(value: number) {
         if (this.isNumber(value)) {
@@ -39,5 +39,5 @@ export class NgbDateCustomParserFormatter extends NgbDateParserFormatter {
         } else {
             return '';
         }
-    }
+    };
 }

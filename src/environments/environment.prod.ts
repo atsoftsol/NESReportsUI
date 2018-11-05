@@ -20,5 +20,11 @@ export const environment = {
     getCourseWiseUsageDetails: 'api/audiovideoreport/coursewiseusagedetail/{stateId}/{districtId}/{branchId}/{courseId}/{startDate}/{endDate}',
     getSubjectWiseUsageSummary: 'api/audiovideoreport/subjectwiseusagesummary',
     getSubjectWiseUsageDetails: 'api/audiovideoreport/subjectwiseusagedetails/{stateId}/{districtId}/{branchId}/{courseId}/{subjectId}/{startDate}/{endDate}'
+  },
+  feedbackReportConfig: {
+    getStateWiseSummary: 'api/feedbackreport/feedbackstatewisesummary',
+    getDistrictWiseSummary: 'api/feedbackreport/feedbackdistrictwisesummary',
+    getBranchWiseSummary: 'api/feedbackreport/feedbackbranchwisesummary',
+    getCourseWiseSummary: 'api/feedbackreport/feedbackcoursewisesummary'
   }
 };

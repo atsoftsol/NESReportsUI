@@ -6,6 +6,7 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AVReportModule } from '../app/av-report/av-report.module';
+import { FeedbackReportModule } from '../app/feedback-report/feedback-report.module';
 import { InspectionModule } from '../app/inspection/inspection.module';
 
 import { AppService } from './app.service';
@@ -26,6 +27,7 @@ import { FooterComponent } from './core/footer/footer.component';
     BrowserAnimationsModule,
     HttpClientModule,
     AVReportModule,
+    FeedbackReportModule,
     InspectionModule,
     AppRoutingModule
   ],
