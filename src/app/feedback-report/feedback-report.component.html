@@ -55,17 +55,21 @@
                             <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>Category</label>
-                                    <select>
-                                        <option value="0">Select Category</option>
-                                    </select>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Category'" [data]="categories"
+                                        [settings]="categoryDropdownSettings" [(ngModel)]="selectedCategories"
+                                        (onSelect)="selectCategory()" (onSelectAll)="selectAllCategories()"
+                                        (onDeSelect)="unSelectCategory()" (onDeSelectAll)="unSelectAllCategories()">
+                                    </ng-multiselect-dropdown>
                                 </div>
                             </div>
                             <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>Sub Category</label>
-                                    <select>
-                                        <option value="0">Select Sub Category</option>
-                                    </select>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Sub Category'" [data]="subCategories"
+                                        [settings]="subCategoryDropdownSettings" [(ngModel)]="selectedSubCategories"
+                                        (onSelect)="selectSubCategory()" (onSelectAll)="selectAllSubCategories()"
+                                        (onDeSelect)="unSelectSubCategory()" (onDeSelectAll)="unSelectAllSubCategories()">
+                                    </ng-multiselect-dropdown>
                                 </div>
                             </div>
                             <div class="col-xl-3">
@@ -79,10 +83,6 @@
                                                 type="button"></button>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
                                     <label>End Date</label>
                                     <div class="input-group">
                                         <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"

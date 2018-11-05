@@ -20,6 +20,12 @@ export class FeedbackReportComponent implements OnInit {
     courses: any[] = [];
     courseDropdownSettings: any;
     selectedCourses: any[] = [];
+    categories: any[] = [];
+    categoryDropdownSettings: any;
+    selectedCategories: any[] = [];
+    subCategories: any[] = [];
+    subCategoryDropdownSettings: any;
+    selectedSubCategories: any[] = [];
     startDate: NgbDateStruct;
     endDate: NgbDateStruct;
     maxDate: NgbDateStruct;
@@ -290,6 +296,38 @@ export class FeedbackReportComponent implements OnInit {
     unSelectAllCourses() {
         this.selectedCourses = [];
         this.getBranchWiseSummary();
+    };
+
+    selectCategory() {
+
+    };
+
+    selectAllCategories() {
+
+    };
+
+    unSelectCategory() {
+
+    };
+
+    unSelectAllCategories() {
+
+    };
+
+    selectSubCategory() {
+
+    };
+
+    selectAllSubCategories() {
+
+    };
+
+    unSelectSubCategory() {
+
+    };
+
+    unSelectAllSubCategories() {
+
     };
 
     getStateWiseSummary() {
