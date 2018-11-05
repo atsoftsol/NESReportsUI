@@ -1,7 +1,7 @@
 <div class="content-wrapper">
     <section class="content">
         <div class="row mt-1">
-            <div class="col-xl-8 connectedSortable">
+            <div class="col-xl-12 connectedSortable">
                 <div class="box box-info">
                     <div class="box-body">
                         <div class="row m-b-20">
@@ -42,6 +42,30 @@
                                         (onSelectAll)="selectAllCourses()" (onDeSelect)="unSelectCourse()"
                                         (onDeSelectAll)="unSelectAllCourses()">
                                     </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Feedback Type</label>
+                                    <select>
+                                        <option value="0">Select Feedback Type</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select>
+                                        <option value="0">Select Category</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Sub Category</label>
+                                    <select>
+                                        <option value="0">Select Sub Category</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-xl-3">
@@ -111,13 +135,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-4 connectedSortable" style="padding-left: 0px;">
-                <div class="box box-info">
-                    <div class="box-body" style="height: 561px;">
-                        <img src="../assets/images/DgclsPurpose.jpg" width="100%" alt="User Image">
                     </div>
                 </div>
             </div>

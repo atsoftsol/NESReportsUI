@@ -4,7 +4,7 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><img src="images/minimal.png" alt=""></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"> <img src="../assets/images/s2.gif"   alt="User Image" width="100%"> </span>
+        <span class="logo-lg"> <img src="../assets/images/s2.gif" alt="User Image" width="100%"> </span>
     </a>
     <!-- Header Navbar-->
     <nav class="navbar navbar-static-top">
@@ -12,10 +12,9 @@
         <a style="cursor:pointer" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
-       <h4 style="font-weight: bold; margin: 0; color: #ffffff;"> Digital Class Room Usage Details  </h4>
+        <h4 style="font-weight: bold; margin: 0; color: #ffffff;"> Digital Class Room Usage Details </h4>
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-
                 <!-- <li>
                     <a href="#" data-toggle="control-sidebar" style="font-size: 22px;"> Audio Video  Module Repor</a>
                 </li> -->
@@ -24,23 +23,39 @@
     </nav>
 </header>
 
-<aside class="main-sidebar" >
+<aside class="main-sidebar">
     <!-- sidebar -->
     <section class="sidebar" style="background-color: #fff;">
         <!-- Sidebar user panel -->
-
-
         <!-- sidebar menu -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="active"> <a href="#"> <i class="fa fa-dashboard"></i> <span>Inspection Report</span> </a> </li>
-            <li> <a href="#"> <i class="fa fa-dashboard"></i> <span>AV Module Report</span> </a> </li>
-            <li> <a href="#"> <i class="fa fa-dashboard"></i> <span>Micro Schedule Report</span> </a> </li>
-            <li> <a href="#"> <i class="fa fa-dashboard"></i> <span>Data Entry Report</span> </a> </li>
-            <li> <a href="#"> <i class="fa fa-dashboard"></i> <span>Mess Report</span> </a> </li>
-            <li> <a href="#"> <i class="fa fa-dashboard"></i> <span>Assets Report</span> </a> </li>
-            <li> <a href="#"> <i class="fa fa-dashboard"></i> <span>Feedback Report</span> </a> </li>
-            <li> <a href="#"> <i class="fa fa-dashboard"></i> <span>Transportation Report</span> </a> </li>
-            <li> <a href="#"> <i class="fa fa-dashboard"></i> <span>Marketing Report</span> </a> </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/inspection-report']">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Inspection Report</span> </a> </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/av-report']">
+                    <i class="fa fa-dashboard"></i>
+                    <span>AV Module Report</span> </a> </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/micro-schedule-report']">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Micro Schedule Report</span> </a> </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/data-entry-report']">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Data Entry Report</span> </a> </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/mess-report']">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Mess Report</span> </a> </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/assets-report']">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Assets Report</span> </a> </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/feedback-report']">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Feedback Report</span> </a> </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/transportation-report']">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Transportation Report</span> </a> </li>
+            <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/marketing-report']">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Marketing Report</span> </a> </li>
         </ul>
     </section>
 
