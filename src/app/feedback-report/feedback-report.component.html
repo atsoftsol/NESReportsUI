@@ -47,7 +47,7 @@
                             <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>Feedback Type</label>
-                                    <select>
+                                    <select class="form-control">
                                         <option value="0">Select Feedback Type</option>
                                     </select>
                                 </div>
@@ -62,7 +62,7 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-                            <div class="col-xl-3">
+                            <div class="col-xl-2">
                                 <div class="form-group">
                                     <label>Sub Category</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Sub Category'" [data]="subCategories"
@@ -72,33 +72,41 @@
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>Start Date</label>
-                                    <div class="input-group">
-                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
-                                            [(ngModel)]="startDate" ngbDatepicker #s="ngbDatepicker" (dateSelect)="onStartDateSelect()">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary calendar" (click)="s.toggle()"
-                                                type="button"></button>
-                                        </div>
-                                    </div>
-                                    <label>End Date</label>
-                                    <div class="input-group">
-                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
-                                            [(ngModel)]="endDate" ngbDatepicker #e="ngbDatepicker" (dateSelect)="onEndDateSelect()">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary calendar" (click)="e.toggle()"
-                                                type="button"></button>
-                                        </div>
-                                    </div>
+                            <div class="col-xl-4">
+                              <div class="row row-10">
+                                <div class="col-xl-6 pr-none">
+                                  <div class="form-group">
+                                      <label>Start Date</label>
+                                      <div class="input-group">
+                                          <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
+                                              [(ngModel)]="startDate" ngbDatepicker #s="ngbDatepicker" (dateSelect)="onStartDateSelect()">
+                                          <div class="input-group-append">
+                                              <button class="btn btn-outline-secondary calendar" (click)="s.toggle()"
+                                                  type="button"></button>
+                                          </div>
+                                      </div>
+                                  </div>
                                 </div>
+                                <div class="col-xl-6 pl-none">
+                                  <div class="form-group">
+                                      <label>End Date</label>
+                                      <div class="input-group">
+                                          <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
+                                              [(ngModel)]="endDate" ngbDatepicker #e="ngbDatepicker" (dateSelect)="onEndDateSelect()">
+                                          <div class="input-group-append">
+                                              <button class="btn btn-outline-secondary calendar" (click)="e.toggle()"
+                                                  type="button"></button>
+                                          </div>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="box box-info  mt-2">
-                    <div class="box-body rowheight" style=" height:403px;">
+                    <div class="box-body rowheight feedback-table">
                         <div>
                             <div class="scrollbar" id="style-1" *ngIf="showFeedbackData">
                                 <div class="media-table-block force-overflow">

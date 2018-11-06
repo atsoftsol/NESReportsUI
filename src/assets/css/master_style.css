@@ -159,7 +159,7 @@ h6 {
     position: fixed;
     left: 5px;
     bottom: 0;
-    width: 100%;
+    right: 0;
 }
 .fixed .left-side, .fixed .main-header, .fixed .main-sidebar {
     position: fixed;
