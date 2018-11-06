@@ -2002,7 +2002,7 @@ select.form-control{
 }
 @media (min-width: 1200px) {
   .connectedSortable{
-    padding-right: 0;
+    padding-right: 0px;
   }
   .report-table{
     min-height: calc(100vh - 274px);

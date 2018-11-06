@@ -1572,8 +1572,9 @@ pre code {
 }
 
 .table-hover tbody tr:hover {
-  /* background-color: rgba(0, 0, 0, 0.075); */
-  background-color: rgba(154, 55, 55, 0.05);
+  background-color: #9fcdff; 
+   /* background-color: rgba(0, 0, 0, 0.075); */  
+ /* background-color: rgba(154, 55, 55, 0.05);*/
 }
 
 .table-primary,
@@ -1588,7 +1589,7 @@ pre code {
 
 .table-hover .table-primary:hover > td,
 .table-hover .table-primary:hover > th {
-  background-color: #9fcdff;
+  background-color: #9fcdff; 
 }
 
 .table-secondary,
@@ -1815,7 +1816,7 @@ pre code {
   width: 100%;
   height: calc(2.25rem + 2px);
   padding: 0.375rem 0.2rem;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
   color: #495057;
   background-color: #fff;
@@ -5494,7 +5495,7 @@ button.close {
 @media (min-width: 576px) {
   .modal-dialog {
     max-width: 500px;
-    margin: 1.75rem auto;
+    margin: 3.75rem auto;
   }
   .modal-dialog-centered {
     min-height: calc(100% - (1.75rem * 2));
