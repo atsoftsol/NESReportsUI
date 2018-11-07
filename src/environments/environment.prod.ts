@@ -22,6 +22,9 @@ export const environment = {
     getSubjectWiseUsageDetails: 'api/audiovideoreport/subjectwiseusagedetails/{stateId}/{districtId}/{branchId}/{courseId}/{subjectId}/{startDate}/{endDate}'
   },
   feedbackReportConfig: {
+    getFeedbackTypes: 'api/feedbackreport/feedbacktype',
+    getCategories: 'api/feedbackreport/feedbackcategory',
+    getSubCategories: 'api/feedbackreport/subcategories',
     getStateWiseSummary: 'api/feedbackreport/feedbackstatewisesummary',
     getDistrictWiseSummary: 'api/feedbackreport/feedbackdistrictwisesummary',
     getBranchWiseSummary: 'api/feedbackreport/feedbackbranchwisesummary',

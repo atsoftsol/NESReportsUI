@@ -20,6 +20,8 @@ export class FeedbackReportComponent implements OnInit {
     courses: any[] = [];
     courseDropdownSettings: any;
     selectedCourses: any[] = [];
+    feedbackTypes: any[] = [];
+    selectedFeedbackTypeId: string;
     categories: any[] = [];
     categoryDropdownSettings: any;
     selectedCategories: any[] = [];
@@ -76,23 +78,40 @@ export class FeedbackReportComponent implements OnInit {
             itemsShowLimit: 1,
             allowSearchFilter: true
         };
+        this.categoryDropdownSettings = {
+            singleSelection: false,
+            idField: 'feedBackCategoryId',
+            textField: 'feedBackCategoryName',
+            selectAllText: 'Select All',
+            unSelectAllText: 'UnSelect All',
+            itemsShowLimit: 1,
+            allowSearchFilter: true
+        };
+        this.subCategoryDropdownSettings = {
+            singleSelection: false,
+            idField: 'subCategoryId',
+            textField: 'subCategoryName',
+            selectAllText: 'Select All',
+            unSelectAllText: 'UnSelect All',
+            itemsShowLimit: 1,
+            allowSearchFilter: true
+        };
     };
 
     ngOnInit() {
-        this.getDates();
         this.getStates();
         this.getCourses();
-    };
-
-    getDates() {
-        this.startDate = this.calendar.getPrev(this.calendar.getToday(), 'd', 30);
-        this.endDate = this.calendar.getToday();
+        this.getFeedbackTypes();
+        this.getCategories();
+        this.getDates();
     };
 
     getStates() {
         this.appService.getStates()
             .subscribe(data => {
                 this.states = data;
+            }, error => {
+
             });
     };
 
@@ -100,7 +119,33 @@ export class FeedbackReportComponent implements OnInit {
         this.appService.getCourses()
             .subscribe(data => {
                 this.courses = data;
+            }, error => {
+
             });
+    };
+
+    getFeedbackTypes() {
+        this.feedbackReportService.getFeedbackTypes()
+            .subscribe(data => {
+                this.feedbackTypes = data;
+                this.selectedFeedbackTypeId = this.feedbackTypes[0].feedBackTypeId;
+            }, error => {
+
+            });
+    };
+
+    getCategories() {
+        this.feedbackReportService.getCategories()
+            .subscribe(data => {
+                this.categories = data;
+            }, error => {
+
+            });
+    };
+
+    getDates() {
+        this.startDate = this.calendar.getPrev(this.calendar.getToday(), 'd', 30);
+        this.endDate = this.calendar.getToday();
     };
 
     selectState() {
@@ -298,20 +343,141 @@ export class FeedbackReportComponent implements OnInit {
         this.getBranchWiseSummary();
     };
 
-    selectCategory() {
+    selectFeedbackType(event: any) {
+        this.selectedFeedbackTypeId = event.target.value;
 
+        switch (this.reportType) {
+            case 'stateWiseSummary':
+                this.getStateWiseSummary();
+                break;
+            case 'districtWiseSummary':
+                this.getDistrictWiseSummary();
+                break;
+            case 'branchWiseSummary':
+                this.getBranchWiseSummary();
+                break;
+            case 'courseWiseSummary':
+                this.getCourseWiseSummary();
+                break;
+        }
+    };
+
+    selectCategory() {
+        let categoryIds: any[] = [];
+        this.selectedSubCategories = [];
+        this.subCategories = [];
+
+        this.selectedCategories.forEach((item) => {
+            categoryIds.push(item.feedBackCategoryId);
+        });
+
+        this.feedbackReportService.getSubCategories(categoryIds.join(','))
+            .subscribe(data => {
+                this.subCategories = data;
+            }, error => {
+
+            });
+
+        switch (this.reportType) {
+            case 'stateWiseSummary':
+                this.getStateWiseSummary();
+                break;
+            case 'districtWiseSummary':
+                this.getDistrictWiseSummary();
+                break;
+            case 'branchWiseSummary':
+                this.getBranchWiseSummary();
+                break;
+            case 'courseWiseSummary':
+                this.getCourseWiseSummary();
+                break;
+        }
     };
 
     selectAllCategories() {
+        let categoryIds: any[] = [];
+        this.selectedCategories = this.categories;
+        this.selectedSubCategories = [];
+        this.subCategories = [];
 
+        this.selectedCategories.forEach((item) => {
+            categoryIds.push(item.feedBackCategoryId);
+        });
+
+        this.feedbackReportService.getSubCategories(categoryIds.join(','))
+            .subscribe(data => {
+                this.subCategories = data;
+            }, error => {
+
+            });
+
+        switch (this.reportType) {
+            case 'stateWiseSummary':
+                this.getStateWiseSummary();
+                break;
+            case 'districtWiseSummary':
+                this.getDistrictWiseSummary();
+                break;
+            case 'branchWiseSummary':
+                this.getBranchWiseSummary();
+                break;
+            case 'courseWiseSummary':
+                this.getCourseWiseSummary();
+                break;
+        }
     };
 
     unSelectCategory() {
+        let categoryIds: any[] = [];
+        this.selectedSubCategories = [];
+        this.subCategories = [];
 
+        this.selectedCategories.forEach((item) => {
+            categoryIds.push(item.feedBackCategoryId);
+        });
+
+        this.feedbackReportService.getSubCategories(categoryIds.join(','))
+            .subscribe(data => {
+                this.subCategories = data;
+            }, error => {
+
+            });
+
+        switch (this.reportType) {
+            case 'stateWiseSummary':
+                this.getStateWiseSummary();
+                break;
+            case 'districtWiseSummary':
+                this.getDistrictWiseSummary();
+                break;
+            case 'branchWiseSummary':
+                this.getBranchWiseSummary();
+                break;
+            case 'courseWiseSummary':
+                this.getCourseWiseSummary();
+                break;
+        }
     };
 
     unSelectAllCategories() {
+        this.selectedCategories = [];
+        this.selectedSubCategories = [];
+        this.subCategories = [];
 
+        switch (this.reportType) {
+            case 'stateWiseSummary':
+                this.getStateWiseSummary();
+                break;
+            case 'districtWiseSummary':
+                this.getDistrictWiseSummary();
+                break;
+            case 'branchWiseSummary':
+                this.getBranchWiseSummary();
+                break;
+            case 'courseWiseSummary':
+                this.getCourseWiseSummary();
+                break;
+        }
     };
 
     selectSubCategory() {
@@ -332,6 +498,7 @@ export class FeedbackReportComponent implements OnInit {
 
     getStateWiseSummary() {
         let stateIds: any[] = [];
+        let categoryIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.reportType = 'stateWiseSummary';
@@ -340,7 +507,11 @@ export class FeedbackReportComponent implements OnInit {
             stateIds.push(item.stateId);
         });
 
-        this.feedbackReportService.getStateWiseSummary(stateIds.join(','), startDate, endDate)
+        this.selectedCategories.forEach((item) => {
+            categoryIds.push(item.feedBackCategoryId);
+        });
+
+        this.feedbackReportService.getStateWiseSummary(stateIds.join(','), this.selectedFeedbackTypeId, categoryIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showFeedbackData = true;
                 this.feedbackData = data;
@@ -356,6 +527,7 @@ export class FeedbackReportComponent implements OnInit {
     getDistrictWiseSummary() {
         let stateIds: any[] = [];
         let districtIds: any[] = [];
+        let categoryIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.reportType = 'districtWiseSummary';
@@ -368,7 +540,11 @@ export class FeedbackReportComponent implements OnInit {
             districtIds.push(item.districtId);
         });
 
-        this.feedbackReportService.getDistrictWiseSummary(stateIds.join(','), districtIds.join(','), startDate, endDate)
+        this.selectedCategories.forEach((item) => {
+            categoryIds.push(item.feedBackCategoryId);
+        });
+
+        this.feedbackReportService.getDistrictWiseSummary(stateIds.join(','), districtIds.join(','), this.selectedFeedbackTypeId, categoryIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showFeedbackData = true;
                 this.feedbackData = data;
@@ -385,6 +561,7 @@ export class FeedbackReportComponent implements OnInit {
         let stateIds: any[] = [];
         let districtIds: any[] = [];
         let branchIds: any[] = [];
+        let categoryIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.reportType = 'branchWiseSummary';
@@ -401,7 +578,11 @@ export class FeedbackReportComponent implements OnInit {
             branchIds.push(item.branchId);
         });
 
-        this.feedbackReportService.getBranchWiseSummary(stateIds.join(','), districtIds.join(','), branchIds.join(','), startDate, endDate)
+        this.selectedCategories.forEach((item) => {
+            categoryIds.push(item.feedBackCategoryId);
+        });
+
+        this.feedbackReportService.getBranchWiseSummary(stateIds.join(','), districtIds.join(','), branchIds.join(','), this.selectedFeedbackTypeId, categoryIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showFeedbackData = true;
                 this.feedbackData = data;
@@ -419,6 +600,7 @@ export class FeedbackReportComponent implements OnInit {
         let districtIds: any[] = [];
         let branchIds: any[] = [];
         let courseIds: any[] = [];
+        let categoryIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
         this.reportType = 'courseWiseSummary';
@@ -439,7 +621,11 @@ export class FeedbackReportComponent implements OnInit {
             courseIds.push(item.courseId);
         });
 
-        this.feedbackReportService.getCourseWiseSummary(stateIds.join(','), districtIds.join(','), branchIds.join(','), courseIds.join(','), startDate, endDate)
+        this.selectedCategories.forEach((item) => {
+            categoryIds.push(item.feedBackCategoryId);
+        });
+
+        this.feedbackReportService.getCourseWiseSummary(stateIds.join(','), districtIds.join(','), branchIds.join(','), courseIds.join(','), this.selectedFeedbackTypeId, categoryIds.join(','), startDate, endDate)
             .subscribe(data => {
                 this.showFeedbackData = true;
                 this.feedbackData = data;
