@@ -1,33 +1,22 @@
 <header class="main-header">
-    <!-- Logo -->
     <a href="index.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><img src="images/minimal.png" alt=""></span>
-        <!-- logo for regular state and mobile devices -->
         <span class="logo-lg"> <img src="../assets/images/s2.gif" alt="User Image" width="100%"> </span>
     </a>
-    <!-- Header Navbar-->
     <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
         <a style="cursor:pointer" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
-        <h4 style="font-weight: bold; margin: 0; color: #ffffff;" class="avtitle"> Digital Class Room Usage Details </h4>
+        <h4 style="font-weight: bold; margin: 0; color: #ffffff;" class="avtitle" [innerHtml]="headerTitle">
+        </h4>
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-                <!-- <li>
-                    <a href="#" data-toggle="control-sidebar" style="font-size: 22px;"> Audio Video  Module Repor</a>
-                </li> -->
             </ul>
         </div>
     </nav>
 </header>
-
 <aside class="main-sidebar">
-    <!-- sidebar -->
     <section class="sidebar" style="background-color: #fff;">
-        <!-- Sidebar user panel -->
-        <!-- sidebar menu -->
         <ul class="sidebar-menu" data-widget="tree">
             <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/inspection-report']">
                     <i class="fa fa-dashboard"></i>
@@ -58,5 +47,4 @@
                     <span>Marketing Report</span> </a> </li>
         </ul>
     </section>
-
 </aside>

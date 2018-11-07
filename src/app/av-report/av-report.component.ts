@@ -515,7 +515,7 @@ export class AVReportComponent implements OnInit {
                 footerTotalValues.push(footerTotalDurationObject);
                 let footerTotalDifferenceObject: any = {};
                 footerTotalDifferenceObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
-                footerTotalDifferenceObject['value'] = differenceTotalDuration;
+                footerTotalDifferenceObject['value'] = '00:00:00';
                 footerTotalValues.push(footerTotalDifferenceObject);
                 let footerTotalPercentageObject: any = {};
                 footerTotalPercentageObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
@@ -607,7 +607,7 @@ export class AVReportComponent implements OnInit {
                 footerTotalValues.push(footerTotalDurationObject);
                 let footerTotalDifferenceObject: any = {};
                 footerTotalDifferenceObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
-                footerTotalDifferenceObject['value'] = differenceTotalDuration;
+                footerTotalDifferenceObject['value'] = '00:00:00';
                 footerTotalValues.push(footerTotalDifferenceObject);
                 let footerTotalPercentageObject: any = {};
                 footerTotalPercentageObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
@@ -711,7 +711,7 @@ export class AVReportComponent implements OnInit {
                 footerTotalValues.push(footerTotalDurationObject);
                 let footerTotalDifferenceObject: any = {};
                 footerTotalDifferenceObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
-                footerTotalDifferenceObject['value'] = differenceTotalDuration;
+                footerTotalDifferenceObject['value'] = '00:00:00';
                 footerTotalValues.push(footerTotalDifferenceObject);
                 let footerTotalPercentageObject: any = {};
                 footerTotalPercentageObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
@@ -803,7 +803,7 @@ export class AVReportComponent implements OnInit {
                 footerTotalValues.push(footerTotalDurationObject);
                 let footerTotalDifferenceObject: any = {};
                 footerTotalDifferenceObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
-                footerTotalDifferenceObject['value'] = differenceTotalDuration;
+                footerTotalDifferenceObject['value'] = '00:00:00';
                 footerTotalValues.push(footerTotalDifferenceObject);
                 let footerTotalPercentageObject: any = {};
                 footerTotalPercentageObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
@@ -913,7 +913,7 @@ export class AVReportComponent implements OnInit {
                 footerTotalValues.push(footerTotalDurationObject);
                 let footerTotalDifferenceObject: any = {};
                 footerTotalDifferenceObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
-                footerTotalDifferenceObject['value'] = differenceTotalDuration;
+                footerTotalDifferenceObject['value'] = '00:00:00';
                 footerTotalValues.push(footerTotalDifferenceObject);
                 let footerTotalPercentageObject: any = {};
                 footerTotalPercentageObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
@@ -1005,7 +1005,7 @@ export class AVReportComponent implements OnInit {
                 footerTotalValues.push(footerTotalDurationObject);
                 let footerTotalDifferenceObject: any = {};
                 footerTotalDifferenceObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
-                footerTotalDifferenceObject['value'] = differenceTotalDuration;
+                footerTotalDifferenceObject['value'] = '00:00:00';
                 footerTotalValues.push(footerTotalDifferenceObject);
                 let footerTotalPercentageObject: any = {};
                 footerTotalPercentageObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
@@ -1121,7 +1121,7 @@ export class AVReportComponent implements OnInit {
                 footerTotalValues.push(footerTotalDurationObject);
                 let footerTotalDifferenceObject: any = {};
                 footerTotalDifferenceObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
-                footerTotalDifferenceObject['value'] = differenceTotalDuration;
+                footerTotalDifferenceObject['value'] = '00:00:00';
                 footerTotalValues.push(footerTotalDifferenceObject);
                 let footerTotalPercentageObject: any = {};
                 footerTotalPercentageObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
@@ -1235,7 +1235,7 @@ export class AVReportComponent implements OnInit {
                 footerTotalValues.push(footerTotalDurationObject);
                 let footerTotalDifferenceObject: any = {};
                 footerTotalDifferenceObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
-                footerTotalDifferenceObject['value'] = differenceTotalDuration;
+                footerTotalDifferenceObject['value'] = '00:00:00';
                 footerTotalValues.push(footerTotalDifferenceObject);
                 let footerTotalPercentageObject: any = {};
                 footerTotalPercentageObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
