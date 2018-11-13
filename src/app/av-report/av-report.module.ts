@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { OrderModule } from 'ngx-order-pipe';
+import { SharedModule } from '../shared/shared.module';
 import { AVReportComponent } from './av-report.component';
 import { AVReportService } from './av-report.service';
 import { AVReportRoutingModule } from './av-report-routing.module';
@@ -17,6 +18,7 @@ import { AVReportRoutingModule } from './av-report-routing.module';
         NgMultiSelectDropDownModule.forRoot(),
         NgxChartsModule,
         OrderModule,
+        SharedModule,
         AVReportRoutingModule
     ],
     declarations: [
