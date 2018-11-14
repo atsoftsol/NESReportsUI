@@ -58,6 +58,8 @@ Body :		Poppins, sans-serif;
 -------------------------------------------------------------------*/
 
 /*Body, layout*/
+ 
+
 .layout-boxed body, .layout-boxed html, .wrapper, body, html {
     height: 100%}
 .wrapper, body {
@@ -2435,6 +2437,7 @@ input[type="color"] {
 .box-header>.box-tools [data-toggle=tooltip], .control {
     position: relative;
 }
+
 
 .box-header>.box-tools .dropdown-menu>li>a {
     color: #444;
@@ -9364,3 +9367,9 @@ table.dataTable thead .sorting:after {
             background-color: #0b84b9;
         }
         
+        .tooltip-inner {
+            max-width: 350px;
+            /* If max-width does not work, try using width instead */
+            width: 350px; 
+            text-align: justify;
+        }
