@@ -528,7 +528,7 @@ export class AVReportComponent implements OnInit {
 
                 for (let i: number = 0; i < stateWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(stateWiseData[i].Duration.split(':')[2]) + (60 * parseInt(stateWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Duration.split(':')[0]));
-                    stateWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    stateWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                     let barChartDataObject: any = {};
                     barChartDataObject['name'] = stateWiseData[i].State;
                     barChartDataObject['value'] = stateWiseData[i]['Per(%)'];
@@ -618,7 +618,7 @@ export class AVReportComponent implements OnInit {
 
                 for (let i: number = 0; i < stateWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(stateWiseData[i].Duration.split(':')[2]) + (60 * parseInt(stateWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(stateWiseData[i].Duration.split(':')[0]));
-                    stateWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    stateWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                 }
 
                 this.detailedReportData['data'] = stateWiseData;
@@ -724,7 +724,7 @@ export class AVReportComponent implements OnInit {
 
                 for (let i: number = 0; i < districtWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
-                    districtWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    districtWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                     let barChartDataObject: any = {};
                     barChartDataObject['name'] = districtWiseData[i].District;
                     barChartDataObject['value'] = districtWiseData[i]['Per(%)'];
@@ -814,7 +814,7 @@ export class AVReportComponent implements OnInit {
 
                 for (let i: number = 0; i < districtWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(districtWiseData[i].Duration.split(':')[2]) + (60 * parseInt(districtWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(districtWiseData[i].Duration.split(':')[0]));
-                    districtWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    districtWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                 }
 
                 this.detailedReportData['data'] = districtWiseData;
@@ -926,7 +926,7 @@ export class AVReportComponent implements OnInit {
 
                 for (let i: number = 0; i < branchWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(branchWiseData[i].Duration.split(':')[2]) + (60 * parseInt(branchWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(branchWiseData[i].Duration.split(':')[0]));
-                    branchWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    branchWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                     let barChartDataObject: any = {};
                     barChartDataObject['name'] = branchWiseData[i].Branch;
                     barChartDataObject['value'] = branchWiseData[i]['Per(%)'];
@@ -1016,7 +1016,7 @@ export class AVReportComponent implements OnInit {
 
                 for (let i: number = 0; i < branchWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(branchWiseData[i].Duration.split(':')[2]) + (60 * parseInt(branchWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(branchWiseData[i].Duration.split(':')[0]));
-                    branchWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    branchWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                 }
 
                 this.detailedReportData['data'] = branchWiseData;
@@ -1134,7 +1134,7 @@ export class AVReportComponent implements OnInit {
 
                 for (let i: number = 0; i < courseWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(courseWiseData[i].Duration.split(':')[2]) + (60 * parseInt(courseWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(courseWiseData[i].Duration.split(':')[0]));
-                    courseWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    courseWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                 }
 
                 let distinctBranchNames: any = [];
@@ -1246,7 +1246,7 @@ export class AVReportComponent implements OnInit {
 
                 for (let i: number = 0; i < courseWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(courseWiseData[i].Duration.split(':')[2]) + (60 * parseInt(courseWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(courseWiseData[i].Duration.split(':')[0]));
-                    courseWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    courseWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                 }
 
                 this.detailedReportData['data'] = courseWiseData;
@@ -1332,7 +1332,7 @@ export class AVReportComponent implements OnInit {
 
                 for (let i: number = 0; i < subjectWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(subjectWiseData[i].Duration.split(':')[2]) + (60 * parseInt(subjectWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(subjectWiseData[i].Duration.split(':')[0]));
-                    subjectWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    subjectWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                 }
 
                 this.reportData['data'] = subjectWiseData;
@@ -1377,7 +1377,7 @@ export class AVReportComponent implements OnInit {
 
                 for (let i: number = 0; i < subjectWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(subjectWiseData[i].Duration.split(':')[2]) + (60 * parseInt(subjectWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(subjectWiseData[i].Duration.split(':')[0]));
-                    subjectWiseData[i]['Per(%)'] = Math.round((durationInSeconds * 100) / totalDurationInSeconds);
+                    subjectWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                 }
 
                 this.reportData['data'] = subjectWiseData;
