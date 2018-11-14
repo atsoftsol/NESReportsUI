@@ -1,3 +1,9 @@
-/* .main-footer {    left: 0px !important;  margin-left: 0px !important; } */
+.main-footer {    left: 0px !important;  margin-left: 0px !important; }
 
- body{background-image: url(assets/images/lbg.jpg);}
+.wrapper{
+    background-color: transparent !important;
+}
+
+body{
+    background-image: url('../../assets/images/lbg.jpg') !important; 
+}

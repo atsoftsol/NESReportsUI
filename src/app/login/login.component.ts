@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './login.service';
 
 @Component({
     templateUrl: 'login.component.html',
-    styleUrls: ['./login.component.css']
+    styles: [`.login-image{
+        background-image: url('../../assets/images/lbg.jpg') !important; 
+    }`],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class LoginComponent {

@@ -1994,8 +1994,7 @@ input[type="color"] {
 .form-group label{
     font-weight: 500;
     
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 14px; 
 }
 .form-control {
     border-radius: 0;

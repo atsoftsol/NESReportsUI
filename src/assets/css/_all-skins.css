@@ -1631,7 +1631,8 @@
 .skin-orange-light .btn-blue{
 	background-color: #0b84b9;
 	color: #fff;
-	border: 1px solid #0b84b9;
+  border: 1px solid #0b84b9;
+  font-size: 13px;padding:10px;
 }
 .skin-orange-light .btn-blue:hover{
 	background-color: #0b84b9;
