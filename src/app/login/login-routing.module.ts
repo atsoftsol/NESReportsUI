@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AVReportComponent } from './av-report.component';
+import { LoginComponent } from './login.component';
 
 const routes: Routes = [
     {
-        path: 'av-report',
-        component: AVReportComponent,
-        data: { title: 'AV Report' }
+        path: '',
+        redirectTo: '/login',
+        pathMatch: 'full'
+    },
+    {
+        path: 'login',
+        component: LoginComponent
     }
 ];
 
@@ -20,4 +24,4 @@ const routes: Routes = [
     ]
 })
 
-export class AVReportRoutingModule { }
+export class LoginRoutingModule { }

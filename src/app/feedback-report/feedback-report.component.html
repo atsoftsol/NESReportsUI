@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="content-wrapper">
     <section class="content">
         <div class="row mt-1">
@@ -139,7 +140,8 @@
                                                     <span [innerHtml]=i+serial></span>
                                                 </td>
                                                 <td *ngFor="let column of feedbackData.columns" [ngStyle]="{'text-align':column.align}">
-                                                    <span [innerHtml]="item[column.name]"></span>
+                                                    <span [innerHtml]="item[column.name]" [ngbTooltip]="item[column.name]"
+                                                        style="overflow: hidden; width: 140px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;"></span>
                                                 </td>
                                             </tr>
                                             <tr *ngIf="!dataCount" style="text-align:center">
@@ -156,3 +158,4 @@
         </div>
     </section>
 </div>
+<app-footer></app-footer>

@@ -2,6 +2,9 @@ export const environment = {
   production: false,
   apiEndPoint: 'http://202.53.10.164/',
   retryFailedRequest: 3,
+  loginConfig: {
+    login: 'api/common/login'
+  },
   commonConfig: {
     getStates: 'api/common/states',
     getDistricts: 'api/common/districts',
