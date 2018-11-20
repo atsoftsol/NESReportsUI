@@ -25,6 +25,9 @@ export class HeaderComponent {
                 case '/feedback-report':
                     this.headerTitle = 'Feedback Report';
                     break;
+                case '/inspection-report':
+                    this.headerTitle = 'Inspection Report';
+                    break;
             }
         });
     };

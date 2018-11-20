@@ -37,4 +37,16 @@ export class AppService {
             .get<any>(environment.apiEndPoint + environment.commonConfig.getSubjects)
             .retry(environment.retryFailedRequest);
     };
+
+    getInspectionReporttypes(): Observable<any> {
+        return this.httpClient
+            .get<any>(environment.apiEndPoint + environment.commonConfig.getInspectionReportTypes)
+            .retry(environment.retryFailedRequest);
+    };
+
+    getInspectionCategory(): Observable<any> {
+        return this.httpClient
+        .get<any>(environment.apiEndPoint + environment.commonConfig.getInspectionCategories)
+        .retry(environment.retryFailedRequest);
+    };
 }

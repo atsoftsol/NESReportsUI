@@ -23,11 +23,13 @@
     "@ng-bootstrap/ng-bootstrap": "^3.3.1",
     "@swimlane/ngx-charts": "^9.0.0",
     "core-js": "^2.5.4",
+    "file-saver": "^2.0.0",
     "ng-multiselect-dropdown": "^0.2.1",
     "ngx-order-pipe": "^2.0.1",
     "ngx-pagination": "^3.2.1",
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.3.3",
+    "xlsx": "^0.14.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

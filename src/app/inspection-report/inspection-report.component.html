@@ -1,9 +1,107 @@
-<div class="wrapper">
+<div class="content-wrapper">
     <section class="content">
-        <div class="row">
+        <div class="row mt-1">
             <div class="col-xl-12 connectedSortable">
                 <div class="box box-info">
-                    <div class="box-body">
+                    <div class="box-body form-field-wrap">
+                        <div class="row m-b-20">
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select State'" [data]="states" [settings]="stateDropdownSettings"
+                                        [(ngModel)]="selectedStates" (onSelect)="selectState()" (onSelectAll)="selectAllStates()"
+                                        (onDeSelect)="unSelectState()" (onDeSelectAll)="unSelectAllStates()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>District</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select District'" [data]="districts"
+                                        [settings]="districtDropdownSettings" [(ngModel)]="selectedDistricts"
+                                        (onSelect)="selectDistrict()" (onSelectAll)="selectAllDistricts()" (onDeSelect)="unSelectDistrict()"
+                                        (onDeSelectAll)="unSelectAllDistricts()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Branch</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Branch'" [data]="branches"
+                                        [settings]="branchDropdownSettings" [(ngModel)]="selectedBranches" (onSelect)="selectBranch()"
+                                        (onSelectAll)="selectAllBranches()" (onDeSelect)="unSelectBranch()"
+                                        (onDeSelectAll)="unSelectAllBranches()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Course</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Course'" [data]="courses"
+                                        [settings]="courseDropdownSettings" [(ngModel)]="selectedCourses" (onSelect)="selectCourse()"
+                                        (onSelectAll)="selectAllCourses()" (onDeSelect)="unSelectCourse()"
+                                        (onDeSelectAll)="unSelectAllCourses()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Report Type</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Report Type'" [data]="reportTypes"
+                                        [settings]="reportTypeDropdownSettings" [(ngModel)]="selectedreportTypes" (onSelect)="selectreportType()"
+                                        (onSelectAll)="selectAllreportType()" (onDeSelect)="unSelectreportType()"
+                                        (onDeSelectAll)="unSelectAllreportTypes()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Inspection Category</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Inspection Category'" [data]="inspectionCategories"
+                                        [settings]="inspectionCategoryDropdownSettings" [(ngModel)]="selectedinspectionCategories" (onSelect)="selectinspectionCategory()"
+                                        (onSelectAll)="selectAllinspectionCategory()" (onDeSelect)="unSelectinspectionCategory()"
+                                        (onDeSelectAll)="unSelectAllinspectionCategory()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Inspection Sub Category</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Inspection Sub Category'" [data]="inspectionSubCategory"
+                                        [settings]="inspectionSubCategoryDropdownSettings" [(ngModel)]="selectedinspectionSubCategories" (onSelect)="selectinspectionSubCategory()"
+                                        (onSelectAll)="selectAllinspectionSubCategory()" (onDeSelect)="unSelectinspectionSubCategory()"
+                                        (onDeSelectAll)="unSelectAllinspectionSubCategory()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
+                                            [(ngModel)]="startDate" ngbDatepicker #s="ngbDatepicker" (dateSelect)="onStartDateSelect($event)">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="s.toggle()"
+                                                type="button"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
+                                            [(ngModel)]="endDate" ngbDatepicker #e="ngbDatepicker" (dateSelect)="onEndDateSelect($event)">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary calendar" (click)="e.toggle()"
+                                                type="button"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

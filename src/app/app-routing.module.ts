@@ -18,6 +18,10 @@ const routes: Routes = [
     {
         path: 'inspection',
         loadChildren: 'app/inspection/inspection.module#InspectionModule'
+    },
+    {
+        path: 'inspection-report',
+        loadChildren: 'app/inspection-report/inspection-report.module#InspectionReportModule'        
     }
 ];
 

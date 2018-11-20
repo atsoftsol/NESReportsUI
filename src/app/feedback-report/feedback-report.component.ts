@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { AppService } from '../app.service';
 import { FeedbackReportService } from './feedback-report.service';
+import { ExcelService } from '../excel.service';
 
 @Component({
     templateUrl: 'feedback-report.component.html'
@@ -40,7 +41,7 @@ export class FeedbackReportComponent implements OnInit {
     noDataColspan: number;
     reportType: string = '';
 
-    constructor(private calendar: NgbCalendar, private appService: AppService, private feedbackReportService: FeedbackReportService) {
+    constructor(private calendar: NgbCalendar, private appService: AppService, private feedbackReportService: FeedbackReportService, private excelService: ExcelService) {
         this.maxDate = this.calendar.getToday();
         this.stateDropdownSettings = {
             singleSelection: false,
@@ -98,6 +99,20 @@ export class FeedbackReportComponent implements OnInit {
         };
     };
 
+    sampledata: any = [{
+        eid: 'e101',
+        ename: 'ravi',
+        esal: 1000
+        },{
+        eid: 'e102',
+        ename: 'ram',
+        esal: 2000
+        },{
+        eid: 'e103',
+        ename: 'rajesh',
+        esal: 3000
+        }];
+
     ngOnInit() {
         this.getStates();
         this.getCourses();
@@ -105,6 +120,11 @@ export class FeedbackReportComponent implements OnInit {
         this.getCategories();
         this.getDates();
     };
+
+    exportAsXLSX(): void {
+        alert('Clicked')
+        this.excelService.exportAsExcelFile(this.sampledata,'sample')
+    }
 
     getStates() {
         this.appService.getStates()

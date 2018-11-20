@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AVReportModule } from '../app/av-report/av-report.module';
 import { FeedbackReportModule } from '../app/feedback-report/feedback-report.module';
 import { InspectionModule } from '../app/inspection/inspection.module';
+import { InspectionReportModule } from '../app/inspection-report/inspection-report.module';
 
 import { AppService } from './app.service';
 import { NgbDateCustomParserFormatter } from '../app/customFormats/dateFormat';
@@ -29,7 +30,9 @@ import { FooterComponent } from './core/footer/footer.component';
     AVReportModule,
     FeedbackReportModule,
     InspectionModule,
+    InspectionReportModule,
     AppRoutingModule
+     
   ],
   providers: [
     AppService,
