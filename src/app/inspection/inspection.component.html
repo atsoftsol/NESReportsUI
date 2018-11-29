@@ -6,14 +6,11 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Inspection</h3>
-
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                             </button>
-
                         </div>
                     </div>
-                    <!-- /.box-header -->
                     <div class="row m-b-20">
                         <div class="col-xl-3">
                             <div class="form-group">
@@ -29,27 +26,24 @@
                                 <label>Select District</label>
                                 <select class="form-control" (change)="getBranches($event.target.value)">
                                     <option value="0">Select District</option>
-                                    <option *ngFor="let district of districts" [innerHtml]="district.districtName"
-                                        [value]="district.districtId"></option>
+                                    <option *ngFor="let district of districts" [innerHtml]="district.districtName" [value]="district.districtId"></option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-xl-3">
                             <div class="form-group">
                                 <label>Select Branch</label>
-                                <select class="form-control">
+                                <select class="form-control" (change)="getSelectedBranch($event.target.value)">
                                     <option value="0">Select Branch</option>
                                     <option *ngFor="let branch of branches" [innerHtml]="branch.branchName" [value]="branch.branchId"></option>
                                 </select>
                             </div>
                         </div>
-
                         <div class="col-xl-2">
                             <div class="form-group">
                                 <label>Select Date</label>
                                 <div class="input-group">
-                                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date"
-                                        ngbDatepicker #e="ngbDatepicker">
+                                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date" ngbDatepicker #e="ngbDatepicker">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
                                     </div>
@@ -58,33 +52,25 @@
                         </div>
                         <div class="col-xl-1">
                             <div class="form-group">
-
                                 <button id="btnAddIdDefaulters" name="btnAddIdDefaulters" class="btn btn-theme mt-3">Add</button>
                             </div>
                         </div>
-                        <!-- /.box-body -->
                     </div>
-                    <!-- /.box-footer -->
                 </div>
             </div>
         </div>
         <div style="height: 5px">
-
         </div>
-
         <div class="row">
             <div class="col-xl-12 connectedSortable">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Discipline - Assembly</h3>
-
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                             </button>
-
                         </div>
                     </div>
-                    <!-- /.box-header -->
                     <div class="row m-b-20">
                         <div class="col-xl-2">
                             <div class="form-group">
@@ -93,23 +79,22 @@
                         </div>
                         <div class="col-xl-2">
                             <div class="form-group">
-                                <input type="text" style="width:40px" placeholder="00:00" id="txtStartTime" name="txtStartTime"
-                                    [ngModel]="startTime">
-                                <input type="radio" id="rbStartTimeYes" value="startTimeYes">
-                                <label for="rbShowTable"> Yes </label>
-                                <input type="radio" id="rbStartTimeNo" value="startTimeNo">
-                                <label for="rbShowChart"> No </label>
+                                <input type="text" style="width:40px" placeholder="00:00" id="txtAssemblyStartTime" name="txtAssemblyStartTime" [(ngModel)]="assemblyStartTime">
+                                <input type="radio" id="rbAssemblyStartTimeYes" value="assemblyStartTimeYes" name="assemblyStartTimeDelay" [(ngModel)]="isAssemblyStartedOnTime">
+                                <label for="rbAssemblyStartTimeYes" (click)="hideAssemblyStartTimeDelay()"> Yes</label>
+                                <input type="radio" id="rbAssemblyStartTimeNo" value="assemblyStartTimeNo" name="assemblyStartTimeDelay" [(ngModel)]="isAssemblyStartedOnTime">
+                                <label for="rbAssemblyStartTimeNo" (click)="showAssemblyStartTimeDelay()"> No</label>
                             </div>
                         </div>
-                        <div class="col-xl-2">
+                        <div class="col-xl-2" *ngIf="isAssemblyNotStartedOnTime">
                             <div class="form-group">
                                 <label>Delay In Minutes</label>
                             </div>
                         </div>
-                        <div class="col-xl-1">
+                        <div class="col-xl-1" *ngIf="isAssemblyNotStartedOnTime">
                             <div class="form-group">
-                                <input type="text" style="width: 45px" placeholder="00:00" id="txtStartTimeDelayInMinutes"
-                                    name="txtStartTimeDelayInMinutes" [ngModel]="startTimeDelayInMinutes">
+                                <input type="text" style="width: 45px" placeholder="00:00" id="txtStartTimeDelayInMinutes" name="txtStartTimeDelayInMinutes"
+                                    [ngModel]="startTimeDelayInMinutes">
                             </div>
                         </div>
                         <div class="col-xl-2">
@@ -119,13 +104,14 @@
                         </div>
                         <div class="col-xl-2">
                             <div class="form-group">
-                                <input type="radio" id="rbStartTimeYes" value="startTimeYes">
-                                <label for="rbShowTable"> Yes </label>
-                                <input type="radio" id="rbStartTimeNo" value="startTimeNo">
-                                <label for="rbShowChart"> No </label>
+                                <input type="radio" id="rbAssemblySchoolPrayerConductedYes" value="assemblySchoolPrayerConductedYes" name="assemblySchoolPrayerConducted"
+                                    [(ngModel)]="isAssemblySchoolPrayerConducted">
+                                <label for="rbAssemblySchoolPrayerConductedYes"> Yes</label>
+                                <input type="radio" id="rbAssemblySchoolPrayerConductedNo" value="assemblySchoolPrayerConductedNo" name="assemblySchoolPrayerConducted"
+                                    [(ngModel)]="isAssemblySchoolPrayerConducted">
+                                <label for="rbAssemblySchoolPrayerConductedNo"> No</label>
                             </div>
                         </div>
-
                     </div>
                     <div class="row m-b-20">
                         <div class="col-xl-2">
@@ -135,38 +121,36 @@
                         </div>
                         <div class="col-xl-2">
                             <div class="form-group">
-                                <input type="text" style="width:40px" placeholder="00:00" id="txtEndTime" name="txtEndTime"
-                                    [ngModel]="endTime">
-                                <input type="radio" id="rbEndTimeYes" value="endTimeYes">
-                                <label for="rbEndTimeYes"> Yes </label>
-                                <input type="radio" id="rbEndTimeNo" value="endTimeNo">
-                                <label for="rbEndTimeNo"> No </label>
+                                <input type="text" style="width:40px" placeholder="00:00" id="txtEndTime" name="txtEndTime" [ngModel]="endTime">
+                                <input type="radio" id="rbAssemblyEndTimeYes" value="assemblyEndTimeYes" name="assemblyEndTimeDelay" [(ngModel)]="isAssemblyEndedOnTime">
+                                <label for="rbAssemblyEndTimeYes" (click)="hideAssemblyEndTimeDelay()"> Yes</label>
+                                <input type="radio" id="rbAssemblyEndTimeNo" value="assemblyEndTimeNo" name="assemblyEndTimeDelay" [(ngModel)]="isAssemblyEndedOnTime">
+                                <label for="rbAssemblyEndTimeNo" (click)="showAssemblyEndTimeDelay()"> No</label>
                             </div>
                         </div>
-                        <div class="col-xl-2">
+                        <div class="col-xl-2" *ngIf="isAssemblyNotEndedOnTime">
                             <div class="form-group">
                                 <label>ForeCloser Minutes</label>
                             </div>
                         </div>
-                        <div class="col-xl-1">
+                        <div class="col-xl-1" *ngIf="isAssemblyNotEndedOnTime">
                             <div class="form-group">
-                                <input type="text" style="width: 45px" placeholder="00:00" id="txtForeCloserMinutes"
-                                    name="txtForeCloserMinutes" [ngModel]="foreCloserMinutes">
+                                <input type="text" style="width: 45px" placeholder="00:00" id="txtForeCloserMinutes" name="txtForeCloserMinutes" [ngModel]="foreCloserMinutes">
                             </div>
                         </div>
-
                         <div class="col-xl-2">
                             <div class="form-group">
                                 <label>Thought For The Day (Read)</label>
                             </div>
                         </div>
                         <div class="col-xl-2">
-                            <input type="radio" id="rbEndTimeYes" value="endTimeYes">
-                            <label for="rbEndTimeYes"> Yes </label>
-                            <input type="radio" id="rbEndTimeNo" value="endTimeNo">
-                            <label for="rbEndTimeNo"> No </label>
+                            <input type="radio" id="rbAssemblyThoughtForTheDayReadYes" value="assemblyThoughtForTheDayReadYes" name="assemblyThoughtForTheDayRead"
+                                [(ngModel)]="isAssemblyThoughtForTheDayRead">
+                            <label for="rbAssemblyThoughtForTheDayReadYes"> Yes</label>
+                            <input type="radio" id="rbAssemblyThoughtForTheDayReadNo" value="assemblyThoughtForTheDayReadNo" name="assemblyThoughtForTheDayRead"
+                                [(ngModel)]="isAssemblyThoughtForTheDayRead">
+                            <label for="rbAssemblyThoughtForTheDayReadNo"> No</label>
                         </div>
-
                     </div>
                     <div class="row m-b-20">
                         <div class="col-xl-2">
@@ -176,50 +160,40 @@
                         </div>
                         <div class="col-xl-2">
                             <div class="form-group">
-
-                                <input type="radio" id="rbStartTimeYes" value="startTimeYes">
-                                <label for="rbShowTable"> Yes </label>
-                                <input type="radio" id="rbStartTimeNo" value="startTimeNo">
-                                <label for="rbShowChart"> No </label>
+                                <input type="radio" id="rbAssemblyEKIDZSongReadYes" value="assemblyEKIDZSongReadYes" name="assemblyEKIDZSongRead" [(ngModel)]="isAssemblyEKIDZSongRead">
+                                <label for="rbAssemblyEKIDZSongReadYes"> Yes</label>
+                                <input type="radio" id="rbAssemblyEKIDZSongReadNo" value="assemblyEKIDZSongReadNo" name="assemblyEKIDZSongRead" [(ngModel)]="isAssemblyEKIDZSongRead">
+                                <label for="rbAssemblyEKIDZSongReadNo"> No</label>
                             </div>
                         </div>
-
                         <div class="col-xl-2">
                             <div class="form-group">
                                 <label>Warm Up Song (Read)</label>
                             </div>
                         </div>
                         <div class="col-xl-2">
-                            <input type="radio" id="rbEndTimeYes" value="endTimeYes">
-                            <label for="rbEndTimeYes"> Yes </label>
-                            <input type="radio" id="rbEndTimeNo" value="endTimeNo">
-                            <label for="rbEndTimeNo"> No </label>
+                            <input type="radio" id="rbAssemblyWarmUpSongReadYes" value="assemblyWarmUpSongReadYes" name="assemblyWarmUpSongRead" [(ngModel)]="isAssemblyWarmUpSongRead">
+                            <label for="rbAssemblyWarmUpSongReadYes"> Yes</label>
+                            <input type="radio" id="rbAssemblyWarmUpSongReadNo" value="assemblyWarmUpSongReadNo" name="assemblyWarmUpSongRead" [(ngModel)]="isAssemblyWarmUpSongRead">
+                            <label for="rbAssemblyWarmUpSongReadNo"> No</label>
                         </div>
-
                     </div>
                 </div>
-
-                <!-- /.box-body -->
             </div>
-            <!-- /.box-footer -->
         </div>
         <div style="height: 5px">
 
         </div>
-
         <div class="row">
             <div class="col-xl-12 connectedSortable">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Discipline-Uniform</h3>
-
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                             </button>
-
                         </div>
                     </div>
-                    <!-- /.box-header -->
                     <div class="row m-b-20">
                         <div class="col-xl-3">
                             <div class="form-group">
@@ -236,9 +210,7 @@
                                 <button id="btnAddIdDefaulters" name="btnAddIdDefaulters" class="btn btn-theme mt-3">Add</button>
                             </div>
                         </div>
-
                     </div>
-                    <!-- /.box-body -->
                     <div class="col-xl-3">
                         <!-- <mwl-text-input-autocomplete-container>
                             <textarea placeholder="Type @ to search..." class="form-control" rows="5" [(ngModel)]="formControlValue"
@@ -250,9 +222,6 @@
                 </div>
             </div>
         </div>
-
-
-
         <!-- <div class="row">
             <div class="col-xl-12 connectedSortable">
                 <div class="box box-info">
