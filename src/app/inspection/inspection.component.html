@@ -1,171 +1,259 @@
-<<<<<<< HEAD
- <div class="content-wrapper">
-=======
+<app-header></app-header>
 <div class="content-wrapper">
->>>>>>> 2dc4e01c3aa1633e474176b4ab2189eb000934f7
     <section class="content">
         <div class="row">
             <div class="col-xl-12 connectedSortable">
-                <div class="box box-info">
-                    <div class="box-body">
-                        <div class="row m-b-20">
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>Select Date</label>
-                                    <div class="input-group">
-                                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date"
-                                            ngbDatepicker #e="ngbDatepicker">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary calendar" (click)="e.toggle()"
-                                                type="button"></button>
-                                        </div>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Inspection</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="row m-b-20">
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <label>Select State</label>
+                                <select class="form-control" (change)="getDistricts($event.target.value)">
+                                    <option value="0">Select State</option>
+                                    <option *ngFor="let state of states" [innerHtml]="state.stateName" [value]="state.stateId"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <label>Select District</label>
+                                <select class="form-control" (change)="getBranches($event.target.value)">
+                                    <option value="0">Select District</option>
+                                    <option *ngFor="let district of districts" [innerHtml]="district.districtName"
+                                        [value]="district.districtId"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <label>Select Branch</label>
+                                <select class="form-control">
+                                    <option value="0">Select Branch</option>
+                                    <option *ngFor="let branch of branches" [innerHtml]="branch.branchName" [value]="branch.branchId"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label>Select Date</label>
+                                <div class="input-group">
+                                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="date"
+                                        ngbDatepicker #e="ngbDatepicker">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"></button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>State</label>
-                                    <select (change)="getDistricts($event.target.value)">
-                                        <option value="0">Select State</option>
-                                        <option *ngFor="let state of states" [innerHtml]="state.stateName" [value]="state.stateId"></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>District</label>
-                                    <select (change)="getBranches($event.target.value)">
-                                        <option value="0">Select District</option>
-                                        <option *ngFor="let district of districts" [innerHtml]="district.districtName"
-                                            [value]="district.districtId"></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>Branch</label>
-                                    <select>
-                                        <option value="0">Select Branch</option>
-                                        <option *ngFor="let branch of branches" [innerHtml]="branch.branchName" [value]="branch.branchId"></option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="col-xl-1">
+                            <div class="form-group">
+
+                                <button id="btnAddIdDefaulters" name="btnAddIdDefaulters" class="btn btn-theme mt-3">Add</button>
                             </div>
                         </div>
+                        <!-- /.box-body -->
                     </div>
+                    <!-- /.box-footer -->
                 </div>
             </div>
         </div>
+        <div style="height: 5px">
+
+        </div>
+
         <div class="row">
             <div class="col-xl-12 connectedSortable">
-                <div class="box box-info">
-                    <div class="box-body">
-                        <h3>Discipline - Assembly</h3>
-                        <div class="row m-b-20">
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>Start Time (On Time)</label>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <input type="text" id="txtStartTime" name="txtStartTime" [ngModel]="startTime">
-                                    <input type="radio" id="startTime" name="startTime" value="yes" ngModel>Yes
-                                    <input type="radio" id="startTime" name="startTime" value="no" ngModel>No
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>Delay In Minutes</label>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <input type="text" id="txtStartTimeDelayInMinutes" name="txtStartTimeDelayInMinutes"
-                                        [ngModel]="startTimeDelayInMinutes">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row m-b-20">
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>Ending Time (On Time)</label>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <input type="text" id="txtEndingTime" name="txtStartTime" [ngModel]="endingTime">
-                                    <input type="radio" name="endingTime" value="yes" ngModel>Yes
-                                    <input type="radio" name="endingTime" value="no" ngModel>No
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>ForeCloser Minutes</label>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <input type="text" id="txtForeCloserMinutes" name="txtForeCloserMinutes" [ngModel]="foreCloserMinutes">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row m-b-20">
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>School Prayer (Conducted)</label>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <input type="radio" name="schoolPrayer" value="yes" ngModel>Yes
-                                    <input type="radio" name="schoolPrayer" value="no" ngModel>No
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row m-b-20">
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>EKIDZ Song (Read)</label>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <input type="radio" name="ekidzSong" value="yes" ngModel>Yes
-                                    <input type="radio" name="ekidzSong" value="no" ngModel>No
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row m-b-20">
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>Warm Up Song (Read)</label>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <input type="radio" name="warmUpSong" value="yes" ngModel>Yes
-                                    <input type="radio" name="warmUpSong" value="no" ngModel>No
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row m-b-20">
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <label>Thought For The Day (Read)</label>
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <div class="form-group">
-                                    <input type="radio" name="thoughtForTheDay" value="yes" ngModel>Yes
-                                    <input type="radio" name="thoughtForTheDay" value="no" ngModel>No
-                                </div>
-                            </div>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Discipline - Assembly</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+
                         </div>
                     </div>
+                    <!-- /.box-header -->
+                    <div class="row m-b-20">
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label>Start Time (On Time)</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <input type="text" style="width:40px" placeholder="00:00" id="txtStartTime" name="txtStartTime"
+                                    [ngModel]="startTime">
+                                <input type="radio" id="rbStartTimeYes" value="startTimeYes">
+                                <label for="rbShowTable"> Yes </label>
+                                <input type="radio" id="rbStartTimeNo" value="startTimeNo">
+                                <label for="rbShowChart"> No </label>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label>Delay In Minutes</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-1">
+                            <div class="form-group">
+                                <input type="text" style="width: 45px" placeholder="00:00" id="txtStartTimeDelayInMinutes"
+                                    name="txtStartTimeDelayInMinutes" [ngModel]="startTimeDelayInMinutes">
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label>School Prayer (Conducted)</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <input type="radio" id="rbStartTimeYes" value="startTimeYes">
+                                <label for="rbShowTable"> Yes </label>
+                                <input type="radio" id="rbStartTimeNo" value="startTimeNo">
+                                <label for="rbShowChart"> No </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row m-b-20">
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label>Ending Time (On Time)</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <input type="text" style="width:40px" placeholder="00:00" id="txtEndTime" name="txtEndTime"
+                                    [ngModel]="endTime">
+                                <input type="radio" id="rbEndTimeYes" value="endTimeYes">
+                                <label for="rbEndTimeYes"> Yes </label>
+                                <input type="radio" id="rbEndTimeNo" value="endTimeNo">
+                                <label for="rbEndTimeNo"> No </label>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label>ForeCloser Minutes</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-1">
+                            <div class="form-group">
+                                <input type="text" style="width: 45px" placeholder="00:00" id="txtForeCloserMinutes"
+                                    name="txtForeCloserMinutes" [ngModel]="foreCloserMinutes">
+                            </div>
+                        </div>
+
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label>Thought For The Day (Read)</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <input type="radio" id="rbEndTimeYes" value="endTimeYes">
+                            <label for="rbEndTimeYes"> Yes </label>
+                            <input type="radio" id="rbEndTimeNo" value="endTimeNo">
+                            <label for="rbEndTimeNo"> No </label>
+                        </div>
+
+                    </div>
+                    <div class="row m-b-20">
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label>EKIDZ Song (Read)</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+
+                                <input type="radio" id="rbStartTimeYes" value="startTimeYes">
+                                <label for="rbShowTable"> Yes </label>
+                                <input type="radio" id="rbStartTimeNo" value="startTimeNo">
+                                <label for="rbShowChart"> No </label>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label>Warm Up Song (Read)</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <input type="radio" id="rbEndTimeYes" value="endTimeYes">
+                            <label for="rbEndTimeYes"> Yes </label>
+                            <input type="radio" id="rbEndTimeNo" value="endTimeNo">
+                            <label for="rbEndTimeNo"> No </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box-footer -->
+        </div>
+        <div style="height: 5px">
+
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 connectedSortable">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Discipline-Uniform</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="row m-b-20">
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <label>Search for Student Regestration Number</label>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <input type="text" style="width: 250px" placeholder="Search for students...">
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <button id="btnAddIdDefaulters" name="btnAddIdDefaulters" class="btn btn-theme mt-3">Add</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="col-xl-3">
+                        <!-- <mwl-text-input-autocomplete-container>
+                            <textarea placeholder="Type @ to search..." class="form-control" rows="5" [(ngModel)]="formControlValue"
+                                mwlTextInputAutocomplete [findChoices]="findChoices" [getChoiceLabel]="getChoiceLabel">
+                                </textarea>
+                        </mwl-text-input-autocomplete-container> -->
+                    </div>
+                    <!-- /.box-footer -->
                 </div>
             </div>
         </div>
-        <div class="row">
+
+
+
+        <!-- <div class="row">
             <div class="col-xl-12 connectedSortable">
                 <div class="box box-info">
                     <div class="box-body">
@@ -221,10 +309,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </section>
-<<<<<<< HEAD
-</div>  
-=======
 </div>
->>>>>>> 2dc4e01c3aa1633e474176b4ab2189eb000934f7
+<app-footer></app-footer>

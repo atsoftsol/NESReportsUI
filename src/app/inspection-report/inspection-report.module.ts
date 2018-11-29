@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OrderModule } from 'ngx-order-pipe';
+import { SharedModule } from '../shared/shared.module';
 import { InspectionReportComponent } from './inspection-report.component';
 import { InspectionReportService } from './inspection-report.service';
 import { InspectionReportRoutingModule } from './inspection-report-routing.module';
@@ -13,9 +14,10 @@ import { InspectionReportRoutingModule } from './inspection-report-routing.modul
         CommonModule,
         FormsModule,
         NgbModule,
-        NgMultiSelectDropDownModule.forRoot(), 
+        NgMultiSelectDropDownModule.forRoot(),
         OrderModule,
-        InspectionReportRoutingModule 
+        SharedModule,
+        InspectionReportRoutingModule
     ],
     declarations: [
         InspectionReportComponent

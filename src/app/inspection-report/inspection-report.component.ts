@@ -7,34 +7,33 @@ import { AppService } from '../app.service';
 })
 
 export class InspectionReportComponent implements OnInit {
-
     states: any[] = [];
     stateDropdownSettings: any;
     selectedStates: any[] = [];
-    
     districts: any[] = [];
     districtDropdownSettings: any;
     selectedDistricts: any[] = [];
-
     branches: any[] = [];
     branchDropdownSettings: any;
     selectedBranches: any[] = [];
-
     courses: any[] = [];
     courseDropdownSettings: any;
     selectedCourses: any[] = [];
-
     reportTypes: any[] = [];
-    reportTypeDropdownSettings:any;
-    selectedreportTypes:any[] = [];
-
+    reportTypeDropdownSettings: any;
+    selectedReportTypes: any[] = [];
     inspectionCategories: any[] = [];
-    inspectionCategoryDropdownSettings:any;
-    selectedinspectionCategories:any[] = [];
-
+    inspectionCategoryDropdownSettings: any;
+    selectedInspectionCategories: any[] = [];
+    inspectionSubCategories: any[] = [];
+    inspectionSubCategoryDropdownSettings: any;
+    selectedInspectionSubCategories: any[] = [];
     maxDate: NgbDateStruct;
     startDate: NgbDateStruct;
     endDate: NgbDateStruct;
+    reportData: any = [];
+    order: string;
+    reverse: boolean = false;
 
     constructor(private calendar: NgbCalendar, private appService: AppService) {
         this.maxDate = this.calendar.getToday();
@@ -92,15 +91,23 @@ export class InspectionReportComponent implements OnInit {
             itemsShowLimit: 1,
             allowSearchFilter: true
         };
+        this.inspectionSubCategoryDropdownSettings = {
+            singleSelection: false,
+            idField: 'subCategoryId',
+            textField: 'name',
+            selectAllText: 'Select All',
+            unSelectAllText: 'UnSelect All',
+            itemsShowLimit: 1,
+            allowSearchFilter: true
+        };
+    };
 
-    }
-
-    ngOnInit() {    
+    ngOnInit() {
         this.getDates();
         this.getStates();
         this.getCourses();
         this.getReportTypes();
-    }
+    };
 
     getDates() {
         this.startDate = this.calendar.getPrev(this.calendar.getToday(), 'd', 30);
@@ -121,13 +128,12 @@ export class InspectionReportComponent implements OnInit {
             });
     };
 
-    getReportTypes()
-    {
-        this.appService.getInspectionReporttypes()
-        .subscribe(data => {
-            this.reportTypes = data;
-        });
-    }
+    getReportTypes() {
+        this.appService.getInspectionReportTypes()
+            .subscribe(data => {
+                this.reportTypes = data;
+            });
+    };
 
     selectState() {
         let stateIds: any[] = [];
@@ -140,8 +146,6 @@ export class InspectionReportComponent implements OnInit {
         for (let i: number = 0; i < this.selectedStates.length; i++) {
             stateIds.push(this.selectedStates[i].stateId);
         }
-
-        //this.getStateWiseUsageSummary();
 
         this.appService.getDistricts(stateIds.join(','))
             .subscribe(data => {
@@ -162,8 +166,6 @@ export class InspectionReportComponent implements OnInit {
             stateIds.push(this.selectedStates[i].stateId);
         }
 
-        //this.getStateWiseUsageSummary();
-
         this.appService.getDistricts(stateIds.join(','))
             .subscribe(data => {
                 this.districts = data;
@@ -182,14 +184,6 @@ export class InspectionReportComponent implements OnInit {
             stateIds.push(this.selectedStates[i].stateId);
         }
 
-        // if (this.selectedStates.length > 0) {
-        //     this.getStateWiseUsageSummary();
-        // }
-        // else {
-        //     this.showReportData = false;
-        //     this.showChartData = false;
-        // }
-
         this.appService.getDistricts(stateIds.join(','))
             .subscribe(data => {
                 this.districts = data;
@@ -203,8 +197,6 @@ export class InspectionReportComponent implements OnInit {
         this.selectedCourses = [];
         this.districts = [];
         this.branches = [];
-        //this.showReportData = false;
-        //this.showChartData = false;
     };
 
     selectDistrict() {
@@ -216,8 +208,6 @@ export class InspectionReportComponent implements OnInit {
         for (let i: number = 0; i < this.selectedDistricts.length; i++) {
             districtIds.push(this.selectedDistricts[i].districtId);
         }
-
-        //this.getDistrictWiseUsageSummary();
 
         this.appService.getBranches(districtIds.join(','))
             .subscribe(data => {
@@ -236,8 +226,6 @@ export class InspectionReportComponent implements OnInit {
             districtIds.push(this.selectedDistricts[i].districtId);
         }
 
-        //this.getDistrictWiseUsageSummary();
-
         this.appService.getBranches(districtIds.join(','))
             .subscribe(data => {
                 this.branches = data;
@@ -254,13 +242,6 @@ export class InspectionReportComponent implements OnInit {
             districtIds.push(this.selectedDistricts[i].districtId);
         }
 
-        // if (this.selectedDistricts.length > 0) {
-        //     this.getDistrictWiseUsageSummary();
-        // }
-        // else {
-        //     this.getStateWiseUsageSummary();
-        // }
-
         this.appService.getBranches(districtIds.join(','))
             .subscribe(data => {
                 this.branches = data;
@@ -272,27 +253,92 @@ export class InspectionReportComponent implements OnInit {
         this.selectedBranches = [];
         this.selectedCourses = [];
         this.branches = [];
-        //this.getStateWiseUsageSummary();
     };
 
-    selectinspectionCategory()
-    {
-        let inspectionCategoryIds: any[] = [];
-        this.selectedDistricts = [];
-        this.selectedBranches = [];
-        this.selectedCourses = [];
-        this.districts = [];
-        this.branches = [];
+    getInspectionCategories() {
+        let reportTypeIds: any[] = [];
 
-        for (let i: number = 0; i < this.selectedStates.length; i++) {
-            inspectionCategoryIds.push(this.selectedStates[i].stateId);
-        }
+        this.selectedReportTypes.forEach((item) => {
+            reportTypeIds.push(item.id);
+        });
 
-        //this.getStateWiseUsageSummary();
+        this.appService.getInspectionCategory(reportTypeIds.join(','))
+            .subscribe(data => {
+                this.inspectionCategories = data;
+            });
+    };
 
-        // this.appService.getDistricts(inspectionCategoryIds.join(','))
-        //     .subscribe(data => {
-        //         this.districts = data;
-        //     });
-    }
+    getInspectionSubCategories() {
+        let reportTypeIds: any[] = [];
+        let categoryIds: any[] = [];
+
+        this.selectedReportTypes.forEach((item) => {
+            reportTypeIds.push(item.id);
+        });
+
+        this.selectedInspectionCategories.forEach((item) => {
+            categoryIds.push(item.categoryId);
+        });
+
+        this.appService.getInspectionSubCategories(reportTypeIds.join(','), categoryIds.join(','))
+            .subscribe(data => {
+                this.inspectionSubCategories = data;
+            });
+    };
+
+    selectReportType() {
+        this.selectedInspectionCategories = [];
+        this.selectedInspectionSubCategories = [];
+        this.inspectionCategories = [];
+        this.inspectionSubCategories = [];
+        this.getInspectionCategories();
+    };
+
+    selectAllReportTypes() {
+        this.selectedReportTypes = this.reportTypes;
+        this.selectedInspectionSubCategories = [];
+        this.inspectionSubCategories = [];
+        this.getInspectionCategories();
+    };
+
+    unSelectReportType() {
+        this.selectedInspectionCategories = [];
+        this.selectedInspectionSubCategories = [];
+        this.inspectionCategories = [];
+        this.inspectionSubCategories = [];
+        this.getInspectionCategories();
+    };
+
+    unSelectAllReportTypes() {
+        this.selectedReportTypes = [];
+        this.selectedInspectionCategories = [];
+        this.selectedInspectionSubCategories = [];
+        this.inspectionCategories = [];
+        this.inspectionSubCategories = [];
+    };
+
+    selectInspectionCategory() {
+        this.selectedInspectionSubCategories = [];
+        this.inspectionSubCategories = [];
+        this.getInspectionSubCategories();
+    };
+
+    selectAllInspectionCategories() {
+        this.selectedInspectionCategories = this.inspectionCategories;
+        this.selectedInspectionSubCategories = [];
+        this.inspectionSubCategories = [];
+        this.getInspectionSubCategories();
+    };
+
+    unSelectInspectionCategory() {
+        this.selectedInspectionSubCategories = [];
+        this.inspectionSubCategories = [];
+        this.getInspectionSubCategories();
+    };
+
+    unSelectAllInspectionCategories() {
+        this.selectedInspectionCategories = [];
+        this.selectedInspectionSubCategories = [];
+        this.inspectionSubCategories = [];
+    };
 }

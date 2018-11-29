@@ -1,3 +1,4 @@
+<app-header></app-header>
 <div class="content-wrapper">
     <section class="content">
         <div class="row mt-1">
@@ -48,9 +49,9 @@
                                 <div class="form-group">
                                     <label>Report Type</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Report Type'" [data]="reportTypes"
-                                        [settings]="reportTypeDropdownSettings" [(ngModel)]="selectedreportTypes" (onSelect)="selectreportType()"
-                                        (onSelectAll)="selectAllreportType()" (onDeSelect)="unSelectreportType()"
-                                        (onDeSelectAll)="unSelectAllreportTypes()">
+                                        [settings]="reportTypeDropdownSettings" [(ngModel)]="selectedReportTypes"
+                                        (onSelect)="selectReportType()" (onSelectAll)="selectAllReportTypes()"
+                                        (onDeSelect)="unSelectReportType()" (onDeSelectAll)="unSelectAllReportTypes()">
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
@@ -58,23 +59,22 @@
                                 <div class="form-group">
                                     <label>Inspection Category</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Inspection Category'" [data]="inspectionCategories"
-                                        [settings]="inspectionCategoryDropdownSettings" [(ngModel)]="selectedinspectionCategories" (onSelect)="selectinspectionCategory()"
-                                        (onSelectAll)="selectAllinspectionCategory()" (onDeSelect)="unSelectinspectionCategory()"
-                                        (onDeSelectAll)="unSelectAllinspectionCategory()">
+                                        [settings]="inspectionCategoryDropdownSettings" [(ngModel)]="selectedInspectionCategories"
+                                        (onSelect)="selectInspectionCategory()" (onSelectAll)="selectAllInspectionCategories()"
+                                        (onDeSelect)="unSelectInspectionCategory()" (onDeSelectAll)="unSelectAllInspectionCategories()">
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
                             <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>Inspection Sub Category</label>
-                                    <ng-multiselect-dropdown [placeholder]="'Select Inspection Sub Category'" [data]="inspectionSubCategory"
-                                        [settings]="inspectionSubCategoryDropdownSettings" [(ngModel)]="selectedinspectionSubCategories" (onSelect)="selectinspectionSubCategory()"
-                                        (onSelectAll)="selectAllinspectionSubCategory()" (onDeSelect)="unSelectinspectionSubCategory()"
-                                        (onDeSelectAll)="unSelectAllinspectionSubCategory()">
+                                    <ng-multiselect-dropdown [placeholder]="'Select Inspection Sub Category'" [data]="inspectionSubCategories"
+                                        [settings]="inspectionSubCategoryDropdownSettings" [(ngModel)]="selectedInspectionSubCategories"
+                                        (onSelect)="selectInspectionSubCategory()" (onSelectAll)="selectAllInspectionSubCategories()"
+                                        (onDeSelect)="unSelectInspectionSubCategory()" (onDeSelectAll)="unSelectAllInspectionSubCategories()">
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
-
                             <div class="col-xl-3">
                                 <div class="form-group">
                                     <label>Start Date</label>
@@ -108,3 +108,4 @@
         </div>
     </section>
 </div>
+<app-footer></app-footer>

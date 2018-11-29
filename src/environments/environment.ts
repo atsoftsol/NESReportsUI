@@ -12,7 +12,8 @@ export const environment = {
     getCourses: 'api/common/courses',
     getSubjects: 'api/common/subjects',
     getInspectionReportTypes: 'api/inspection/inspectiontype',
-    getInspectionCategories: 'api/inspection/inspectionCategory/{reportType}'
+    getInspectionCategories: 'api/inspection/inspectioncategory',
+    getInspectionSubCategories: 'api/inspection/inspectionsubcategory'
   },
   avReportConfig: {
     getStateWiseUsageSummary: 'api/audiovideoreport/statewiseusagesummary',

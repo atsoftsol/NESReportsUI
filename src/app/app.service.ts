@@ -38,15 +38,21 @@ export class AppService {
             .retry(environment.retryFailedRequest);
     };
 
-    getInspectionReporttypes(): Observable<any> {
+    getInspectionReportTypes(): Observable<any> {
         return this.httpClient
             .get<any>(environment.apiEndPoint + environment.commonConfig.getInspectionReportTypes)
             .retry(environment.retryFailedRequest);
     };
 
-    getInspectionCategory(): Observable<any> {
+    getInspectionCategory(reportType: string): Observable<any> {
         return this.httpClient
-        .get<any>(environment.apiEndPoint + environment.commonConfig.getInspectionCategories)
-        .retry(environment.retryFailedRequest);
+            .get<any>(environment.apiEndPoint + environment.commonConfig.getInspectionCategories, { params: new HttpParams().set('reportType', reportType) })
+            .retry(environment.retryFailedRequest);
+    };
+
+    getInspectionSubCategories(reportTypeIds: string, categoryIds: string): Observable<any> {
+        return this.httpClient
+            .get<any>(environment.apiEndPoint + environment.commonConfig.getInspectionSubCategories, { params: new HttpParams().set('reporttype', reportTypeIds).set('category', categoryIds) })
+            .retry(environment.retryFailedRequest);
     };
 }
