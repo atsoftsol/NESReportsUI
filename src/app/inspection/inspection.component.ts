@@ -17,14 +17,18 @@ export class InspectionComponent implements OnInit {
     districtName: string = '';
     branchId: number = 0;
     branchName: string = '';
+    assemblyStartTime: string = '';
+    assemblyStartTimeDelayInMinutes: string = '0';
+    assemblyEndTime: string = '';
+    assemblyEndTimeForeCloserMinutes: string = '0';
     isAssemblyNotStartedOnTime: boolean = false;
     isAssemblyNotEndedOnTime: boolean = false;
-    isAssemblyStartedOnTime: boolean = false;
-    isAssemblyEndedOnTime: boolean = false;
-    isAssemblySchoolPrayerConducted: boolean = false;
-    isAssemblyThoughtForTheDayRead: boolean = false;
-    isAssemblyEKIDZSongRead: boolean = false;
-    isAssemblyWarmUpSongRead: boolean = false;
+    isAssemblyStartedOnTime: string = '';
+    isAssemblyEndedOnTime: string = '';
+    isAssemblySchoolPrayerConducted: string = '';
+    isAssemblyThoughtForTheDayRead: string = '';
+    isAssemblyEKIDZSongRead: string = '';
+    isAssemblyWarmUpSongRead: string = '';
 
     constructor(private calendar: NgbCalendar, private appService: AppService) {
 
@@ -32,7 +36,7 @@ export class InspectionComponent implements OnInit {
 
     ngOnInit() {
         this.date = this.calendar.getToday();
-        //this.getStates();
+        this.getStates();
     };
 
     getStates() {
@@ -46,7 +50,7 @@ export class InspectionComponent implements OnInit {
 
     getDistricts(stateId: string) {
         this.stateId = parseInt(stateId);
-        this.stateName = this.states.filter((item) => item.stateId === stateId)[0].stateName;
+        this.stateName = this.states.filter((item) => item.stateId === parseInt(stateId))[0].stateName;
 
         this.appService.getDistricts(stateId)
             .subscribe(data => {
@@ -58,7 +62,7 @@ export class InspectionComponent implements OnInit {
 
     getBranches(districtId: string) {
         this.districtId = parseInt(districtId);
-        this.districtName = this.districts.filter((item) => item.districtId === districtId)[0].districtName;
+        this.districtName = this.districts.filter((item) => item.districtId === parseInt(districtId))[0].districtName;
 
         this.appService.getBranches(districtId)
             .subscribe(data => {
@@ -70,7 +74,7 @@ export class InspectionComponent implements OnInit {
 
     getSelectedBranch(branchId: string) {
         this.branchId = parseInt(branchId);
-        this.branchName = this.branches.filter((item) => item.branchId === branchId)[0].branchName;
+        this.branchName = this.branches.filter((item) => item.branchId === parseInt(branchId))[0].branchName;
     };
 
     showAssemblyStartTimeDelay() {
@@ -99,12 +103,19 @@ export class InspectionComponent implements OnInit {
             'branchId': this.branchId,
             'branch': this.branchName,
             'assembly': {
-                'schoolPrayer': this.isAssemblySchoolPrayerConducted,
-                'ekidzSong': this.isAssemblyEKIDZSongRead,
-                'warmUpSong': this.isAssemblyWarmUpSongRead,
-                'thoughtForTheDay': this.isAssemblyThoughtForTheDayRead
+                'startTime': this.assemblyStartTime,
+                'endTime': this.assemblyEndTime,
+                'isStartedOnTime': this.isAssemblyStartedOnTime === 'assemblyStartTimeYes' ? true : false,
+                'isEndedOnTime': this.isAssemblyEndedOnTime === 'assemblyEndTimeYes' ? true : false,
+                'delayInMinutes': parseInt(this.assemblyStartTimeDelayInMinutes),
+                'foreCloserMinutes': parseInt(this.assemblyEndTimeForeCloserMinutes),
+                'schoolPrayer': this.isAssemblySchoolPrayerConducted === 'assemblySchoolPrayerConductedYes' ? true : false,
+                'thoughtForTheDay': this.isAssemblyThoughtForTheDayRead === 'assemblyThoughtForTheDayReadYes' ? true : false,
+                'ekidzSong': this.isAssemblyEKIDZSongRead === 'assemblyEKIDZSongReadYes' ? true : false,
+                'warmUpSong': this.isAssemblyWarmUpSongRead === 'assemblyWarmUpSongReadYes' ? true : false
             }
         };
 
+        console.log(JSON.stringify(inspectionData));
     };
 }
