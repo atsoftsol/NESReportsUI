@@ -67,4 +67,16 @@ export class AVReportService {
             .get<any>(environment.apiEndPoint + environment.avReportConfig.getSubjectWiseUsageDetails.replace(/{stateId}/g, stateId).replace(/{districtId}/g, districtId).replace(/{branchId}/g, branchId).replace(/{courseId}/g, courseId).replace(/{subjectId}/g, subjectId).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
             .retry(environment.retryFailedRequest);
     };
-}
+
+    getContentWiseUsageSummary(stateIds: string, districtIds: string, branchIds: string, courseIds: string, subjectIds: string, contentCodes: string, startDate: string, endDate: string): Observable<any> {
+        return this.httpClient
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getContentWiseUsageSummary, { params: new HttpParams().set('stateIds', stateIds).set('districtIds', districtIds).set('branchIds', branchIds).set('courseIds', courseIds).set('subjectIds', subjectIds).set('contentCodes', contentCodes).set('startDate', startDate).set('endDate', endDate) })
+            .retry(environment.retryFailedRequest);
+    };
+
+    getContentWiseUsageDetails(stateId: string, districtId: string, branchId: string, courseId: string, subjectId: string, contentId: string, startDate: string, endDate: string): Observable<any> {
+        return this.httpClient
+            .get<any>(environment.apiEndPoint + environment.avReportConfig.getContentWiseUsageDetails.replace(/{stateId}/g, stateId).replace(/{districtId}/g, districtId).replace(/{branchId}/g, branchId).replace(/{courseId}/g, courseId).replace(/{subjectId}/g, subjectId).replace(/{contentId}/g, contentId).replace(/{startDate}/g, startDate).replace(/{endDate}/g, endDate))
+            .retry(environment.retryFailedRequest);
+    };
+};

@@ -211,12 +211,19 @@
                     <div class="row m-b-20">
                         <div class="col-xl-3">
                             <div class="form-group">
-                                <label>Search for Student Regestration Number</label>
+                                <label>Search for Student Registration Number</label>
                             </div>
                         </div>
                         <div class="col-xl-3">
                             <div class="form-group">
-                                <input type="text" style="width: 250px" placeholder="Search for students...">
+                                <input type="text" style="width: 250px" placeholder="Search for students..." matInput
+                                    [formControl]="studentSearchTerm" [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let studentDetails of studentDetailsByRegistrationNumber"
+                                        [value]="studentDetails.studentName">
+                                        {{studentDetails.studentName}}
+                                    </mat-option>
+                                </mat-autocomplete>
                             </div>
                         </div>
                         <div class="col-xl-3">

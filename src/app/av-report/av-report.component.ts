@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { AppService } from '../app.service';
 import { AVReportService } from './av-report.service';
+import { ExcelService } from '../custom-services/excel.service';
 
 @Component({
     templateUrl: 'av-report.component.html'
@@ -23,6 +24,9 @@ export class AVReportComponent implements OnInit {
     subjects: any[] = [];
     subjectDropdownSettings: any;
     selectedSubjects: any[] = [];
+    content: any[] = [];
+    contentDropdownSettings: any;
+    selectedContent: any[] = [];
     startDate: NgbDateStruct;
     endDate: NgbDateStruct;
     serial: number = 1;
@@ -64,7 +68,7 @@ export class AVReportComponent implements OnInit {
     showTableOrChart: string;
     maxDate: NgbDateStruct;
 
-    constructor(private calendar: NgbCalendar, private appService: AppService, private avReportService: AVReportService) {
+    constructor(private calendar: NgbCalendar, private appService: AppService, private avReportService: AVReportService, private excelService: ExcelService) {
         this.maxDate = this.calendar.getToday();
         this.stateDropdownSettings = {
             singleSelection: false,
@@ -111,12 +115,23 @@ export class AVReportComponent implements OnInit {
             itemsShowLimit: 1,
             allowSearchFilter: true
         };
+        this.contentDropdownSettings = {
+            singleSelection: false,
+            idField: 'contentId',
+            textField: 'contentName',
+            selectAllText: 'Select All',
+            unSelectAllText: 'UnSelect All',
+            itemsShowLimit: 1,
+            allowSearchFilter: true
+        };
     };
 
     ngOnInit() {
         this.getDates();
         this.getStates();
         this.getCourses();
+        this.getSubjects();
+        this.getContent();
     };
 
     getDates() {
@@ -142,6 +157,13 @@ export class AVReportComponent implements OnInit {
         this.appService.getSubjects()
             .subscribe(data => {
                 this.subjects = data;
+            });
+    };
+
+    getContent() {
+        this.appService.getContent()
+            .subscribe(data => {
+                this.content = data;
             });
     };
 
@@ -325,17 +347,20 @@ export class AVReportComponent implements OnInit {
 
     selectCourse() {
         this.selectedSubjects = [];
+        this.selectedContent = [];
         this.getCourseWiseUsageSummary();
     };
 
     selectAllCourses() {
         this.selectedCourses = this.courses;
         this.selectedSubjects = [];
+        this.selectedContent = [];
         this.getCourseWiseUsageSummary();
     };
 
     unSelectCourse() {
         this.selectedSubjects = [];
+        this.selectedContent = [];
 
         if (this.selectedCourses.length > 0) {
             this.getCourseWiseUsageSummary();
@@ -348,7 +373,59 @@ export class AVReportComponent implements OnInit {
     unSelectAllCourses() {
         this.selectedCourses = [];
         this.selectedSubjects = [];
+        this.selectedContent = [];
         this.getBranchWiseUsageSummary();
+    };
+
+    selectSubject() {
+        this.selectedContent = [];
+        this.getSubjectWiseUsageSummary();
+    };
+
+    selectAllSubjects() {
+        this.selectedSubjects = this.subjects;
+        this.selectedContent = [];
+        this.getSubjectWiseUsageSummary();
+    };
+
+    unSelectSubject() {
+        this.selectedContent = [];
+
+        if (this.selectedSubjects.length > 0) {
+            this.getSubjectWiseUsageSummary();
+        }
+        else {
+            this.getCourseWiseUsageSummary();
+        }
+    };
+
+    unSelectAllSubjects() {
+        this.selectedSubjects = [];
+        this.selectedContent = [];
+        this.getCourseWiseUsageSummary();
+    };
+
+    selectContent() {
+        this.getContentWiseUsageSummary();
+    };
+
+    selectAllContent() {
+        this.selectedContent = this.content;
+        this.getContentWiseUsageSummary();
+    };
+
+    unSelectContent() {
+        if (this.selectedContent.length > 0) {
+            this.getContentWiseUsageSummary();
+        }
+        else {
+            this.getSubjectWiseUsageSummary();
+        }
+    };
+
+    unSelectAllContent() {
+        this.selectedContent = [];
+        this.getSubjectWiseUsageSummary();
     };
 
     onStartDateSelect(date: NgbDateStruct) {
@@ -1264,6 +1341,7 @@ export class AVReportComponent implements OnInit {
         let subjectIds: any[] = [];
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'subjectWiseUsageSummary';
         this.detailedReportType = 'subjectWiseDetailedReport';
         this.showTableOrChart = 'showTable';
 
@@ -1309,12 +1387,20 @@ export class AVReportComponent implements OnInit {
                 this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
                 let totalDuration: string;
                 let totalSeconds: number = 0;
+                let targetTotalDuration: string;
+                let targetTotalSeconds: number = 0;
+                let differenceTotalDuration: string;
+                let differenceTotalSeconds: number = 0;
                 let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
                 let subjectWiseData: any = JSON.parse(this.reportData.data);
 
                 for (let i: number = 0; i < subjectWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(subjectWiseData[i].Duration.split(':')[2]) + (60 * parseInt(subjectWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(subjectWiseData[i].Duration.split(':')[0]));
+                    let targetDurationInSeconds: number = parseInt(subjectWiseData[i].Target.split(':')[2]) + (60 * parseInt(subjectWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(subjectWiseData[i].Target.split(':')[0]));
+                    let differenceDurationInSeconds: number = parseInt(subjectWiseData[i].Diff.split(':')[2]) + (60 * parseInt(subjectWiseData[i].Diff.split(':')[1])) + (60 * 60 * parseInt(subjectWiseData[i].Diff.split(':')[0]));
                     totalSeconds += durationInSeconds;
+                    targetTotalSeconds += targetDurationInSeconds;
+                    differenceTotalSeconds += differenceDurationInSeconds;
                 }
 
                 let hours: number = Math.floor(totalSeconds / 3600);
@@ -1322,11 +1408,33 @@ export class AVReportComponent implements OnInit {
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
                 totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
-                let totalStrength: number = subjectWiseData.length > 0 ? subjectWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
+                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                targetTotalSeconds %= 3600;
+                let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
+                let targetSeconds: number = targetTotalSeconds % 60;
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
+                let differenceHours: number = Math.floor(differenceTotalSeconds / 3600);
+                differenceTotalSeconds %= 3600;
+                let differenceMinutes: number = Math.floor(differenceTotalSeconds / 60);
+                let differenceSeconds: number = differenceTotalSeconds % 60;
+                differenceTotalDuration = paddingZero(differenceHours) + ':' + paddingZero(differenceMinutes) + ':' + paddingZero(differenceSeconds);
                 let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '00:00:00';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
                 this.reportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
 
@@ -1345,20 +1453,28 @@ export class AVReportComponent implements OnInit {
     getSubjectWiseUsageDetails(stateId: string, districtId: string, branchId: string, courseId: string, subjectId: string) {
         let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
         let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'subjectWiseUsageDetails';
 
         this.avReportService.getSubjectWiseUsageDetails(stateId, districtId, branchId, courseId, subjectId, startDate, endDate)
             .subscribe(data => {
-                this.showReportData = true;
-                this.reportData = data;
-                this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
+                this.detailedReportData = data;
+                this.detailedReportGrandTotalColspan = this.detailedReportData.columns.length - this.detailedReportData.footerTotalColumns.length;
                 let totalDuration: string;
                 let totalSeconds: number = 0;
+                let targetTotalDuration: string;
+                let targetTotalSeconds: number = 0;
+                let differenceTotalDuration: string;
+                let differenceTotalSeconds: number = 0;
                 let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
-                let subjectWiseData: any = JSON.parse(this.reportData.data);
+                let subjectWiseData: any = JSON.parse(this.detailedReportData.data);
 
                 for (let i: number = 0; i < subjectWiseData.length; i++) {
                     let durationInSeconds: number = parseInt(subjectWiseData[i].Duration.split(':')[2]) + (60 * parseInt(subjectWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(subjectWiseData[i].Duration.split(':')[0]));
+                    let targetDurationInSeconds: number = parseInt(subjectWiseData[i].Target.split(':')[2]) + (60 * parseInt(subjectWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(subjectWiseData[i].Target.split(':')[0]));
+                    let differenceDurationInSeconds: number = parseInt(subjectWiseData[i].Diff.split(':')[2]) + (60 * parseInt(subjectWiseData[i].Diff.split(':')[1])) + (60 * 60 * parseInt(subjectWiseData[i].Diff.split(':')[0]));
                     totalSeconds += durationInSeconds;
+                    targetTotalSeconds += targetDurationInSeconds;
+                    differenceTotalSeconds += differenceDurationInSeconds;
                 }
 
                 let hours: number = Math.floor(totalSeconds / 3600);
@@ -1366,13 +1482,34 @@ export class AVReportComponent implements OnInit {
                 let minutes: number = Math.floor(totalSeconds / 60);
                 let seconds: number = totalSeconds % 60;
                 totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
-                let totalStrength: number = subjectWiseData.length > 0 ? subjectWiseData.map(item => parseInt(item.Strength) || 0).reduce((strength, item) => item + strength) : 0;
+                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                targetTotalSeconds %= 3600;
+                let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
+                let targetSeconds: number = targetTotalSeconds % 60;
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
+                let differenceHours: number = Math.floor(differenceTotalSeconds / 3600);
+                differenceTotalSeconds %= 3600;
+                let differenceMinutes: number = Math.floor(differenceTotalSeconds / 60);
+                let differenceSeconds: number = differenceTotalSeconds % 60;
+                differenceTotalDuration = paddingZero(differenceHours) + ':' + paddingZero(differenceMinutes) + ':' + paddingZero(differenceSeconds);
                 let footerTotalValues: any[] = [];
-                footerTotalValues.push(totalStrength);
-                footerTotalValues.push(totalDuration);
-                footerTotalValues.push('');
-                footerTotalValues.push('');
-                this.reportData['footerTotalValues'] = footerTotalValues;
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '00:00:00';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
+                this.detailedReportData['footerTotalValues'] = footerTotalValues;
                 let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
 
                 for (let i: number = 0; i < subjectWiseData.length; i++) {
@@ -1380,10 +1517,207 @@ export class AVReportComponent implements OnInit {
                     subjectWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
                 }
 
-                this.reportData['data'] = subjectWiseData;
-                this.dataCount = subjectWiseData.length;
+                this.detailedReportData['data'] = subjectWiseData;
+                this.detailedReportDataCount = subjectWiseData.length;
+                this.detailedReportNoDataColspan = this.reportData.columns.length;
+                this.detailedReportOrder = this.reportData.sorting;
+            });
+    };
+
+    getContentWiseUsageSummary() {
+        let stateIds: any[] = [];
+        let districtIds: any[] = [];
+        let branchIds: any[] = [];
+        let courseIds: any[] = [];
+        let subjectIds: any[] = [];
+        let contentCodes: any[] = [];
+        let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
+        let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'contentWiseUsageSummary';
+        this.detailedReportType = 'contentWiseDetailedReport';
+        this.showTableOrChart = 'showTable';
+
+        for (let i: number = 0; i < this.selectedStates.length; i++) {
+            let state: any = this.states.filter((item) => item.stateId === this.selectedStates[i].stateId);
+            stateIds.push(state[0].stateId);
+        }
+
+        for (let i: number = 0; i < this.selectedDistricts.length; i++) {
+            let district: any = this.districts.filter((item) => item.districtId === this.selectedDistricts[i].districtId);
+            districtIds.push(district[0].districtId);
+        }
+
+        for (let i: number = 0; i < this.selectedBranches.length; i++) {
+            let branch: any = this.branches.filter((item) => item.branchId === this.selectedBranches[i].branchId);
+            branchIds.push(branch[0].branchId);
+        }
+
+        for (let i: number = 0; i < this.selectedCourses.length; i++) {
+            let course: any = this.courses.filter((item) => item.courseId === this.selectedCourses[i].courseId);
+            courseIds.push(course[0].courseId);
+        }
+
+        for (let i: number = 0; i < this.selectedSubjects.length; i++) {
+            let subject: any = this.subjects.filter((item) => item.subjectId === this.selectedSubjects[i].subjectId);
+            subjectIds.push(subject[0].subjectId);
+        }
+
+        if (this.selectedContent.length === 0) {
+            for (let i: number = 0; i < this.content.length; i++) {
+                contentCodes.push(this.content[i].contentCode);
+            }
+        }
+        else {
+            for (let i: number = 0; i < this.selectedContent.length; i++) {
+                let content: any = this.content.filter((item) => item.contentId === this.selectedContent[i].contentId);
+                contentCodes.push(content[0].contentCode);
+            }
+        }
+
+        this.avReportService.getContentWiseUsageSummary(stateIds.join(','), districtIds.join(','), branchIds.join(','), courseIds.join(','), subjectIds.join(','), contentCodes.join(','), startDate, endDate)
+            .subscribe(data => {
+                this.showReportData = true;
+                this.showChartData = false;
+                this.showBarChart = false;
+                this.showGroupBarChart = false;
+                this.reportData = data;
+                this.grandTotalColspan = this.reportData.columns.length - this.reportData.footerTotalColumns.length;
+                let totalDuration: string;
+                let totalSeconds: number = 0;
+                let targetTotalDuration: string;
+                let targetTotalSeconds: number = 0;
+                let differenceTotalDuration: string;
+                let differenceTotalSeconds: number = 0;
+                let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
+                let contentWiseData: any = JSON.parse(this.reportData.data);
+
+                for (let i: number = 0; i < contentWiseData.length; i++) {
+                    let durationInSeconds: number = parseInt(contentWiseData[i].Duration.split(':')[2]) + (60 * parseInt(contentWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(contentWiseData[i].Duration.split(':')[0]));
+                    let targetDurationInSeconds: number = parseInt(contentWiseData[i].Target.split(':')[2]) + (60 * parseInt(contentWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(contentWiseData[i].Target.split(':')[0]));
+                    let differenceDurationInSeconds: number = parseInt(contentWiseData[i].Diff.split(':')[2]) + (60 * parseInt(contentWiseData[i].Diff.split(':')[1])) + (60 * 60 * parseInt(contentWiseData[i].Diff.split(':')[0]));
+                    totalSeconds += durationInSeconds;
+                    targetTotalSeconds += targetDurationInSeconds;
+                    differenceTotalSeconds += differenceDurationInSeconds;
+                }
+
+                let hours: number = Math.floor(totalSeconds / 3600);
+                totalSeconds %= 3600;
+                let minutes: number = Math.floor(totalSeconds / 60);
+                let seconds: number = totalSeconds % 60;
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
+                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                targetTotalSeconds %= 3600;
+                let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
+                let targetSeconds: number = targetTotalSeconds % 60;
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
+                let differenceHours: number = Math.floor(differenceTotalSeconds / 3600);
+                differenceTotalSeconds %= 3600;
+                let differenceMinutes: number = Math.floor(differenceTotalSeconds / 60);
+                let differenceSeconds: number = differenceTotalSeconds % 60;
+                differenceTotalDuration = paddingZero(differenceHours) + ':' + paddingZero(differenceMinutes) + ':' + paddingZero(differenceSeconds);
+                let footerTotalValues: any[] = [];
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '00:00:00';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.reportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
+                this.reportData['footerTotalValues'] = footerTotalValues;
+                let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+
+                for (let i: number = 0; i < contentWiseData.length; i++) {
+                    let durationInSeconds: number = parseInt(contentWiseData[i].Duration.split(':')[2]) + (60 * parseInt(contentWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(contentWiseData[i].Duration.split(':')[0]));
+                    contentWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
+                }
+
+                this.reportData['data'] = contentWiseData;
+                this.dataCount = contentWiseData.length;
                 this.noDataColspan = this.reportData.columns.length;
                 this.order = this.reportData.sorting;
+            });
+    };
+
+    getContentWiseUsageDetails(stateId: string, districtId: string, branchId: string, courseId: string, subjectId: string, contentId: string) {
+        let startDate: string = this.startDate.year + '-' + this.startDate.month + '-' + this.startDate.day;
+        let endDate: string = this.endDate.year + '-' + this.endDate.month + '-' + this.endDate.day;
+        this.reportType = 'contentWiseUsageDetails';
+
+        this.avReportService.getContentWiseUsageDetails(stateId, districtId, branchId, courseId, subjectId, contentId, startDate, endDate)
+            .subscribe(data => {
+                this.detailedReportData = data;
+                this.detailedReportGrandTotalColspan = this.detailedReportData.columns.length - this.detailedReportData.footerTotalColumns.length;
+                let totalDuration: string;
+                let totalSeconds: number = 0;
+                let targetTotalDuration: string;
+                let targetTotalSeconds: number = 0;
+                let differenceTotalDuration: string;
+                let differenceTotalSeconds: number = 0;
+                let paddingZero = function (n) { return (n < 10 ? '0' : '') + n; }
+                let contentWiseData: any = JSON.parse(this.detailedReportData.data);
+
+                for (let i: number = 0; i < contentWiseData.length; i++) {
+                    let durationInSeconds: number = parseInt(contentWiseData[i].Duration.split(':')[2]) + (60 * parseInt(contentWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(contentWiseData[i].Duration.split(':')[0]));
+                    let targetDurationInSeconds: number = parseInt(contentWiseData[i].Target.split(':')[2]) + (60 * parseInt(contentWiseData[i].Target.split(':')[1])) + (60 * 60 * parseInt(contentWiseData[i].Target.split(':')[0]));
+                    let differenceDurationInSeconds: number = parseInt(contentWiseData[i].Diff.split(':')[2]) + (60 * parseInt(contentWiseData[i].Diff.split(':')[1])) + (60 * 60 * parseInt(contentWiseData[i].Diff.split(':')[0]));
+                    totalSeconds += durationInSeconds;
+                    targetTotalSeconds += targetDurationInSeconds;
+                    differenceTotalSeconds += differenceDurationInSeconds;
+                }
+
+                let hours: number = Math.floor(totalSeconds / 3600);
+                totalSeconds %= 3600;
+                let minutes: number = Math.floor(totalSeconds / 60);
+                let seconds: number = totalSeconds % 60;
+                totalDuration = paddingZero(hours) + ':' + paddingZero(minutes) + ':' + paddingZero(seconds);
+                let targetHours: number = Math.floor(targetTotalSeconds / 3600);
+                targetTotalSeconds %= 3600;
+                let targetMinutes: number = Math.floor(targetTotalSeconds / 60);
+                let targetSeconds: number = targetTotalSeconds % 60;
+                targetTotalDuration = paddingZero(targetHours) + ':' + paddingZero(targetMinutes) + ':' + paddingZero(targetSeconds);
+                let differenceHours: number = Math.floor(differenceTotalSeconds / 3600);
+                differenceTotalSeconds %= 3600;
+                let differenceMinutes: number = Math.floor(differenceTotalSeconds / 60);
+                let differenceSeconds: number = differenceTotalSeconds % 60;
+                differenceTotalDuration = paddingZero(differenceHours) + ':' + paddingZero(differenceMinutes) + ':' + paddingZero(differenceSeconds);
+                let footerTotalValues: any[] = [];
+                let footerTargetTotalDurationObject: any = {};
+                footerTargetTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Target')[0].align;
+                footerTargetTotalDurationObject['value'] = targetTotalDuration;
+                footerTotalValues.push(footerTargetTotalDurationObject);
+                let footerTotalDurationObject: any = {};
+                footerTotalDurationObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Duration')[0].align;
+                footerTotalDurationObject['value'] = totalDuration;
+                footerTotalValues.push(footerTotalDurationObject);
+                let footerTotalDifferenceObject: any = {};
+                footerTotalDifferenceObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Diff')[0].align;
+                footerTotalDifferenceObject['value'] = '00:00:00';
+                footerTotalValues.push(footerTotalDifferenceObject);
+                let footerTotalPercentageObject: any = {};
+                footerTotalPercentageObject['align'] = this.detailedReportData.footerTotalColumns.filter((item) => item.name === 'Per(%)')[0].align;
+                footerTotalPercentageObject['value'] = '';
+                footerTotalValues.push(footerTotalPercentageObject);
+                this.detailedReportData['footerTotalValues'] = footerTotalValues;
+                let totalDurationInSeconds: number = parseInt(totalDuration.split(':')[2]) + (60 * parseInt(totalDuration.split(':')[1])) + (60 * 60 * parseInt(totalDuration.split(':')[0]));
+
+                for (let i: number = 0; i < contentWiseData.length; i++) {
+                    let durationInSeconds: number = parseInt(contentWiseData[i].Duration.split(':')[2]) + (60 * parseInt(contentWiseData[i].Duration.split(':')[1])) + (60 * 60 * parseInt(contentWiseData[i].Duration.split(':')[0]));
+                    contentWiseData[i]['Per(%)'] = totalDurationInSeconds !== 0 ? Math.round((durationInSeconds * 100) / totalDurationInSeconds) : '0';
+                }
+
+                this.detailedReportData['data'] = contentWiseData;
+                this.detailedReportDataCount = contentWiseData.length;
+                this.detailedReportNoDataColspan = this.reportData.columns.length;
+                this.detailedReportOrder = this.reportData.sorting;
             });
     };
 
@@ -1461,5 +1795,31 @@ export class AVReportComponent implements OnInit {
             this.showGroupBarChart = true;
         else
             this.showBarChart = true;
+    };
+
+    exportToExcel() {
+        let sampleData: any[] = [{
+            "State": "WEST BENGAL",
+            "Strength": 12259,
+            "Target": "00:00:00",
+            "Duration": "33:33:43",
+            "Diff": "00:00:00",
+            "Per(%)": 100
+        }, {
+            "State": "ANDHRA PRADESH",
+            "Strength": 104372,
+            "Target": "00:00:00",
+            "Duration": "00:00:00",
+            "Diff": "00:00:00",
+            "Per(%)": 0
+        }, {
+            "State": "Grand Total",
+            "Strength": 116631,
+            "Target": "00:00:00",
+            "Duration": "33:33:43",
+            "Diff": "00:00:00",
+            "Per(%)": ""
+        }];
+        this.excelService.exportAsExcelFile(sampleData, 'AV Report Excel');
     };
 }

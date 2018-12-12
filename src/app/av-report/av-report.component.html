@@ -2,7 +2,7 @@
 <div class="content-wrapper">
     <section class="content">
         <div class="row mt-1">
-            <div class="col-xl-9 connectedSortable">
+            <div class="col-xl-12 connectedSortable">
                 <div class="box box-info">
                     <div class="box-body form-field-wrap">
                         <div class="row m-b-20">
@@ -47,6 +47,26 @@
                             </div>
                             <div class="col-xl-3">
                                 <div class="form-group">
+                                    <label>Subject</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Subject'" [data]="subjects"
+                                        [settings]="subjectDropdownSettings" [(ngModel)]="selectedSubjects" (onSelect)="selectSubject()"
+                                        (onSelectAll)="selectAllSubjects()" (onDeSelect)="unSelectSubject()"
+                                        (onDeSelectAll)="unSelectAllSubjects()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
+                                    <label>Content</label>
+                                    <ng-multiselect-dropdown [placeholder]="'Select Content'" [data]="content"
+                                        [settings]="contentDropdownSettings" [(ngModel)]="selectedContent" (onSelect)="selectContent()"
+                                        (onSelectAll)="selectAllContent()" (onDeSelect)="unSelectContent()"
+                                        (onDeSelectAll)="unSelectAllContent()">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="form-group">
                                     <label>Start Date</label>
                                     <div class="input-group">
                                         <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
@@ -79,9 +99,10 @@
                                     <input type="radio" id="rbShowChart" value="showChart" name="showTableOrChart"
                                         [(ngModel)]="showTableOrChart">
                                     <label for="rbShowChart" (click)="showChart()"> Show Chart</label>
+                                    <button id="btnExportToExcel" name="btnExportToExcel" class="btn btn-theme mt-3"
+                                        (click)="exportToExcel()" *ngIf="showReportData">Export
+                                        to Excel</button>
                                 </div>
-                            </div>
-                            <div class="col-xl-3">
                             </div>
                         </div>
                     </div>
@@ -120,7 +141,7 @@
                                                 </td>
                                             </tr>
                                             <tr *ngIf="!dataCount" style="text-align:center">
-                                                <td [attr.colspan]="noDataColspan">No data available</td>
+                                                <td [attr.colspan]="noDataColspan + 1">No data available</td>
                                             </tr>
                                         </tbody>
                                         <tfoot *ngIf="dataCount">
@@ -196,7 +217,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr *ngIf="!detailedReportDataCount" style="text-align:center">
-                                                        <td [attr.colspan]="detailedReportNoDataColspan">No data
+                                                        <td [attr.colspan]="detailedReportNoDataColspan + 1">No data
                                                             available
                                                         </td>
                                                     </tr>
@@ -218,13 +239,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 connectedSortable">
-                <div class="box box-info image-wrap">
-                    <div class="box-body">
-                        <img src="../assets/images/DgclsPurpose.jpg" width="100%" alt="User Image">
                     </div>
                 </div>
             </div>

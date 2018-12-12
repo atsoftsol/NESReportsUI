@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { AppService } from '../app.service';
+import { InspectionService } from './inspection.service';
+import { debounceTime } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 @Component({
     templateUrl: 'inspection.component.html'
@@ -29,8 +32,10 @@ export class InspectionComponent implements OnInit {
     isAssemblyThoughtForTheDayRead: string = '';
     isAssemblyEKIDZSongRead: string = '';
     isAssemblyWarmUpSongRead: string = '';
+    studentSearchTerm: FormControl = new FormControl();
+    studentDetailsByRegistrationNumber: any[] = [];
 
-    constructor(private calendar: NgbCalendar, private appService: AppService) {
+    constructor(private calendar: NgbCalendar, private appService: AppService, private inspectionService: InspectionService) {
 
     };
 
@@ -117,5 +122,18 @@ export class InspectionComponent implements OnInit {
         };
 
         console.log(JSON.stringify(inspectionData));
+    };
+
+    searchStudentByRegistrationNumber() {
+        this.studentSearchTerm.valueChanges
+            .subscribe(registrationNumber => {
+                if (registrationNumber !== '') {
+                    this.inspectionService.searchStudentByRegistrationNumber(registrationNumber)
+                        .pipe(debounceTime(500))
+                        .subscribe(data => {
+                            this.studentDetailsByRegistrationNumber = data.length != 0 ? data : [{ 'studentName': 'No Record Found' } as any];
+                        });
+                }
+            });
     };
 }

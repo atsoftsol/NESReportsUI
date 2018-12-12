@@ -38,6 +38,12 @@ export class AppService {
             .retry(environment.retryFailedRequest);
     };
 
+    getContent(): Observable<any> {
+        return this.httpClient
+            .get<any>(environment.apiEndPoint + environment.commonConfig.getContent)
+            .retry(environment.retryFailedRequest);
+    };
+
     getInspectionReportTypes(): Observable<any> {
         return this.httpClient
             .get<any>(environment.apiEndPoint + environment.commonConfig.getInspectionReportTypes)
