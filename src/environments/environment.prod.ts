@@ -11,8 +11,10 @@ export const environment = {
     getBranches: 'api/common/branches',
     getCourses: 'api/common/courses',
     getSubjects: 'api/common/subjects',
+    getContent: 'api/common/content',
     getInspectionReportTypes: 'api/inspection/inspectiontype',
-    getInspectionCategories: 'api/inspection/inspectionCategory/{reportType}'
+    getInspectionCategories: 'api/inspection/inspectioncategory',
+    getInspectionSubCategories: 'api/inspection/inspectionsubcategory'
   },
   avReportConfig: {
     getStateWiseUsageSummary: 'api/audiovideoreport/statewiseusagesummary',
@@ -24,7 +26,9 @@ export const environment = {
     getCourseWiseUsageSummary: 'api/audiovideoreport/coursewiseusagesummary',
     getCourseWiseUsageDetails: 'api/audiovideoreport/coursewiseusagedetail/{stateId}/{districtId}/{branchId}/{courseId}/{startDate}/{endDate}',
     getSubjectWiseUsageSummary: 'api/audiovideoreport/subjectwiseusagesummary',
-    getSubjectWiseUsageDetails: 'api/audiovideoreport/subjectwiseusagedetails/{stateId}/{districtId}/{branchId}/{courseId}/{subjectId}/{startDate}/{endDate}'
+    getSubjectWiseUsageDetails: 'api/audiovideoreport/subjectwiseusagedetail/{stateId}/{districtId}/{branchId}/{courseId}/{subjectId}/{startDate}/{endDate}',
+    getContentWiseUsageSummary: 'api/audiovideoreport/contentwiseusagesummary',
+    getContentWiseUsageDetails: 'api/audiovideoreport/contentwiseusagedetail/{stateId}/{districtId}/{branchId}/{courseId}/{subjectId}/{contentId}/{startDate}/{endDate}'
   },
   feedbackReportConfig: {
     getFeedbackTypes: 'api/feedbackreport/feedbacktype',
@@ -34,5 +38,8 @@ export const environment = {
     getDistrictWiseSummary: 'api/feedbackreport/feedbackdistrictwisesummary',
     getBranchWiseSummary: 'api/feedbackreport/feedbackbranchwisesummary',
     getCourseWiseSummary: 'api/feedbackreport/feedbackcoursewisesummary'
+  },
+  inspectionConfig: {
+    searchStudentByRegistrationNumber: ''
   }
 };
