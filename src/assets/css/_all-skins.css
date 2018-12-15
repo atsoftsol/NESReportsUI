@@ -2048,8 +2048,10 @@ select.form-control{
     right: 0;
     top: 0;
   }
-  .content-wrapper{
-    margin-top: 50px;
+  .content-wrapper{ 
+    margin-top: 52px;
+    margin-left: 217px;
+    margin-right: 17px;
   }
 }
 

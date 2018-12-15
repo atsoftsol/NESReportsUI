@@ -190,7 +190,7 @@ Body :		Poppins, sans-serif;
                 -moz-transition: -moz-transform .3s ease-in-out, margin .3s ease-in-out;
                 -o-transition: -o-transform .3s ease-in-out, margin .3s ease-in-out;
                 transition: transform .3s ease-in-out, margin .3s ease-in-out;
-                margin-left: 234px;
+                margin-left: 209px;
                 z-index: 820;
             }
             
@@ -207,7 +207,7 @@ Body :		Poppins, sans-serif;
             }
             
             .content-wrapper {
-                min-height: 100%;
+                /* min-height: 100%; */
                 background-color: #ecf0f5;
                 z-index: 800;
                 min-height: 90vh;
@@ -215,7 +215,7 @@ Body :		Poppins, sans-serif;
             
             .main-footer {
                 background: #fff;
-                padding: 10px;
+                padding: 5px;
                 color: #444;
                 border-top: 1px solid #d2d6de;
                 border-left: 1px solid #d2d6de;
@@ -283,10 +283,10 @@ Body :		Poppins, sans-serif;
             }
             
             .content {
-                min-height: 700px;
-                padding: 15px;
+                /* min-height: 700px;
+                padding: 15px; */
                 margin-right: auto;
-                margin-left: auto;
+                margin-left: auto; 
             }
             
             a {
@@ -326,7 +326,7 @@ Body :		Poppins, sans-serif;
                 -o-transition: margin-left .3s ease-in-out;
                 transition: margin-left .3s ease-in-out;
                 margin-bottom: 0;
-                margin-left: 230px;
+                margin-left: 210x;
                 border: none;
                 min-height: 50px;
                 border-radius: 0;
@@ -439,11 +439,11 @@ Body :		Poppins, sans-serif;
                 transition: width .3s ease-in-out;
                 display: block;
                 float: left;
-                height: 50px;
+                height: 49px;
                 font-size: 20px;
                 line-height: 50px;
                 text-align: center;
-                width: 230px;
+                width: 210px;
                 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
                 padding: 0 15px;
                 font-weight: 300;
@@ -557,7 +557,7 @@ Body :		Poppins, sans-serif;
             }
             
             .avtitle {
-                font-size: 25px;
+                font-size: 23px;
                 text-transform: uppercase;
             }
             
@@ -605,7 +605,7 @@ Body :		Poppins, sans-serif;
                 left: 0;
                 padding-top: 50px;
                 min-height: 100%;
-                width: 230px;
+                width: 210px;
                 z-index: 810;
                 -webkit-transition: -webkit-transform .3s ease-in-out, width .3s ease-in-out;
                 -moz-transition: -moz-transform .3s ease-in-out, width .3s ease-in-out;
@@ -2545,8 +2545,8 @@ Body :		Poppins, sans-serif;
             }
             
             .form-group label {
-                font-weight: 500;
-                font-size: 14px;
+                font-weight: 400;
+                font-size: 12px;
             }
             
             .form-control {
@@ -11550,14 +11550,14 @@ Body :		Poppins, sans-serif;
             }
             
             .multiselect-dropdown .dropdown-btn {
-                padding: 3px 0px 3px 2px !important;
-                font-size: 13px !important;
+                padding: 2px 0px 2px 1px !important;
+                font-size: 12px !important;
                 line-height: 1.4 !important;
             }
             
             .btn-theme {
-                background-color: #ff6028;
-                border-color: #ff6028;
+                background-color: #0b84b9;
+                border-color: #0b84b9;
                 color: #ffffff !important;
                 border-radius: 4px !important;
             }
@@ -11597,8 +11597,8 @@ Body :		Poppins, sans-serif;
             .main-container {
                 max-height: 400px;
                 overflow-y: auto;
-                border-top: 36px solid #0b84b9;
-                border-bottom: 36px solid #fff;
+                border-top: 30px solid #0b84b9;
+                border-bottom: 30px solid #fff;
             }
             
             table.main-table {
@@ -11611,7 +11611,7 @@ Body :		Poppins, sans-serif;
             table.main-table td,
             table.main-table th {
                 background: #efefef;
-                padding: 10px;
+                padding: 3px;
             }
             
             table.main-table thead tr th,

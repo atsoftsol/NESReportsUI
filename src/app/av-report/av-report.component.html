@@ -92,14 +92,14 @@
                                 </div>
                             </div>
                             <div class="col-xl-6">
-                                <div class="form-group mt-3">
+                                <div class="form-group">
                                     <input type="radio" id="rbShowTable" value="showTable" name="showTableOrChart"
                                         [(ngModel)]="showTableOrChart">
                                     <label for="rbShowTable" (click)="showTable()"> Show Table</label>
                                     <input type="radio" id="rbShowChart" value="showChart" name="showTableOrChart"
                                         [(ngModel)]="showTableOrChart">
                                     <label for="rbShowChart" (click)="showChart()"> Show Chart</label>
-                                    <button id="btnExportToExcel" name="btnExportToExcel" class="btn btn-theme mt-3"
+                                    <button id="btnExportToExcel" name="btnExportToExcel" class="btn btn-theme mt-1"
                                         (click)="exportToExcel()" *ngIf="showReportData">Export
                                         to Excel</button>
                                 </div>
@@ -107,6 +107,7 @@
                         </div>
                     </div>
                 </div>
+                <div style="height: 1%"></div>
                 <div class="box box-primary" *ngIf="showReportData">
                     <div class="box-body">
                         <div class="main-wrapper">

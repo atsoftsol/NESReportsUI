@@ -250,6 +250,7 @@ th {
 label {
     display: inline-block;
     margin-bottom: 0;
+    font-size: 12px !important;
 }
 
 button {
@@ -2092,7 +2093,7 @@ textarea.form-control {
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
 }
 
 .form-text {
