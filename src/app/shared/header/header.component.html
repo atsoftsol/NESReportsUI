@@ -4,8 +4,8 @@
                 <span class="logo-lg"> <img src="../assets/images/s2.gif" alt="User Image" width="100%"> </span>
         </a>
         <nav class="navbar navbar-static-top">
-                <a style="cursor:pointer" class="sidebar-toggle" data-toggle="push-menu" role="button"  (click)="toggleMenu()" > 
-                        <span class="sr-only"  >Toggle navigation</span>
+                <a style="cursor:pointer" class="sidebar-toggle" data-toggle="push-menu" role="button" (click)="toggleMenu()">
+                        <span class="sr-only">Toggle navigation</span>
                 </a>
                 <h4 style="font-weight: bold; margin: 0; color: #ffffff;" class="avtitle" [innerHtml]="headerTitle">
                 </h4>
@@ -36,9 +36,9 @@
                         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/assets-report']">
                                         <i class="fa fa-table"></i>
                                         <span>Assets Report</span> </a> </li>
-                        <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/feedback-report']">
+                        <!-- <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/feedback-report']">
                                         <i class="fa fa-envelope"></i>
-                                        <span>Feedback Report</span> </a> </li>
+                                        <span>Feedback Report</span> </a> </li> -->
                         <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"> <a [routerLink]="['/transportation-report']">
                                         <i class="fa fa-truck"></i>
                                         <span>Transportation Report</span> </a> </li>

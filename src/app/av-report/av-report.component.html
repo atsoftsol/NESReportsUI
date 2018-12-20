@@ -122,7 +122,7 @@
                                                 </div>
                                             </th>
                                             <th *ngFor="let column of reportData.columns" [class.active]="order === column.name"
-                                                (click)="setOrder(column.name)">
+                                                [ngStyle]="{'text-align':column.align}" (click)="setOrder(column.name)">
                                                 <div>
                                                     <span [innerHtml]="column.name"></span>
                                                     <span *ngIf="dataCount" style="cursor: pointer;">
@@ -135,7 +135,7 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let item of reportData.data | orderBy: order:!reverse:'case-insensitive'; let i = index">
-                                            <td data-toggle="modal" data-target="#divSelectedRowModal" style="cursor: pointer;"
+                                            <td data-toggle="modal" data-target="#divSelectedRowModal" style="cursor: pointer; text-align: center;"
                                                 (click)="getDetailedReport(item)">
                                                 <span [innerHtml]=i+serial></span>
                                             </td>
@@ -199,7 +199,7 @@
                                                 aria-hidden="true">&times;</span></button>
                                     </div>
                                     <div class="modal-body">
-                                         <div class="main-wrapper">
+                                        <div class="main-wrapper">
                                             <div class="main-container">
                                                 <div class="media-table-block">
                                                     <table class="main-table">
@@ -210,8 +210,9 @@
                                                                     <div>
                                                                         S.No
                                                                     </div>
-                                                                </th>  
-                                                                <th *ngFor="let column of detailedReportData.columns" [class.active]="detailedReportOrder === column.name"
+                                                                </th>
+                                                                <th *ngFor="let column of detailedReportData.columns"
+                                                                    [class.active]="detailedReportOrder === column.name"
                                                                     [ngStyle]="{'text-align':column.align}" (click)="detailedReportSetOrder(column.name)">
                                                                     <div>
                                                                         <span [innerHtml]="column.name"></span>
@@ -228,12 +229,14 @@
                                                                 <td style="text-align:center;">
                                                                     <span [innerHtml]=i+serial></span>
                                                                 </td>
-                                                                <td *ngFor="let column of detailedReportData.columns" [ngStyle]="{'text-align':column.align}">
+                                                                <td *ngFor="let column of detailedReportData.columns"
+                                                                    [ngStyle]="{'text-align':column.align}">
                                                                     <span [innerHtml]="item[column.name]"></span>
                                                                 </td>
                                                             </tr>
                                                             <tr *ngIf="!detailedReportDataCount" style="text-align:center">
-                                                                <td [attr.colspan]="detailedReportNoDataColspan">No data
+                                                                <td [attr.colspan]="detailedReportNoDataColspan">No
+                                                                    data
                                                                     available
                                                                 </td>
                                                             </tr>
@@ -258,7 +261,7 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                         </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
