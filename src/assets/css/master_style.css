@@ -11624,6 +11624,7 @@ Body :		Poppins, sans-serif;
                 color: transparent;
                 border: none;
                 white-space: nowrap;
+                width: 200px;
             }
             
             table.main-table thead tr th div,
@@ -11688,7 +11689,7 @@ Body :		Poppins, sans-serif;
             }
             
              ::-webkit-scrollbar {
-                width: 6px;
+                width: 9px;
                 background-color: rgba(0, 0, 0, 0);
                 border-radius: 80px;
                 -webkit-border-radius: 80px;
