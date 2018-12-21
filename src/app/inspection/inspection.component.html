@@ -216,14 +216,16 @@
                         </div>
                         <div class="col-xl-3">
                             <div class="form-group">
-                                <input type="text" style="width: 250px" placeholder="Search for students..." matInput
-                                    [formControl]="studentSearchTerm" [matAutocomplete]="auto">
-                                <mat-autocomplete #auto="matAutocomplete">
-                                    <mat-option *ngFor="let studentDetails of studentDetailsByRegistrationNumber"
-                                        [value]="studentDetails.studentName">
-                                        {{studentDetails.studentName}}
-                                    </mat-option>
-                                </mat-autocomplete>
+                                <mat-form-field class="container">
+                                    <input type="text" style="width: 250px" placeholder="Search for students..."
+                                        matInput [formControl]="studentSearchTerm" [matAutocomplete]="auto">
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                        <mat-option *ngFor="let studentDetails of studentDetailsByRegistrationNumber"
+                                            [value]="studentDetails.name">
+                                            {{studentDetails.name}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
                             </div>
                         </div>
                         <div class="col-xl-3">
@@ -233,11 +235,7 @@
                         </div>
                     </div>
                     <div class="col-xl-3">
-                        <!-- <mwl-text-input-autocomplete-container>
-                            <textarea placeholder="Type @ to search..." class="form-control" rows="5" [(ngModel)]="formControlValue"
-                                mwlTextInputAutocomplete [findChoices]="findChoices" [getChoiceLabel]="getChoiceLabel">
-                                </textarea>
-                        </mwl-text-input-autocomplete-container> -->
+
                     </div>
                     <!-- /.box-footer -->
                 </div>

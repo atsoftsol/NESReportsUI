@@ -8,9 +8,9 @@ import 'rxjs/add/operator/retry';
 export class InspectionService {
     constructor(private httpClient: HttpClient) { }
 
-    searchStudentByRegistrationNumber(registrationNumber: string): Observable<any> {
+    searchStudentByRegistrationNumber(admissionNumber: string, branchId: string): Observable<any> {
         return this.httpClient
-            .get<any>(environment.apiEndPoint + environment.inspectionConfig.searchStudentByRegistrationNumber, { params: new HttpParams().set('registrationNumber', registrationNumber) })
+            .get<any>(environment.apiEndPoint + environment.inspectionConfig.searchStudentByRegistrationNumber, { params: new HttpParams().set('adminissionNo', admissionNumber).set('branchId', branchId) })
             .retry(environment.retryFailedRequest);
     };
 }

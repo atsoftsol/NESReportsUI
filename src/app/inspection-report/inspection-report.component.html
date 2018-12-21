@@ -29,9 +29,7 @@
                                 <div class="form-group">
                                     <label>Branch</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Branch'" [data]="branches"
-                                        [settings]="branchDropdownSettings" [(ngModel)]="selectedBranches" (onSelect)="selectBranch()"
-                                        (onSelectAll)="selectAllBranches()" (onDeSelect)="unSelectBranch()"
-                                        (onDeSelectAll)="unSelectAllBranches()">
+                                        [settings]="branchDropdownSettings" [(ngModel)]="selectedBranches">
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
@@ -39,9 +37,7 @@
                                 <div class="form-group">
                                     <label>Course</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Course'" [data]="courses"
-                                        [settings]="courseDropdownSettings" [(ngModel)]="selectedCourses" (onSelect)="selectCourse()"
-                                        (onSelectAll)="selectAllCourses()" (onDeSelect)="unSelectCourse()"
-                                        (onDeSelectAll)="unSelectAllCourses()">
+                                        [settings]="courseDropdownSettings" [(ngModel)]="selectedCourses">
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
@@ -69,9 +65,7 @@
                                 <div class="form-group">
                                     <label>Inspection Sub Category</label>
                                     <ng-multiselect-dropdown [placeholder]="'Select Inspection Sub Category'" [data]="inspectionSubCategories"
-                                        [settings]="inspectionSubCategoryDropdownSettings" [(ngModel)]="selectedInspectionSubCategories"
-                                        (onSelect)="selectInspectionSubCategory()" (onSelectAll)="selectAllInspectionSubCategories()"
-                                        (onDeSelect)="unSelectInspectionSubCategory()" (onDeSelectAll)="unSelectAllInspectionSubCategories()">
+                                        [settings]="inspectionSubCategoryDropdownSettings" [(ngModel)]="selectedInspectionSubCategories">
                                     </ng-multiselect-dropdown>
                                 </div>
                             </div>
@@ -80,7 +74,7 @@
                                     <label>Start Date</label>
                                     <div class="input-group">
                                         <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
-                                            [(ngModel)]="startDate" ngbDatepicker #s="ngbDatepicker" (dateSelect)="onStartDateSelect($event)">
+                                            [(ngModel)]="startDate" ngbDatepicker #s="ngbDatepicker">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary calendar" (click)="s.toggle()"
                                                 type="button"></button>
@@ -93,7 +87,7 @@
                                     <label>End Date</label>
                                     <div class="input-group">
                                         <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [maxDate]="maxDate"
-                                            [(ngModel)]="endDate" ngbDatepicker #e="ngbDatepicker" (dateSelect)="onEndDateSelect($event)">
+                                            [(ngModel)]="endDate" ngbDatepicker #e="ngbDatepicker">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary calendar" (click)="e.toggle()"
                                                 type="button"></button>

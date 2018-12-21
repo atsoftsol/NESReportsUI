@@ -40,6 +40,6 @@ export const environment = {
     getCourseWiseSummary: 'api/feedbackreport/feedbackcoursewisesummary'
   },
   inspectionConfig: {
-    searchStudentByRegistrationNumber: ''
+    searchStudentByRegistrationNumber: 'api/inspection/studentinfo'
   }
 };

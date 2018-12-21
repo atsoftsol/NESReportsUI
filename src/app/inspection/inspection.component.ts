@@ -42,6 +42,7 @@ export class InspectionComponent implements OnInit {
     ngOnInit() {
         this.date = this.calendar.getToday();
         this.getStates();
+        this.searchStudentByRegistrationNumber();
     };
 
     getStates() {
@@ -126,12 +127,12 @@ export class InspectionComponent implements OnInit {
 
     searchStudentByRegistrationNumber() {
         this.studentSearchTerm.valueChanges
-            .subscribe(registrationNumber => {
-                if (registrationNumber !== '') {
-                    this.inspectionService.searchStudentByRegistrationNumber(registrationNumber)
+            .subscribe(admissionNumber => {
+                if (admissionNumber !== '') {
+                    this.inspectionService.searchStudentByRegistrationNumber(admissionNumber, this.branchId.toString())
                         .pipe(debounceTime(500))
                         .subscribe(data => {
-                            this.studentDetailsByRegistrationNumber = data.length != 0 ? data : [{ 'studentName': 'No Record Found' } as any];
+                            this.studentDetailsByRegistrationNumber = data.length != 0 ? data : [{ 'name': 'No Record Found' } as any];
                         });
                 }
             });

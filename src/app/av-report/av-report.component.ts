@@ -3,6 +3,7 @@ import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { AppService } from '../app.service';
 import { AVReportService } from './av-report.service';
 import { ExcelService } from '../custom-services/excel.service';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 
 @Component({
     templateUrl: 'av-report.component.html'
@@ -67,8 +68,12 @@ export class AVReportComponent implements OnInit {
     showGroupBarChart: boolean = false;
     showTableOrChart: string;
     maxDate: NgbDateStruct;
+    config: ExportAsConfig = {
+        type: 'xlsx',
+        elementId: 'avReportData',
+    };
 
-    constructor(private calendar: NgbCalendar, private appService: AppService, private avReportService: AVReportService, private excelService: ExcelService) {
+    constructor(private calendar: NgbCalendar, private appService: AppService, private avReportService: AVReportService, private excelService: ExcelService, private exportAsService: ExportAsService) {
         this.maxDate = this.calendar.getToday();
         this.stateDropdownSettings = {
             singleSelection: false,
@@ -1798,28 +1803,7 @@ export class AVReportComponent implements OnInit {
     };
 
     exportToExcel() {
-        let sampleData: any[] = [{
-            "State": "WEST BENGAL",
-            "Strength": 12259,
-            "Target": "00:00:00",
-            "Duration": "33:33:43",
-            "Diff": "00:00:00",
-            "Per(%)": 100
-        }, {
-            "State": "ANDHRA PRADESH",
-            "Strength": 104372,
-            "Target": "00:00:00",
-            "Duration": "00:00:00",
-            "Diff": "00:00:00",
-            "Per(%)": 0
-        }, {
-            "State": "Grand Total",
-            "Strength": 116631,
-            "Target": "00:00:00",
-            "Duration": "33:33:43",
-            "Diff": "00:00:00",
-            "Per(%)": ""
-        }];
-        this.excelService.exportAsExcelFile(sampleData, 'AV Report Excel');
+        this.config.type = 'xlsx';
+        this.exportAsService.save(this.config, 'myFile');
     };
 }

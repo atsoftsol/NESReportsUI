@@ -112,7 +112,7 @@
                     <div class="box-body">
                         <div class="main-wrapper">
                             <div class="main-container">
-                                <table class="main-table">
+                                <table id="avReportData" class="main-table">
                                     <thead>
                                         <tr>
                                             <th>
@@ -229,8 +229,8 @@
                                                                 <td style="text-align:center;">
                                                                     <span [innerHtml]=i+serial></span>
                                                                 </td>
-                                                                <td *ngFor="let column of detailedReportData.columns"
-                                                                    [ngStyle]="{'text-align':column.align}">
+                                                                <td *ngFor="let column of detailedReportData.columns">
+                                                                    <!-- [ngStyle]="{'text-align':column.align}"> -->
                                                                     <span [innerHtml]="item[column.name]"></span>
                                                                 </td>
                                                             </tr>
